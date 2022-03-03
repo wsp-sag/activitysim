@@ -22,7 +22,3 @@ dependencies:
 - coveralls
 - pycodestyle
 - pytest-regressions
-
-- pip:
-# Placeholder until available on conda-forge 
-  - simwrapper > 1.7
