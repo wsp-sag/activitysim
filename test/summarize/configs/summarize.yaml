@@ -1,13 +1,17 @@
 SPECIFICATION: summarize.csv
 OUTPUT: summarize
 
+# Set to True to export pipeline tables for expression development
+EXPORT_PIPELINE_TABLES: True
+
 preprocessor:
-  DF: trips_mergerd
+  DF: trips_merged
   SPEC: summarize_preprocessor.csv
 #  TABLES:
 
 persons_merged:
-  SLICERS:
+  
+  BIN:
     # Manually-specified bins
     - column: income
       label: income_category
@@ -49,7 +53,8 @@ persons_merged:
       label_format: ${left:,.2f} - ${right:,.2f} # 'left' and 'right' are bin boundaries
 
 trips_merged:
-  SLICERS:
+  
+  BIN:
     - column: income
       label: trip_income_category # TODO: Figure out why this can't have the same name as a slicer for persons_merged
       type: manual_breaks
