@@ -66,3 +66,11 @@ coef_cars3_drivers_3,5.5131,F
 coef_cars2_drivers_4_up,6.3662,F
 coef_cars3_drivers_4_up,8.5148,F
 coef_cars4_drivers_4_up,9.5807,F
+coef_nest_root,1,T
+coef_nest_own_no_car,0.668,T
+coef_nest_own_cars,0.668,T
+coef_nest_own_zero_car,0.3,T
+coef_nest_own_one_car,0.3,T
+coef_nest_own_two_cars,0.3,T
+coef_nest_own_three_cars,0.3,T
+coef_nest_own_four_cars,0.3,T

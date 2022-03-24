@@ -2,8 +2,44 @@
 SPEC: auto_ownership_interim.csv
 COEFFICIENTS: auto_ownership_coefficients.csv
 
-#LOGIT_TYPE: NL
-LOGIT_TYPE: MNL
+LOGIT_TYPE: NL
+
+NESTS:
+  name: root
+  coefficient: 1
+  alternatives:
+    - name: own no car
+      coefficient: 0.668
+      alternatives:
+        - name: zero car
+          coefficient: 0.3
+          alternatives:
+            - 0_CARS
+    - name: own cars
+      coefficient: 0.668
+      alternatives:
+        - name: one car
+          coefficient: 0.3
+          alternatives:
+            - 1_CAR_1CV
+            - 1_CAR_1AV
+        - name: two cars
+          coefficient: 0.3
+          alternatives:
+            - 2_CARS_2CV
+            - 2_CARS_2AV
+            - 2_CARS_1CV1AV
+        - name: three cars
+          coefficient: 0.3
+          alternatives:
+            - 3_CARS_3CV
+            - 3_CARS_3AV
+            - 3_CARS_2CV1AV
+            - 3_CARS_1CV2AV
+        - name: four cars
+          coefficient: 0.3
+          alternatives:
+            - 4_CARS_4CV
 
 CONSTANTS:
   ID_SAN_FRANCISCO: 1
