@@ -6,6 +6,7 @@ import pandas as pd
 # import models is necessary to initalize the model steps with orca
 from activitysim.abm import models
 from activitysim.core import pipeline, config
+from activitysim.core import tracing
 
 
 # Used by conftest.py initialize_pipeline method
@@ -30,6 +31,7 @@ def tables() -> dict[str, str]:
         'land_use': 'zone_id',
         'persons': 'person_id',
         'households': 'household_id',
+        #'accessibility': 'mgra'
     }
 
 
@@ -47,21 +49,38 @@ def initialize_network_los() -> bool:
 
 def test_auto_ownership(initialize_pipeline: pipeline.Pipeline, caplog):
     # Run summarize model
-    caplog.set_level(logging.DEBUG)
+    caplog.set_level(logging.INFO)
+
+    # run model step
     pipeline.run(models=['auto_ownership_simulate'])
+    
+    # get the updated pipeline data
+    household_df = pipeline.get_table('households')
 
-    # # Retrieve output tables to check contents
-    # model_settings = config.read_model_settings('auto_ownership.yaml')
-    # output_location = (model_settings['OUTPUT'] if 'OUTPUT' in model_settings else 'output')
-    # output_dir = config.output_file_path(output_location)
+    tracing.print_summary('auto_ownership', household_df.auto_ownership, describe=True)
 
-    # # Check that households are counted correctly
-    # households_count = pd.read_csv(config.output_file_path(os.path.join(output_location, f'households_count.csv')))
-    # households = pd.read_csv(config.data_file_path("households.csv"))
-    # assert int(households_count.iloc[0]) == len(households)
+    # compare with targets
+    # TODO check the value of auto_ownership
+    """
+    target_df = pd.DataFrame()
+    model_df = household_df['auto_ownership'].value_counts().to_frame()
+    assert (target_df == model_df)
+    """
 
-    # # Check that bike trips are counted correctly
-    # trips_by_mode_count = pd.read_csv(
-    #     config.output_file_path(os.path.join(output_location, f'trips_by_mode_count.csv')))
-    # trips = pd.read_csv(config.data_file_path("trips.csv"))
-    # assert int(trips_by_mode_count.BIKE.iloc[0]) == len(trips[trips.trip_mode == 'BIKE'])
+## TODO
+# fetch/prepare existing files for model inputs
+# e.g. read accessibilities.csv from ctramp result, rename columns, write out to accessibility.csv which is the input to activitysim
+
+@pytest.fixture(scope='module')
+def prepare_model_inputs() -> None:
+    """
+    Prepare accessibility file from ctramp run into input file activitysim expects
+    1. renaming columns
+    2. write out table
+
+    Prepare household, person, landuse data into format activitysim expects
+    1. renaming columns
+    2. write out table
+
+    :return: None
+    """

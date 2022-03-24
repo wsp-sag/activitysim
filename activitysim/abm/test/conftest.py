@@ -54,5 +54,5 @@ def initialize_pipeline(module: str, tables: dict[str, str], initialize_network_
 
     # pytest teardown code
     pipeline.close_pipeline()
-    pipeline_file_path = os.path.join(output_dir, 'pipeline.h5')
-    os.unlink(pipeline_file_path)
+    #pipeline_file_path = os.path.join(output_dir, 'pipeline.h5')
+    #os.unlink(pipeline_file_path)
