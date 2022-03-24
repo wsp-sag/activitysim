@@ -1,7 +1,7 @@
 Label,Description,Expression,0_CARS,1_CAR_1CV,1_CAR_1AV,2_CARS_2CV,2_CARS_2AV,2_CARS_1CV1AV,3_CARS_3CV,3_CARS_3AV,3_CARS_2CV1AV,3_CARS_1CV2AV,4_CARS_4CV
 ,Boolean indicating that household is in SF county,"@np.where(df.county_id == ID_SAN_FRANCISCO, 1, 0)",1.233276051,,,,,,,,,,
 ,alternative specific constant for 1 driver household,num_drivers==1,-1.920143842,,,-0.934889684,-0.934889684,-0.934889684,-1.904733531,-1.904733531,-1.904733531,-1.904733531,-2.488003709
-#,Non-motorized zonal accessbility,column_1,0.060875253,0.039970159,0.039970159,,,,-0.052524462,-0.052524462,-0.052524462,-0.052524462,-0.100612397
+,Non-motorized zonal accessbility,nonmandatory_nm_accessibility,0.060875253,0.039970159,0.039970159,,,,-0.052524462,-0.052524462,-0.052524462,-0.052524462,-0.100612397
 #,alternative specific constant for 2 driver household,num_drivers==2,-3.470781624,-2.20339718,-2.20339718,,,,-0.829354142,-0.829354142,-0.829354142,-0.829354142,-1.778311581
 #,alternative specific constant for 3 driver household,num_drivers==3,-3.329633459,-2.473061365,-2.473061365,-0.317496682,-0.317496682,-0.317496682,,,,,-0.533915593
 #,alternative specific constant for 4+ driver household,num_drivers>=4,-6.111494495,-3.983965837,-3.983965837,-0.909626603,-0.909626603,-0.909626603,-0.524427892,-0.524427892,-0.524427892,-0.524427892,
