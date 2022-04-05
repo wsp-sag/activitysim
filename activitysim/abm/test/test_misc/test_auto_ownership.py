@@ -89,7 +89,7 @@ def prepare_module_inputs() -> None:
     accessibility_file = os.path.join('test', 'auto_ownership', 'data', 'accessibilities.csv')
     household_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'synthetic_households.csv')
     person_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'synthetic_persons.csv')
-    landuse_file = os.path.join('test', 'auto_ownership', 'data', 'landuse', 'maz_data.csv')
+    landuse_file = os.path.join('test', 'auto_ownership', 'data', 'landuse', 'maz_data_withDensity.csv')
 
     test_dir = os.path.join('test', 'auto_ownership', 'data')
 

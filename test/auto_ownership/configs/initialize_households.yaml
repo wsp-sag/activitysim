@@ -8,6 +8,8 @@ annotate_tables:
       employed: pemploy
       student_status: pstudent
       person_type: ptype
+      SCHL: education_attainment
+      SCHG: grade_attending
     annotate:
       SPEC: annotate_persons
       DF: persons
@@ -21,6 +23,7 @@ annotate_tables:
       VEH: auto_ownership
       MAZ: home_zone_id
       HINCP: income
+      BLD: building_size
     annotate:
       SPEC: annotate_households
       DF: households

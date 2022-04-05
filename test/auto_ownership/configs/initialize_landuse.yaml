@@ -3,7 +3,6 @@ annotate_tables:
     column_map:
         MAZ_ORIGINAL: zone_id
         CountyID: county_id
-        TAZ_ORIGINAL: TAZ
         DistID: DISTRICT
         HH: TOTHH
         POP: TOTPOP
