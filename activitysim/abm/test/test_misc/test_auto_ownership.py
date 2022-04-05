@@ -1,6 +1,7 @@
 import logging
 import pytest
 import os
+import shutil
 import pandas as pd
 
 # import models is necessary to initalize the model steps with orca
@@ -29,10 +30,10 @@ def tables() -> dict[str, str]:
     :return: dict
     """
     return {
-        'land_use': 'zone_id',
+        'land_use': 'MAZ_ORIGINAL',
         'persons': 'person_id',
         'households': 'household_id',
-        'accessibility': 'zone_id'
+        'accessibility': 'mgra'
     }
 
 
@@ -53,7 +54,12 @@ def test_auto_ownership(initialize_pipeline: pipeline.Pipeline, caplog):
     caplog.set_level(logging.INFO)
 
     # run model step
-    pipeline.run(models=['auto_ownership_simulate'])
+    pipeline.run(models=[
+        'initialize_landuse',
+        'initialize_households', 
+        'auto_ownership_simulate'
+        ]
+    )
     
     # get the updated pipeline data
     household_df = pipeline.get_table('households')
@@ -72,83 +78,60 @@ def test_auto_ownership(initialize_pipeline: pipeline.Pipeline, caplog):
 @pytest.fixture(scope='module')
 def prepare_module_inputs() -> None:
     """
-    Prepare accessibility file from ctramp run into input file activitysim expects
-    1. renaming columns
-    2. write out table
+    copy input files from sharepoint into test folder
 
-    Prepare household, person, landuse data into format activitysim expects
-    1. renaming columns
-    2. write out table
+    create unique person id in person file
 
     :return: None
     """
+    # https://wsponlinenam.sharepoint.com/sites/US-TM2ConversionProject/Shared%20Documents/Forms/
+    # AllItems.aspx?id=%2Fsites%2FUS%2DTM2ConversionProject%2FShared%20Documents%2FTask%203%20ActivitySim&viewid=7a1eaca7%2D3999%2D4d45%2D9701%2D9943cc3d6ab1
+    accessibility_file = os.path.join('test', 'auto_ownership', 'data', 'accessibilities.csv')
+    household_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'synthetic_households.csv')
+    person_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'synthetic_persons.csv')
+    landuse_file = os.path.join('test', 'auto_ownership', 'data', 'landuse', 'maz_data.csv')
 
-    # this is the ctramp accessibility output file
-    # can be downloaded from 
-    # https://wsponlinenam.sharepoint.com/:x:/r/sites/US-TM2ConversionProject/Shared%20Documents/Task%203%20ActivitySim/model_results/
-    # ver12_new_inputs/ctramp_output/accessibilities.csv?d=wef3dbcd2186c42518a9e9558a15a2ca3&csf=1&web=1&e=6whUv0
-    input_accessibility_file = os.path.join('test', 'auto_ownership', 'data', 'accessibilities.csv')
+    test_dir = os.path.join('test', 'auto_ownership', 'data')
 
-    accessibility_df = pd.read_csv(
-        input_accessibility_file
+    shutil.copy(accessibility_file, os.path.join(test_dir, 'accessibility.csv'))
+    shutil.copy(household_file, os.path.join(test_dir, 'households.csv'))
+    shutil.copy(person_file, os.path.join(test_dir, 'persons.csv'))
+    shutil.copy(landuse_file, os.path.join(test_dir, 'land_use.csv'))
+    
+    household_df = pd.read_csv(
+        os.path.join(test_dir, 'households.csv')
     )
 
-    # rename columns
-    # this dictionary is developed based on mtc ctramp code
-    # https://github.com/BayAreaMetro/travel-model-two/blob/27e3ad6e5a6c71120e3e513fe423ecaac372c63a/core/src/java/com/pb/mtctm2/abm/accessibilities/AccessibilitiesTable.java#L24-L61
-    # TODO confirm this is the corrent column names
-    accessibility_columns_dict = {
-        'column_1': 'nonmandatory_auto_accessibility',
-        'column_2': 'nonmandatory_transit_accessibility',
-        'column_3': 'nonmandatory_nm_accessibility',
-        'column_4': 'nonmandatory_sov0_accessibility',
-        'column_5': 'nonmandatory_sov1_accessibility',
-        'column_6': 'nonmandatory_sov2_accessibility',
-        'column_7': 'nonmandatory_hov0_accessibility',
-        'column_8': 'nonmandatory_hov1_accessibility',
-        'column_9': 'nonmandatory_hov2_accessibility',
-        'column_10': 'shop_hov_insufficient_accessibility',
-        'column_11': 'shop_hov_sufficient_accessibility',
-        'column_12': 'shop_hov_oversufficient_accessibility',
-        'column_13': 'maint_hov_insufficient_accessibility',
-        'column_14': 'maint_hov_sufficient_accessibility',
-        'column_15': 'maint_hov_oversufficient_accessibility',
-        'column_16': 'eat_hov_insufficient_accessibility',
-        'column_17': 'eat_hov_sufficient_accessibility',
-        'column_18': 'eat_hov_oversufficient_accessibility',
-        'column_19': 'visit_hov_insufficient_accessibility',
-        'column_20': 'visit_hov_sufficient_accessibility',
-        'column_21': 'visit_hov_oversufficient_accessibility',
-        'column_22': 'discr_hov_insufficient_accessibility',
-        'column_23': 'discr_hov_sufficient_accessibility',
-        'column_24': 'discr_hov_oversufficient_accessibility',
-        'column_25': 'escort_hov_insufficient_accessibility',
-        'column_26': 'escort_hov_sufficient_accessibility',
-        'column_27': 'escort_hov_oversufficient_accessibility',
-        'column_28': 'shop_sov_insufficient_accessibility',
-        'column_29': 'shop_sov_sufficient_accessibility',
-        'column_30': 'shop_sov_oversufficient_accessibility',
-        'column_31': 'maint_sov_insufficient_accessibility',
-        'column_32': 'maint_sov_sufficient_accessibility',
-        'column_33': 'maint_sov_oversufficient_accessibility',
-        'column_40': 'discr_sov_insufficient_accessibility',
-        'column_41': 'discr_sov_sufficient_accessibility',
-        'column_42': 'discr_sov_oversufficient_accessibility',
-        'column_45': 'total_emp_accessibility',
-        'column_47': 'hh_walktransit_accessibility',
-        'mgra' : 'zone_id'
+    household_columns_dict = {
+        'unique_hh_id' : 'household_id',
+        'MAZ' : 'home_zone_id'
     }
 
-    accessibility_df.rename(columns=accessibility_columns_dict, inplace = True)
+    household_df.rename(columns = household_columns_dict, inplace = True)
 
-    accessibility_df.to_csv(
-        os.path.join('test', 'auto_ownership', 'data', 'accessibility.csv'),
+    # take subset of household - for faster runtime
+    #household_df = household_df[household_df.household_id == 357022]
+
+    household_df.to_csv(
+        os.path.join('test', 'auto_ownership', 'data', 'households.csv'),
         index = False
     )
 
-    ## TODO
-    # annotate household, person, and land_use data
+    person_df = pd.read_csv(
+        os.path.join(test_dir, 'persons.csv')
+    )
 
+    # create person_id
+    person_df['person_id'] = person_df['unique_hh_id'] * 100 + person_df['SPORDER']
+
+    # take subset of person - for faster runtime
+    #person_df = person_df[person_df.unique_hh_id == 357022]
+
+    person_df.to_csv(
+        os.path.join(test_dir, 'persons.csv'),
+        index = False
+    )
+   
 # TODO 
 # create target database from existing run
 @pytest.fixture(scope='module')
