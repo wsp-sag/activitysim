@@ -1,14 +1,16 @@
 annotate_tables:
   - tablename: persons
     column_map:
-      unique_hh_id: household_id
+      HHID: household_id
+      PERID: person_id
       AGEP: age
-      SPORDER: PNUM
       SEX: sex
-      employed: pemploy
-      student_status: pstudent
-      person_type: ptype
       SCHL: education_attainment
+      OCCP: occupation
+      WKHP: hours_worked
+      WKW: weeks_worked
+      EMPLOYED: employment_status
+      ESR: esr
       SCHG: grade_attending
     annotate:
       SPEC: annotate_persons
@@ -17,13 +19,16 @@ annotate_tables:
         - households
   - tablename: households
     column_map:
-      unique_hh_id: household_id
-      NP: hhsize
-      hh_workers_from_esr: num_workers
-      VEH: auto_ownership
+      HHID: household_id
       MAZ: home_zone_id
-      HINCP: income
+      HHINCADJ: income
+      NWRKRS_ESR: num_workers
+      VEH: auto_ownership
+      NP: hhsize
+      HHT: hh_type
       BLD: building_size
+      TYPE: hh_unit_type
+      MTCCountyID: county_id
     annotate:
       SPEC: annotate_households
       DF: households

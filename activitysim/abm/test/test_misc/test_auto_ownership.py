@@ -31,7 +31,7 @@ def tables() -> dict[str, str]:
     """
     return {
         'land_use': 'MAZ_ORIGINAL',
-        'persons': 'person_id',
+        'persons': 'PERID',
         'households': 'household_id',
         'accessibility': 'mgra'
     }
@@ -87,8 +87,8 @@ def prepare_module_inputs() -> None:
     # https://wsponlinenam.sharepoint.com/sites/US-TM2ConversionProject/Shared%20Documents/Forms/
     # AllItems.aspx?id=%2Fsites%2FUS%2DTM2ConversionProject%2FShared%20Documents%2FTask%203%20ActivitySim&viewid=7a1eaca7%2D3999%2D4d45%2D9701%2D9943cc3d6ab1
     accessibility_file = os.path.join('test', 'auto_ownership', 'data', 'accessibilities.csv')
-    household_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'synthetic_households.csv')
-    person_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'synthetic_persons.csv')
+    household_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'households.csv')
+    person_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'persons.csv')
     landuse_file = os.path.join('test', 'auto_ownership', 'data', 'landuse', 'maz_data_withDensity.csv')
 
     test_dir = os.path.join('test', 'auto_ownership', 'data')
@@ -98,40 +98,27 @@ def prepare_module_inputs() -> None:
     shutil.copy(person_file, os.path.join(test_dir, 'persons.csv'))
     shutil.copy(landuse_file, os.path.join(test_dir, 'land_use.csv'))
     
+    # currently household file has to have these two columns, even before annotation
+    # because annotate person happens before household and uses these two columns
+    # TODO find a way to get around this
+    ####
     household_df = pd.read_csv(
         os.path.join(test_dir, 'households.csv')
     )
 
     household_columns_dict = {
-        'unique_hh_id' : 'household_id',
+        'HHID' : 'household_id',
         'MAZ' : 'home_zone_id'
     }
 
     household_df.rename(columns = household_columns_dict, inplace = True)
 
-    # take subset of household - for faster runtime
-    #household_df = household_df[household_df.household_id == 357022]
-
     household_df.to_csv(
         os.path.join('test', 'auto_ownership', 'data', 'households.csv'),
         index = False
     )
+    ####
 
-    person_df = pd.read_csv(
-        os.path.join(test_dir, 'persons.csv')
-    )
-
-    # create person_id
-    person_df['person_id'] = person_df['unique_hh_id'] * 100 + person_df['SPORDER']
-
-    # take subset of person - for faster runtime
-    #person_df = person_df[person_df.unique_hh_id == 357022]
-
-    person_df.to_csv(
-        os.path.join(test_dir, 'persons.csv'),
-        index = False
-    )
-   
 # TODO 
 # create target database from existing run
 @pytest.fixture(scope='module')
