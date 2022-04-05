@@ -1,0 +1,29 @@
+annotate_tables:
+  - tablename: persons
+    column_map:
+      unique_hh_id: household_id
+      AGEP: age
+      SPORDER: PNUM
+      SEX: sex
+      employed: pemploy
+      student_status: pstudent
+      person_type: ptype
+    annotate:
+      SPEC: annotate_persons
+      DF: persons
+      TABLES:
+        - households
+  - tablename: households
+    column_map:
+      unique_hh_id: household_id
+      NP: hhsize
+      hh_workers_from_esr: num_workers
+      VEH: auto_ownership
+      MAZ: home_zone_id
+      HINCP: income
+    annotate:
+      SPEC: annotate_households
+      DF: households
+      TABLES:
+        - persons
+        - land_use

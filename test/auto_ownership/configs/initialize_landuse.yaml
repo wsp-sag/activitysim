@@ -1,0 +1,14 @@
+annotate_tables:
+  - tablename: land_use
+    column_map:
+        MAZ_ORIGINAL: zone_id
+        CountyID: county_id
+        TAZ_ORIGINAL: TAZ
+        DistID: DISTRICT
+        HH: TOTHH
+        POP: TOTPOP
+        ACRES: TOTACRE
+        emp_total: TOTEMP
+    annotate:
+      SPEC: annotate_landuse
+      DF: land_use
