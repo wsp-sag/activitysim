@@ -1,0 +1,9 @@
+################
+# remote
+################
+
+FROM continuumio/anaconda3 AS activitysim-remote
+
+WORKDIR /usr/node
+
+RUN pip install activitysim

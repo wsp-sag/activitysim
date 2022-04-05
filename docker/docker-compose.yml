@@ -35,6 +35,14 @@ services:
     volumes:
       - ..:/usr/node
     entrypoint: docker/entrypoint.sh
+  remote:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.remote
+      target: activitysim-remote
+    image: activitysim-remote
+    volumes:
+      - ..:/usr/node
 
 # Build all containers
 # docker-compose build
