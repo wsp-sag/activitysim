@@ -3,6 +3,9 @@ import pytest
 import os
 import shutil
 import pandas as pd
+import numpy as np
+from numpy import dot
+from numpy.linalg import norm
 
 # import models is necessary to initalize the model steps with orca
 from activitysim.abm import models
@@ -33,7 +36,7 @@ def tables() -> dict[str, str]:
         'land_use': 'MAZ_ORIGINAL',
         'persons': 'PERID',
         'households': 'household_id',
-        'accessibility': 'mgra'
+        'accessibility': 'MAZ_ORIGINAL'
     }
 
 
@@ -64,14 +67,28 @@ def test_auto_ownership(initialize_pipeline: pipeline.Pipeline, caplog):
     # get the updated pipeline data
     household_df = pipeline.get_table('households')
 
-    tracing.print_summary('auto_ownership', household_df.auto_ownership, describe=True)
+    ao_results_file = os.path.join('test', 'auto_ownership', 'data', 'householdData_3.csv')
+    ao_results_df = pd.read_csv(ao_results_file)
 
-    # compare with targets
-    # TODO check the value of auto_ownership
-    if validate_model_against_target(prepare_targets, household_df):
-        logger.info("Model result matches target")
-    else:
-        logger.info("Model result does not match target")
+    target_key = "autos"
+    simulated_key = "auto_ownership"
+    similarity_threshold = 0.99
+    
+    MAX_AUTO_OWNERSHIP = max(ao_results_df[target_key])
+
+    # AO summary from the model
+    household_df[simulated_key] = np.where(household_df[simulated_key] <= MAX_AUTO_OWNERSHIP, household_df[simulated_key], MAX_AUTO_OWNERSHIP)
+    simulated_df = create_summary(household_df, key=simulated_key, out_col="Simulated_Share")
+
+    # AO summary from the results/target
+    target_df = create_summary(ao_results_df, key=target_key, out_col="Target_Share")
+
+    # compare simulated and target results 
+    similarity_value = compare_simulated_against_target(target_df, simulated_df, target_key, simulated_key)
+
+    # if the cosine_similarity >= threshold then the simulated and target results are "similar"
+    assert similarity_value >= similarity_threshold
+
 
 # fetch/prepare existing files for model inputs
 # e.g. read accessibilities.csv from ctramp result, rename columns, write out to accessibility.csv which is the input to activitysim
@@ -119,28 +136,46 @@ def prepare_module_inputs() -> None:
     )
     ####
 
-# TODO 
-# create target database from existing run
-@pytest.fixture(scope='module')
-def prepare_targets() -> pd.DataFrame:
+
+def create_summary(input_df, key, out_col = "Share") -> pd.DataFrame:
     """
-    Prepare auto ownership target data from existing ctramp run
+    Create summary for the input data. 
+    1. group input data by the "key" column
+    2. calculate the percent of input data records in each "key" category. 
 
     :return: pd.DataFrame
     """
 
-    # ctramp run result
-    # https://wsponlinenam.sharepoint.com/:x:/r/sites/US-TM2ConversionProject/Shared%20Documents/Task%203%20ActivitySim/model_results/
-    # ver12_new_inputs/ctramp_output/aoResults.csv?d=wba2db5a7cd8841ae822cc4234038b258&csf=1&web=1&e=KmHeWN
+    out_df = input_df.groupby(key).size().reset_index(name='Count')
+    out_df[out_col] = round(out_df["Count"]/out_df["Count"].sum(), 4)
+    
+    return out_df[[key, out_col]]
 
-# TODO
-# flesh out assert function
-def validate_model_against_target(target_df: pd.DataFrame, model_df: pd.DataFrame) -> bool:
+
+def cosine_similarity(a, b): 
     """
-    assert funtion that compares model summary with target
-    e.g. loop through each cell in the summary table, if % diff within threshold then model matches target
+    Computes cosine similarity between two vectors.
+    
+    Cosine similarity is used here as a metric to measure similarity between two sequence of numbers.
+    Two sequence of numbers are represented as vectors (in a multi-dimensional space) and cosine similiarity is defined as the cosine of the angle between them
+    i.e., dot products of the vectors divided by the product of their lengths. 
 
-    :return: bool
+    :return: 
     """
+    
+    return dot(a, b)/(norm(a)*norm(b))
 
-    return True
+
+def compare_simulated_against_target(target_df: pd.DataFrame, simulated_df: pd.DataFrame, target_key: str, simulated_key:str) -> bool:
+    """
+    compares the simulated and target results by computing the cosine similarity between them. 
+
+    :return:
+    """
+    
+    merged_df = pd.merge(target_df, simulated_df, left_on=target_key, right_on=simulated_key, how="outer")
+    merged_df = merged_df.fillna(0)
+
+    similarity_value = cosine_similarity(merged_df["Target_Share"].tolist(), merged_df["Simulated_Share"].tolist())
+
+    return similarity_value
