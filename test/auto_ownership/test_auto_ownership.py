@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 # Used by conftest.py initialize_pipeline method
 @pytest.fixture(scope='module')
-def module(prepare_module_inputs) -> str:
+def module() -> str:
     """
     A pytest fixture that returns the data folder location.
     :return: folder location for any necessary data to initialize the tests
@@ -26,7 +26,7 @@ def module(prepare_module_inputs) -> str:
 
 # Used by conftest.py initialize_pipeline method
 @pytest.fixture(scope='module')
-def tables() -> dict[str, str]:
+def tables(prepare_module_inputs) -> dict[str, str]:
     """
     A pytest fixture that returns the "mock" tables to build pipeline dataframes. The
     key-value pair is the name of the table and the index column.
@@ -34,7 +34,7 @@ def tables() -> dict[str, str]:
     """
     return {
         'land_use': 'MAZ_ORIGINAL',
-        'persons': 'PERID',
+        'persons': 'person_id',
         'households': 'household_id',
         'accessibility': 'MAZ_ORIGINAL'
     }
@@ -51,17 +51,29 @@ def initialize_network_los() -> bool:
     """
     return False
 
-
-def test_auto_ownership(initialize_pipeline: pipeline.Pipeline, caplog):
+@pytest.mark.skipif(os.path.isfile('test/auto_ownership/output/pipeline.h5'), reason = "no need to recreate pipeline store if alreayd exist")
+def test_prepare_input_pipeline(initialize_pipeline: pipeline.Pipeline, caplog):
     # Run summarize model
     caplog.set_level(logging.INFO)
 
     # run model step
     pipeline.run(models=[
         'initialize_landuse',
-        'initialize_households', 
-        'auto_ownership_simulate'
+        'initialize_households'
         ]
+    )
+    
+    pipeline.close_pipeline()
+
+def test_auto_ownership(reconnect_pipeline: pipeline.Pipeline, caplog):
+    
+    caplog.set_level(logging.INFO)
+
+    # run model step
+    pipeline.run(models=[
+        'auto_ownership_simulate'
+        ],
+        resume_after = 'initialize_households'
     )
     
     # get the updated pipeline data
@@ -72,7 +84,7 @@ def test_auto_ownership(initialize_pipeline: pipeline.Pipeline, caplog):
 
     target_key = "autos"
     simulated_key = "auto_ownership"
-    similarity_threshold = 0.99
+    similarity_threshold = 0.01
     
     MAX_AUTO_OWNERSHIP = max(ao_results_df[target_key])
 
@@ -114,11 +126,35 @@ def prepare_module_inputs() -> None:
     shutil.copy(household_file, os.path.join(test_dir, 'households.csv'))
     shutil.copy(person_file, os.path.join(test_dir, 'persons.csv'))
     shutil.copy(landuse_file, os.path.join(test_dir, 'land_use.csv'))
-    
+
+    # add original maz id to accessibility table
+    land_use_df = pd.read_csv(
+        os.path.join(test_dir, 'land_use.csv')
+    )
+    accessibility_df = pd.read_csv(
+        os.path.join(test_dir, 'accessibility.csv')
+    )
+
+    accessibility_df = pd.merge(
+        accessibility_df,
+        land_use_df[['MAZ', 'MAZ_ORIGINAL']].rename(
+            columns = {'MAZ' : 'mgra'}
+        ),
+        how = 'left',
+        on = 'mgra'
+    )
+
+    accessibility_df.to_csv(
+        os.path.join(test_dir, 'accessibility.csv'),
+        index = False
+    )
+
     # currently household file has to have these two columns, even before annotation
     # because annotate person happens before household and uses these two columns
     # TODO find a way to get around this
     ####
+
+    # household file from populationsim
     household_df = pd.read_csv(
         os.path.join(test_dir, 'households.csv')
     )
@@ -130,8 +166,67 @@ def prepare_module_inputs() -> None:
 
     household_df.rename(columns = household_columns_dict, inplace = True)
 
+    # get columns from ctramp output
+    tm2_simulated_household_df = pd.read_csv(
+        os.path.join(test_dir, 'householdData_3.csv')
+    )
+    tm2_simulated_household_df.rename(columns = {'hh_id' : 'household_id'}, inplace = True)
+
+    household_df = pd.merge(
+        household_df,
+        tm2_simulated_household_df[
+            ['household_id', 'autos', 'automated_vehicles', 'transponder', 'cdap_pattern', 'jtf_choice']
+        ],
+        how = 'inner', # tm2 is not 100% sample run
+        on = 'household_id'
+    )
+
     household_df.to_csv(
-        os.path.join('test', 'auto_ownership', 'data', 'households.csv'),
+        os.path.join(test_dir, 'households.csv'),
+        index = False
+    )
+
+    # person file from populationsim
+    person_df = pd.read_csv(
+        os.path.join(test_dir, 'persons.csv')
+    )
+
+    person_columns_dict = {
+        'HHID' : 'household_id',
+        'PERID' : 'person_id'
+    }
+
+    person_df.rename(columns = person_columns_dict, inplace = True)
+
+    # get columns from ctramp result
+    tm2_simulated_person_df = pd.read_csv(
+        os.path.join(test_dir, 'personData_3.csv')
+    )
+    tm2_simulated_person_df.rename(columns = {'hh_id' : 'household_id'}, inplace = True)
+
+    person_df = pd.merge(
+        person_df,
+        tm2_simulated_person_df[
+            [
+                'household_id', 
+                'person_id', 
+                'type', 
+                'value_of_time', 
+                'activity_pattern',
+                'imf_choice',
+                'inmf_choice',
+                'fp_choice',
+                'reimb_pct',
+                'workDCLogsum',
+                'schoolDCLogsum'
+            ]
+        ],
+        how = 'inner', # ctramp might not be 100% sample run
+        on = ['household_id', 'person_id']
+    )
+
+    person_df.to_csv(
+        os.path.join(test_dir, 'persons.csv'),
         index = False
     )
     ####
