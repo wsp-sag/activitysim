@@ -51,6 +51,7 @@ def initialize_network_los() -> bool:
     """
     return False
 
+
 @pytest.mark.skipif(os.path.isfile('test/auto_ownership/output/pipeline.h5'), reason = "no need to recreate pipeline store if alreayd exist")
 def test_prepare_input_pipeline(initialize_pipeline: pipeline.Pipeline, caplog):
     # Run summarize model
@@ -65,35 +66,41 @@ def test_prepare_input_pipeline(initialize_pipeline: pipeline.Pipeline, caplog):
     
     pipeline.close_pipeline()
 
+
 def test_auto_ownership(reconnect_pipeline: pipeline.Pipeline, caplog):
     
     caplog.set_level(logging.INFO)
 
+    #logger.info("household_df columns: ", household_df.columns.tolist())
+    #logger.info("persons_df columns: ", persons_df.columns.tolist())
+
     # run model step
-    pipeline.run(models=[
-        'auto_ownership_simulate'
-        ],
+    pipeline.run(
+        models = ['auto_ownership_simulate'],
         resume_after = 'initialize_households'
     )
     
     # get the updated pipeline data
     household_df = pipeline.get_table('households')
+    
+    # logger.info("household_df columns: ", household_df.columns.tolist())
 
-    ao_results_file = os.path.join('test', 'auto_ownership', 'data', 'householdData_3.csv')
-    ao_results_df = pd.read_csv(ao_results_file)
+    persons_df = pipeline.get_table('persons')    
+    
+    # logger.info("persons_df columns: ", persons_df.columns.tolist())
 
     target_key = "autos"
     simulated_key = "auto_ownership"
     similarity_threshold = 0.01
     
-    MAX_AUTO_OWNERSHIP = max(ao_results_df[target_key])
+    MAX_AUTO_OWNERSHIP = max(household_df[target_key])
 
     # AO summary from the model
     household_df[simulated_key] = np.where(household_df[simulated_key] <= MAX_AUTO_OWNERSHIP, household_df[simulated_key], MAX_AUTO_OWNERSHIP)
     simulated_df = create_summary(household_df, key=simulated_key, out_col="Simulated_Share")
 
     # AO summary from the results/target
-    target_df = create_summary(ao_results_df, key=target_key, out_col="Target_Share")
+    target_df = create_summary(household_df, key=target_key, out_col="Target_Share")
 
     # compare simulated and target results 
     similarity_value = compare_simulated_against_target(target_df, simulated_df, target_key, simulated_key)
@@ -131,6 +138,7 @@ def prepare_module_inputs() -> None:
     land_use_df = pd.read_csv(
         os.path.join(test_dir, 'land_use.csv')
     )
+    
     accessibility_df = pd.read_csv(
         os.path.join(test_dir, 'accessibility.csv')
     )
@@ -168,7 +176,7 @@ def prepare_module_inputs() -> None:
 
     # get columns from ctramp output
     tm2_simulated_household_df = pd.read_csv(
-        os.path.join(test_dir, 'householdData_3.csv')
+        os.path.join(test_dir, 'tm2_outputs', 'householdData_3.csv')
     )
     tm2_simulated_household_df.rename(columns = {'hh_id' : 'household_id'}, inplace = True)
 
@@ -200,7 +208,7 @@ def prepare_module_inputs() -> None:
 
     # get columns from ctramp result
     tm2_simulated_person_df = pd.read_csv(
-        os.path.join(test_dir, 'personData_3.csv')
+        os.path.join(test_dir, 'tm2_outputs', 'personData_3.csv')
     )
     tm2_simulated_person_df.rename(columns = {'hh_id' : 'household_id'}, inplace = True)
 
@@ -225,11 +233,34 @@ def prepare_module_inputs() -> None:
         on = ['household_id', 'person_id']
     )
 
+    # # get usual workplace and school location result
+    # tm2_simulated_wsloc_df = pd.read_csv(
+    #     os.path.join(test_dir, 'tm2_outputs', 'wsLocResults_3.csv')
+    # )
+    # tm2_simulated_wsloc_df.rename(columns = {'HHID' : 'household_id', 'PersonID' : 'person_id'}, inplace = True)
+
+    # person_df = pd.merge(
+    #     person_df,
+    #     tm2_simulated_wsloc_df[
+    #         [
+    #             'household_id', 
+    #             'person_id', 
+    #             'WorkLocation', 
+    #             'WorkLocationDistance',
+    #             'WorkLocationLogsum',
+    #             'SchoolLocation',
+    #             'SchoolLocationDistance',
+    #             'SchoolLocationLogsum'
+    #         ]
+    #     ],
+    #     how = 'inner', # ctramp might not be 100% sample run
+    #     on = ['household_id', 'person_id']
+    # )
+
     person_df.to_csv(
         os.path.join(test_dir, 'persons.csv'),
         index = False
     )
-    ####
 
 
 def create_summary(input_df, key, out_col = "Share") -> pd.DataFrame:

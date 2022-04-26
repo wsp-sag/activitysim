@@ -16,3 +16,4 @@ num_old_retirees,num_old_retirees,"_PERSON_COUNT('80 <= age', persons, household
 num_persons_18_to_35,num_persons_18_to_35,"_PERSON_COUNT('18 <= age <= 35', persons, households)"
 num_persons_65_plus,num_persons_65_plus,"_PERSON_COUNT('65 <= age', persons, households)"
 num_highschool_graduates,num_highschool_graduates,"_PERSON_COUNT('9 <= education_attainment', persons, households)"
+#mobility av share, mobility_av_share, setting('mobility_av_share')

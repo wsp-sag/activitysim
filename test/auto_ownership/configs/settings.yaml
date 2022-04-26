@@ -57,4 +57,9 @@ input_table_list:
       - TOTPOP
       - TOTACRE
 
-trace_hh_id: 357022
+#trace_hh_id: 357022
+trace_hh_id: 36
+
+use_accessibility: 0
+
+mobility_av_share: 0.0
