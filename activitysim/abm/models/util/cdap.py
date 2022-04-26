@@ -245,6 +245,8 @@ def preprocess_interaction_coefficients(interaction_coefficients):
 def cached_spec_name(hhsize):
     return 'cdap_spec_%s' % hhsize
 
+def cached_joint_spec_name(hhsize):
+    return 'cdap_joint_spec_%s' % hhsize
 
 def get_cached_spec(hhsize):
 
@@ -267,15 +269,29 @@ def get_cached_spec(hhsize):
 
     return None
 
+def get_cached_joint_spec(hhsize):
+
+    spec_name = cached_joint_spec_name(hhsize)
+
+    spec = inject.get_injectable(spec_name, None)
+    if spec is not None:
+        logger.debug("build_cdap_joint_spec returning cached injectable spec %s", spec_name)
+        return spec
+
+    return None
 
 def cache_spec(hhsize, spec):
     spec_name = cached_spec_name(hhsize)
     # cache as injectable
     inject.add_injectable(spec_name, spec)
 
+def cache_joint_spec(hhsize, spec):
+    spec_name = cached_joint_spec_name(hhsize)
+    # cache as injectable
+    inject.add_injectable(spec_name, spec)
 
 def build_cdap_spec(interaction_coefficients, hhsize,
-                    trace_spec=False, trace_label=None, cache=True):
+                    trace_spec=False, trace_label=None, cache=True, joint_tour_alt=False):
     """
     Build a spec file for computing utilities of alternative household member interaction patterns
     for households of specified size.
@@ -340,6 +356,10 @@ def build_cdap_spec(interaction_coefficients, hhsize,
     # generate a list of activity pattern alternatives for this hhsize
     # e.g. ['HH', 'HM', 'HN', 'MH', 'MM', 'MN', 'NH', 'NM', 'NN'] for hhsize=2
     alternatives = [''.join(tup) for tup in itertools.product('HMN', repeat=hhsize)]
+
+    if joint_tour_alt:
+        joint_alternatives = [''.join(tup)+'J' for tup in itertools.product('HMN', repeat=hhsize) if tup.count('M')+tup.count('N')>=2]
+        alternatives = alternatives + joint_alternatives
 
     # spec df has expression column plus a column for each alternative
     spec = pd.DataFrame(columns=[expression_name] + alternatives)
@@ -453,6 +473,154 @@ def build_cdap_spec(interaction_coefficients, hhsize,
 
     return spec
 
+def build_cdap_joint_spec(joint_tour_coefficients, hhsize,
+                    trace_spec=False, trace_label=None, cache=True):
+    """
+    Build a spec file for computing joint tour utilities of alternative household member for households of specified size.
+
+    We generate this spec automatically from a table of rules and coefficients because the
+    interaction rules are fairly simple and can be expressed compactly whereas
+    there is a lot of redundancy between the spec files for different household sizes, as well as
+    in the vectorized expression of the interaction alternatives within the spec file itself
+
+    joint_tour_coefficients has five columns:
+        label
+            label of the expression
+        description
+            description of the expression
+        dependency
+            if the expression is dependent on alternative, and which alternative is it dependent on
+            (e.g. M_px, N_px, H_px)
+        expression
+            expression of the utility term
+        coefficient
+            The coefficient to apply for the alternative
+
+    The generated spec will have the eval expression in the index, and a utility column for each
+    alternative (e.g. ['HH', 'HM', 'HN', 'MH', 'MM', 'MN', 'NH', 'NM', 'NN', 'MMJ', 'MNJ', 'NMJ', 'NNJ'] for hhsize 2 with joint alts)
+
+    Parameters
+    ----------
+    joint_tour_coefficients : pandas.DataFrame
+        Rules and coefficients for generating joint tour specs for different household sizes
+    hhsize : int
+        household size for which the spec should be built.
+
+    Returns
+    -------
+    spec: pandas.DataFrame
+
+    """
+
+    t0 = tracing.print_elapsed_time()
+
+    # cdap joint spec is same for all households of MAX_HHSIZE and greater
+    hhsize = min(hhsize, MAX_HHSIZE)
+
+    if cache:
+        spec = get_cached_joint_spec(hhsize)
+        if spec is not None:
+            return spec
+
+    expression_name = "Expression"
+
+    # generate a list of activity pattern alternatives for this hhsize
+    # e.g. ['HH', 'HM', 'HN', 'MH', 'MM', 'MN', 'NH', 'NM', 'NN'] for hhsize=2
+    alternatives = [''.join(tup) for tup in itertools.product('HMN', repeat=hhsize)]
+
+    joint_alternatives = [''.join(tup)+'J' for tup in itertools.product('HMN', repeat=hhsize) if tup.count('M')+tup.count('N')>=2]
+    alternatives = alternatives + joint_alternatives
+
+    # spec df has expression column plus a column for each alternative
+    spec = pd.DataFrame(columns=[expression_name] + alternatives)
+
+    # Before processing the interaction_coefficients, we add add rows to the spec to carry
+    # the alternative utilities previously computed for each individual into all hh alternative
+    # columns in which the individual assigned that alternative. The Expression column contains
+    # the name of the choosers column with that individuals utility for the individual alternative
+    # and the hh alternative columns that should receive that utility are given a value of 1
+    # e.g. M_p1 is a column in choosers with the individual utility to person p1 of alternative M
+    #   Expression   MM   MN   MH   NM   NN   NH   HM   HN   HH
+    #         M_p1  1.0  1.0  1.0  0.0  0.0  0.0  0.0  0.0  0.0
+    #         N_p1  0.0  0.0  0.0  1.0  1.0  1.0  0.0  0.0  0.0
+    for pnum in range(1, hhsize+1):
+        for activity in ['M', 'N', 'H']:
+
+            new_row_index = len(spec)
+            spec.loc[new_row_index, expression_name] = add_pn(activity, pnum)
+
+            # list of alternative columns where person pnum has expression activity
+            # e.g. for M_p1 we want the columns where activity M is in position p1
+            alternative_columns = [alt for alt in alternatives if alt[pnum - 1] == activity]
+            spec.loc[new_row_index, alternative_columns] = 1
+
+    # for each row in the joint util table
+    for row in joint_tour_coefficients.itertuples():
+
+        # if there is no dependencies
+        if row.dependency is np.nan:
+            expression = row.Expression
+            existing_row_index = (spec[expression_name] == expression)
+
+            if (existing_row_index).any():
+                # if the rows exist, simply update the appropriate alternative columns in spec
+                spec.loc[existing_row_index, expression_name] = expression
+                spec.loc[existing_row_index] = row.coefficient
+            else:
+                # otherwise, add a new row to spec
+                new_row_index = len(spec)
+                spec.loc[new_row_index, expression_name] = expression
+                spec.loc[new_row_index, alternatives] = row.coefficient
+        # if there is dependencies
+        else:
+            dependency_name = row.dependency
+            expression = row.Expression
+            coefficient = row.coefficient
+            if dependency_name in ['M_px', 'N_px', 'H_px']:
+                if expression.startswith('ptype_px'):
+                    for pnum in range(1, hhsize+1):
+                        dependency_name = row.dependency.replace('x', str(pnum))
+                        expression = row.Expression.replace('x', str(pnum))
+                        existing_row_index = (spec[expression_name] == expression)
+
+                        # otherwise, add a new row to spec
+                        new_row_index = len(spec)
+                        spec.loc[new_row_index] = spec.loc[spec[expression_name]==dependency_name].squeeze()
+                        spec.loc[new_row_index, expression_name] = expression
+                        spec.loc[new_row_index, alternatives] = spec.loc[new_row_index, alternatives]*coefficient
+
+    # drop dependency rows
+    spec = spec[~spec[expression_name].str.startswith(('M_p', 'N_p', 'H_p'))]
+
+    # eval expression goes in the index
+    spec.set_index(expression_name, inplace=True)
+
+    for c in spec.columns:
+        spec[c] = spec[c].fillna(0)
+
+    simulate.uniquify_spec_index(spec)
+
+    # make non-joint alts 0
+    for c in alternatives:
+        if c.endswith('J'):
+            continue
+        else:
+            spec[c] = 0
+
+    if trace_spec:
+        tracing.trace_df(spec, '%s.hhsize%d_joint_spec' % (trace_label, hhsize),
+                         transpose=False, slicer='NONE')
+
+    if trace_spec:
+        tracing.trace_df(spec, '%s.hhsize%d_joint_spec_patched' % (trace_label, hhsize),
+                         transpose=False, slicer='NONE')
+
+    if cache:
+        cache_joint_spec(hhsize, spec)
+
+    t0 = tracing.print_elapsed_time("build_cdap_joint_spec hh_size %s" % hhsize, t0)
+
+    return spec
 
 def add_interaction_column(choosers, p_tup):
     """
@@ -583,12 +751,15 @@ def hh_choosers(indiv_utils, hhsize):
     for i in range(2, min(hhsize, MAX_INTERACTION_CARDINALITY)+1):
         for tup in itertools.combinations(list(range(1, hhsize+1)), i):
             add_interaction_column(choosers, tup)
+    
+    # add hhsize
+    choosers['hhsize'] = hhsize
 
     return choosers
 
 
 def household_activity_choices(indiv_utils, interaction_coefficients, hhsize,
-                               trace_hh_id=None, trace_label=None):
+                               trace_hh_id=None, trace_label=None, add_joint_tour_utility=False):
     """
     Calculate household utilities for each activity pattern alternative for households of hhsize
     The resulting activity pattern for each household will be coded as a string of activity codes.
@@ -629,9 +800,21 @@ def household_activity_choices(indiv_utils, interaction_coefficients, hhsize,
 
         spec = build_cdap_spec(interaction_coefficients, hhsize,
                                trace_spec=(trace_hh_id in choosers.index),
-                               trace_label=trace_label)
+                               trace_label=trace_label, joint_tour_alt=add_joint_tour_utility)
 
         utils = simulate.eval_utilities(spec, choosers, trace_label=trace_label)
+
+        # calculate joint tour utility
+        if add_joint_tour_utility:
+            # calculate joint utils
+            joint_tour_spec = build_cdap_joint_spec(interaction_coefficients, hhsize,
+                                trace_spec=(trace_hh_id in choosers.index),
+                                trace_label=trace_label)
+
+            joint_tour_utils = simulate.eval_utilities(joint_tour_spec, choosers, trace_label=trace_label)
+
+            # add joint util to util
+            utils = utils.add(joint_tour_utils)
 
     if len(utils.index) == 0:
         return pd.Series(dtype='float64')
@@ -796,7 +979,7 @@ def _run_cdap(
         interaction_coefficients,
         cdap_fixed_relative_proportions,
         locals_d,
-        trace_hh_id, trace_label):
+        trace_hh_id, trace_label, add_joint_tour_utility):
     """
     Implements core run_cdap functionality on persons df (or chunked subset thereof)
     Aside from chunking of persons df, params are passed through from run_cdap unchanged
@@ -830,7 +1013,7 @@ def _run_cdap(
 
         choices = household_activity_choices(
             indiv_utils, interaction_coefficients, hhsize=hhsize,
-            trace_hh_id=trace_hh_id, trace_label=trace_label)
+            trace_hh_id=trace_hh_id, trace_label=trace_label, add_joint_tour_utility=add_joint_tour_utility)
 
         hh_choices_list.append(choices)
 
@@ -882,7 +1065,7 @@ def run_cdap(
         cdap_interaction_coefficients,
         cdap_fixed_relative_proportions,
         locals_d,
-        chunk_size=0, trace_hh_id=None, trace_label=None):
+        chunk_size=0, trace_hh_id=None, trace_label=None, add_joint_tour_utility=False):
     """
     Choose individual activity patterns for persons.
 
@@ -908,6 +1091,8 @@ def run_cdap(
         hh_id to trace or None if no hh tracing
     trace_label : str
         label for tracing or None if no tracing
+    add_joint_tour_utility : Bool
+        cdap model include joint tour utility or not
 
     Returns
     -------
@@ -933,7 +1118,7 @@ def run_cdap(
                       cdap_interaction_coefficients,
                       cdap_fixed_relative_proportions,
                       locals_d,
-                      trace_hh_id, chunk_trace_label)
+                      trace_hh_id, chunk_trace_label, add_joint_tour_utility)
 
         result_list.append(cdap_results)
 
