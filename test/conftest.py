@@ -59,10 +59,14 @@ def initialize_pipeline(module: str, tables: dict[str, str], initialize_network_
 def reconnect_pipeline(module: str, initialize_network_los: bool) -> pipeline.Pipeline:
     test_dir = os.path.join('test', module)
     configs_dir = os.path.join(test_dir, 'configs')
+    data_dir = os.path.join(test_dir, 'data')
     output_dir = os.path.join(test_dir, 'output')
 
     if os.path.isdir(configs_dir):
         orca.add_injectable('configs_dir', configs_dir)
+
+    if os.path.isdir(data_dir):
+        orca.add_injectable('data_dir', data_dir)
 
     if os.path.isdir(test_dir):
         if not os.path.isdir(output_dir):

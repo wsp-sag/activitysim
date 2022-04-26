@@ -1,0 +1,7 @@
+Label,description,Expression,dependency,coefficient
+,constant,1,,-3.1506
+,joint tour for hhsize 2,hhsize==2,,0.33142052
+,person x is adult and DAP is M,ptype_px<7,M_px,0.008
+,person x is adult and DAP is N,ptype_px<7,N_px,1.2557
+,person x is kid and DAP is M,ptype_px>6,M_px,0.1088
+,person x is kid and DAP is N,ptype_px>6,N_px,1.6898
