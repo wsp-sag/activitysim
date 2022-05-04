@@ -3,6 +3,9 @@ import pytest
 import os
 import shutil
 import pandas as pd
+import numpy as np
+from numpy import dot
+from numpy.linalg import norm
 
 # import models is necessary to initalize the model steps with orca
 from activitysim.abm import models
@@ -78,14 +81,126 @@ def test_cdap_from_pipeline(reconnect_pipeline: pipeline.Pipeline, caplog):
     # get the updated pipeline data
     person_df = pipeline.get_table('persons')
 
-    tracing.print_summary('cdap_simulate', person_df.cdap_activity, describe=True)
+    # get the updated pipeline data
+    household_df = pipeline.get_table('households')
 
-    # compare with targets
-    # TODO check the value of auto_ownership
-    if validate_model_against_target(prepare_targets, person_df):
-        logger.info("Model result matches target")
-    else:
-        logger.info("Model result does not match target")
+    ############################
+    # person cdap pattern validation
+    ############################
+    # cdap person result from the model
+    logger.info('person cdap pattern validation')
+
+    target_key = "activity_pattern"
+    simulated_key = "cdap_activity"
+    similarity_threshold = 0.99
+
+    simulated_df = create_summary(person_df, key=simulated_key, out_col="Simulated_Share")
+
+    # cdap person result from the TM2 run
+    target_df = create_summary(person_df, key=target_key, out_col="Target_Share")
+
+    # compare simulated and target results 
+    similarity_value = compare_simulated_against_target(target_df, simulated_df, target_key, simulated_key)
+
+    # if the cosine_similarity >= threshold then the simulated and target results are "similar"
+    assert similarity_value >= similarity_threshold
+
+    ############################
+    # household joint pattern validation
+    ############################
+    # cdap household result from the model
+    logger.info('household joint vs non-joint tour validation')
+
+    target_key = "has_joint_tour_tm2"
+    simulated_key = "has_joint_tour"
+    similarity_threshold = 0.99
+
+    simulated_df = create_summary(household_df, key=simulated_key, out_col="Simulated_Share")
+
+    # cdap household result from the TM2 run
+    household_df['has_joint_tour_tm2'] = np.where(
+        household_df['cdap_pattern'].str.endswith('j'),
+        1,
+        0
+    )
+    target_df = create_summary(household_df, key=target_key, out_col="Target_Share")
+
+    # compare simulated and target results 
+    similarity_value = compare_simulated_against_target(target_df, simulated_df, target_key, simulated_key)
+
+    # if the cosine_similarity >= threshold then the simulated and target results are "similar"
+    assert similarity_value >= similarity_threshold
+
+    ############################
+    # one person household cdap pattern validation
+    ############################
+    # cdap household result from the model
+    logger.info('one-person household cdap pattern validation')
+
+    target_key = "cdap_pattern"
+    simulated_key = "cdap_activity"
+    similarity_threshold = 0.99
+
+    household_df['cdap_pattern'] = household_df['cdap_pattern'].apply(
+        lambda x: x[:-1].upper() if x.endswith('0') else x.upper()
+    )
+    household_df['cdap_activity'] = household_df.apply(
+        lambda x: x['cdap_activity']+'J' if x['has_joint_tour'] == 1 else x['cdap_activity'],
+        axis = 1
+    )
+
+    hh1_df = household_df[household_df.hhsize == 1].copy()
+
+    simulated_df = create_summary(hh1_df, key=simulated_key, out_col="Simulated_Share")
+    target_df = create_summary(hh1_df, key=target_key, out_col="Target_Share")
+
+    # compare simulated and target results 
+    similarity_value = compare_simulated_against_target(target_df, simulated_df, target_key, simulated_key)
+
+    # if the cosine_similarity >= threshold then the simulated and target results are "similar"
+    assert similarity_value >= similarity_threshold
+
+    ############################
+    # two person household cdap pattern validation
+    ############################
+    # cdap household result from the model
+    logger.info('two-person household cdap pattern validation')
+
+    target_key = "cdap_pattern"
+    simulated_key = "cdap_activity"
+    similarity_threshold = 0.99
+
+    hh2_df = household_df[household_df.hhsize == 2].copy()
+
+    simulated_df = create_summary(hh2_df, key=simulated_key, out_col="Simulated_Share")
+    target_df = create_summary(hh2_df, key=target_key, out_col="Target_Share")
+
+    # compare simulated and target results 
+    similarity_value = compare_simulated_against_target(target_df, simulated_df, target_key, simulated_key)
+
+    # if the cosine_similarity >= threshold then the simulated and target results are "similar"
+    assert similarity_value >= similarity_threshold
+
+    ############################
+    # three person household cdap pattern validation
+    ############################
+    # cdap household result from the model
+    logger.info('three-person household cdap pattern validation')
+
+    target_key = "cdap_pattern"
+    simulated_key = "cdap_activity"
+    similarity_threshold = 0.99
+
+    hh3_df = household_df[household_df.hhsize == 3].copy()
+
+    simulated_df = create_summary(hh3_df, key=simulated_key, out_col="Simulated_Share")
+    target_df = create_summary(hh3_df, key=target_key, out_col="Target_Share")
+
+    # compare simulated and target results 
+    similarity_value = compare_simulated_against_target(target_df, simulated_df, target_key, simulated_key)
+
+    # if the cosine_similarity >= threshold then the simulated and target results are "similar"
+    assert similarity_value >= similarity_threshold
 
 # fetch/prepare existing files for model inputs
 # e.g. read accessibilities.csv from ctramp result, rename columns, write out to accessibility.csv which is the input to activitysim
@@ -100,10 +215,10 @@ def prepare_module_inputs() -> None:
     """
     # https://wsponlinenam.sharepoint.com/sites/US-TM2ConversionProject/Shared%20Documents/Forms/
     # AllItems.aspx?id=%2Fsites%2FUS%2DTM2ConversionProject%2FShared%20Documents%2FTask%203%20ActivitySim&viewid=7a1eaca7%2D3999%2D4d45%2D9701%2D9943cc3d6ab1
-    accessibility_file = os.path.join('test', 'auto_ownership', 'data', 'accessibilities.csv')
-    household_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'households.csv')
-    person_file = os.path.join('test', 'auto_ownership', 'data', 'popsyn', 'persons.csv')
-    landuse_file = os.path.join('test', 'auto_ownership', 'data', 'landuse', 'maz_data_withDensity.csv')
+    accessibility_file = os.path.join('test', 'cdap', 'data', 'tm2_outputs', 'accessibilities.csv')
+    household_file = os.path.join('test', 'cdap', 'data', 'popsyn', 'households.csv')
+    person_file = os.path.join('test', 'cdap', 'data', 'popsyn', 'persons.csv')
+    landuse_file = os.path.join('test', 'cdap', 'data', 'landuse', 'maz_data_withDensity.csv')
 
     test_dir = os.path.join('test', 'cdap', 'data')
 
@@ -150,7 +265,7 @@ def prepare_module_inputs() -> None:
     household_df.rename(columns = household_columns_dict, inplace = True)
 
     tm2_simulated_household_df = pd.read_csv(
-        os.path.join(test_dir, 'householdData_3.csv')
+        os.path.join(test_dir, 'tm2_outputs', 'householdData_3.csv')
     )
     tm2_simulated_household_df.rename(columns = {'hh_id' : 'household_id'}, inplace = True)
 
@@ -164,7 +279,7 @@ def prepare_module_inputs() -> None:
     )
 
     household_df.to_csv(
-        os.path.join('test', 'cdap', 'data', 'households.csv'),
+        os.path.join(test_dir, 'households.csv'),
         index = False
     )
 
@@ -180,7 +295,7 @@ def prepare_module_inputs() -> None:
     person_df.rename(columns = person_columns_dict, inplace = True)
 
     tm2_simulated_person_df = pd.read_csv(
-        os.path.join(test_dir, 'personData_3.csv')
+        os.path.join(test_dir, 'tm2_outputs', 'personData_3.csv')
     )
     tm2_simulated_person_df.rename(columns = {'hh_id' : 'household_id'}, inplace = True)
 
@@ -205,34 +320,77 @@ def prepare_module_inputs() -> None:
         on = ['household_id', 'person_id']
     )
 
+    # get tm2 simulated workplace and school location results
+    tm2_simulated_wsloc_df = pd.read_csv(
+        os.path.join(test_dir, 'tm2_outputs', 'wsLocResults_3.csv')
+    )
+    tm2_simulated_wsloc_df.rename(columns = {'HHID' : 'household_id', 'PersonID' : 'person_id'}, inplace = True)
+
+    person_df = pd.merge(
+        person_df,
+        tm2_simulated_wsloc_df[
+            [
+                'household_id', 
+                'person_id', 
+                'WorkLocation',
+                'WorkLocationLogsum',  # this is the same as `workDCLogsum` in tm2 person output
+                'SchoolLocation',
+                'SchoolLocationLogsum'  # this is the same as `schoolDCLogsum` in tm2 person output
+            ]
+        ],
+        how = 'inner', # ctramp might not be 100% sample run
+        on = ['household_id', 'person_id']
+    )
+
     person_df.to_csv(
         os.path.join(test_dir, 'persons.csv'),
         index = False
     )
     ####
 
-# TODO 
-# create target database from existing run
-@pytest.fixture(scope='module')
-def prepare_targets() -> pd.DataFrame:
+def create_summary(input_df, key, out_col = "Share") -> pd.DataFrame:
     """
-    Prepare auto ownership target data from existing ctramp run
+    Create summary for the input data. 
+    1. group input data by the "key" column
+    2. calculate the percent of input data records in each "key" category. 
 
     :return: pd.DataFrame
     """
 
-    # ctramp run result
-    # https://wsponlinenam.sharepoint.com/:x:/r/sites/US-TM2ConversionProject/Shared%20Documents/Task%203%20ActivitySim/model_results/
-    # ver12_new_inputs/ctramp_output/aoResults.csv?d=wba2db5a7cd8841ae822cc4234038b258&csf=1&web=1&e=KmHeWN
+    out_df = input_df.groupby(key).size().reset_index(name='Count')
+    out_df[out_col] = round(out_df["Count"]/out_df["Count"].sum(), 4)
+    
+    return out_df[[key, out_col]]
 
-# TODO
-# flesh out assert function
-def validate_model_against_target(target_df: pd.DataFrame, model_df: pd.DataFrame) -> bool:
+
+def cosine_similarity(a, b): 
     """
-    assert funtion that compares model summary with target
-    e.g. loop through each cell in the summary table, if % diff within threshold then model matches target
+    Computes cosine similarity between two vectors.
+    
+    Cosine similarity is used here as a metric to measure similarity between two sequence of numbers.
+    Two sequence of numbers are represented as vectors (in a multi-dimensional space) and cosine similiarity is defined as the cosine of the angle between them
+    i.e., dot products of the vectors divided by the product of their lengths. 
 
-    :return: bool
+    :return: 
     """
+    
+    return dot(a, b)/(norm(a)*norm(b))
 
-    return True
+
+def compare_simulated_against_target(target_df: pd.DataFrame, simulated_df: pd.DataFrame, target_key: str, simulated_key:str) -> bool:
+    """
+    compares the simulated and target results by computing the cosine similarity between them. 
+
+    :return:
+    """
+    
+    merged_df = pd.merge(target_df, simulated_df, left_on=target_key, right_on=simulated_key, how="outer")
+    merged_df = merged_df.fillna(0)
+
+    logger.info("simulated vs target share:\n%s" % merged_df)
+
+    similarity_value = cosine_similarity(merged_df["Target_Share"].tolist(), merged_df["Simulated_Share"].tolist())
+
+    logger.info("cosine similarity:\n%s" % similarity_value)
+
+    return similarity_value
