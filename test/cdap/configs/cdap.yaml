@@ -9,6 +9,14 @@ FIXED_RELATIVE_PROPORTIONS_SPEC: cdap_fixed_relative_proportions.csv
 # otherwise set to False or comment out, defaulted to False
 ADD_JOINT_TOUR_UTILITY: True
 JOINT_TOUR_COEFFICIENTS: cdap_joint_tour_coefficients.csv
+JOINT_TOUR_USEFUL_COLUMNS:
+  - autos
+  - income
+  - num_workers
+  - nonmandatory_hov0_accessibility
+  - nonmandatory_hov1_accessibility
+  - nonmandatory_hov2_accessibility
+  - WorkLocationLogsum
 
 CONSTANTS:
   FULL: 1

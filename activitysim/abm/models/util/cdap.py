@@ -191,6 +191,12 @@ def individual_utilities(
     useful_columns = [_hh_id_, _ptype_, 'cdap_rank', _hh_size_]
     indiv_utils[useful_columns] = persons[useful_columns]
 
+    # add attributes for joint tour utility
+    model_settings = config.read_model_settings('cdap.yaml')
+    additional_useful_columns = model_settings.get('JOINT_TOUR_USEFUL_COLUMNS', None)
+    if additional_useful_columns is not None:
+        indiv_utils[additional_useful_columns] = persons[additional_useful_columns]
+
     if trace_hh_id:
         tracing.trace_df(indiv_utils, '%s.indiv_utils' % trace_label,
                          column_labels=['activity', 'person'])
@@ -560,30 +566,47 @@ def build_cdap_joint_spec(joint_tour_coefficients, hhsize,
         # if there is no dependencies
         if row.dependency is np.nan:
             expression = row.Expression
-            existing_row_index = (spec[expression_name] == expression)
 
-            if (existing_row_index).any():
-                # if the rows exist, simply update the appropriate alternative columns in spec
-                spec.loc[existing_row_index, expression_name] = expression
-                spec.loc[existing_row_index] = row.coefficient
-            else:
-                # otherwise, add a new row to spec
-                new_row_index = len(spec)
-                spec.loc[new_row_index, expression_name] = expression
-                spec.loc[new_row_index, alternatives] = row.coefficient
+            # add a new row to spec
+            new_row_index = len(spec)
+            spec.loc[new_row_index, expression_name] = expression
+            spec.loc[new_row_index, alternatives] = row.coefficient
         # if there is dependencies
         else:
             dependency_name = row.dependency
             expression = row.Expression
             coefficient = row.coefficient
             if dependency_name in ['M_px', 'N_px', 'H_px']:
-                if expression.startswith('ptype_px'):
+                if '_pxprod' in expression:
+                    prod_conds = row.Expression.split('|')
+                    expanded_expressions = [tup for tup in itertools.product(range(len(prod_conds)), repeat=hhsize)]
+                    for expression_tup in expanded_expressions:
+                        expression_list = []
+                        dependency_list = []
+                        for counter in range(len(expression_tup)):
+                            expression_list.append(prod_conds[expression_tup[counter]].replace('xprod', str(counter+1)))
+                            if expression_tup[counter] == 0:
+                                dependency_list.append(dependency_name.replace('x', str(counter+1))) 
+                        
+                        expression_value = '&'.join(expression_list)
+                        dependency_value = pd.Series(np.ones(len(alternatives)), index = alternatives)
+                        if len(dependency_list) > 0:
+                            for dependency in dependency_list:
+                                #temp = spec.loc[spec[expression_name]==dependency, alternatives].squeeze().fillna(0)
+                                dependency_value *= spec.loc[spec[expression_name]==dependency, alternatives].squeeze().fillna(0)
+                        
+                        # add a new row to spec
+                        new_row_index = len(spec)
+                        spec.loc[new_row_index] = dependency_value
+                        spec.loc[new_row_index, expression_name] = expression_value
+                        spec.loc[new_row_index, alternatives] = spec.loc[new_row_index, alternatives]*coefficient
+
+                elif '_px' in expression:
                     for pnum in range(1, hhsize+1):
                         dependency_name = row.dependency.replace('x', str(pnum))
                         expression = row.Expression.replace('x', str(pnum))
-                        existing_row_index = (spec[expression_name] == expression)
 
-                        # otherwise, add a new row to spec
+                        # add a new row to spec
                         new_row_index = len(spec)
                         spec.loc[new_row_index] = spec.loc[spec[expression_name]==dependency_name].squeeze()
                         spec.loc[new_row_index, expression_name] = expression
@@ -713,6 +736,12 @@ def hh_choosers(indiv_utils, hhsize):
 
     # we want to merge the ptype and M, N, and H utilities for each individual in the household
     merge_cols = [_hh_id_, _ptype_, 'M', 'N', 'H']
+
+    # add attributes for joint tour utility
+    model_settings = config.read_model_settings('cdap.yaml')
+    additional_merge_cols = model_settings.get('JOINT_TOUR_USEFUL_COLUMNS', None)
+    if additional_merge_cols is not None:
+        merge_cols.extend(additional_merge_cols)
 
     if hhsize > MAX_HHSIZE:
         raise RuntimeError("hh_choosers hhsize > MAX_HHSIZE")
@@ -1044,6 +1073,13 @@ def _run_cdap(
     persons['cdap_activity'] = person_choices
     chunk.log_df(trace_label, 'persons', persons)
 
+    # return household joint tour flag
+    if add_joint_tour_utility:
+        hh_activity_choices = hh_activity_choices.to_frame(name='hh_choices')
+        hh_activity_choices['has_joint_tour'] = hh_activity_choices['hh_choices'].apply(
+            lambda x: 1 if 'J' in x else 0
+        )
+
     # if DUMP:
     #     tracing.trace_df(hh_activity_choices, '%s.DUMP.hh_activity_choices' % trace_label,
     #                      transpose=False, slicer='NONE')
@@ -1055,7 +1091,10 @@ def _run_cdap(
     del persons
     chunk.log_df(trace_label, 'persons', None)
 
-    return result
+    if add_joint_tour_utility:
+        return result, hh_activity_choices['has_joint_tour']
+    else:
+        return result
 
 
 def run_cdap(
@@ -1111,14 +1150,24 @@ def run_cdap(
     for i, persons_chunk, chunk_trace_label \
             in chunk.adaptive_chunked_choosers_by_chunk_id(persons, chunk_size, trace_label):
 
-        cdap_results = \
-            _run_cdap(persons_chunk,
-                      person_type_map,
-                      cdap_indiv_spec,
-                      cdap_interaction_coefficients,
-                      cdap_fixed_relative_proportions,
-                      locals_d,
-                      trace_hh_id, chunk_trace_label, add_joint_tour_utility)
+        if add_joint_tour_utility:
+            cdap_results, hh_choice_results = \
+                _run_cdap(persons_chunk,
+                        person_type_map,
+                        cdap_indiv_spec,
+                        cdap_interaction_coefficients,
+                        cdap_fixed_relative_proportions,
+                        locals_d,
+                        trace_hh_id, chunk_trace_label, add_joint_tour_utility)
+        else:
+            cdap_results = \
+                _run_cdap(persons_chunk,
+                        person_type_map,
+                        cdap_indiv_spec,
+                        cdap_interaction_coefficients,
+                        cdap_fixed_relative_proportions,
+                        locals_d,
+                        trace_hh_id, chunk_trace_label, add_joint_tour_utility)
 
         result_list.append(cdap_results)
 
@@ -1137,5 +1186,8 @@ def run_cdap(
                          columns=['cdap_rank', 'cdap_activity'],
                          warn_if_empty=True)
 
-    # return choices column as series
-    return cdap_results['cdap_activity']
+    if add_joint_tour_utility:
+        return cdap_results['cdap_activity'], hh_choice_results
+    else:
+        # return choices column as series
+        return cdap_results['cdap_activity']
