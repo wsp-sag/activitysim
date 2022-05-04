@@ -8,3 +8,4 @@ num_travel_active_children,num_travel_active_children,num_travel_active - num_tr
 num_travel_active_non_preschoolers,num_travel_active_non_preschoolers,num_travel_active - num_travel_active_preschoolers
 #participates_in_jtf_model,participates_in_jtf_model,(num_travel_active > 1) & (num_travel_active_non_preschoolers > 0)
 participates_in_jtf_model,participates_in_jtf_model,(num_travel_active > 1)
+cdap_activity,cdap_activity,"persons.cdap_activity.groupby(persons.household_id).apply(''.join).reindex(households.index).fillna('')"

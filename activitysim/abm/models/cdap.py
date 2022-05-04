@@ -122,17 +122,30 @@ def cdap_simulate(persons_merged, persons, households,
 
     logger.info("Running cdap_simulate with %d persons", len(persons_merged.index))
 
-    choices = cdap.run_cdap(
-        persons=persons_merged,
-        person_type_map=person_type_map,
-        cdap_indiv_spec=cdap_indiv_spec,
-        cdap_interaction_coefficients=cdap_interaction_coefficients,
-        cdap_fixed_relative_proportions=cdap_fixed_relative_proportions,
-        locals_d=constants,
-        chunk_size=chunk_size,
-        trace_hh_id=trace_hh_id,
-        trace_label=trace_label,
-        add_joint_tour_utility=add_joint_tour_utility)
+    if add_joint_tour_utility:
+        choices, hh_joint = cdap.run_cdap(
+            persons=persons_merged,
+            person_type_map=person_type_map,
+            cdap_indiv_spec=cdap_indiv_spec,
+            cdap_interaction_coefficients=cdap_interaction_coefficients,
+            cdap_fixed_relative_proportions=cdap_fixed_relative_proportions,
+            locals_d=constants,
+            chunk_size=chunk_size,
+            trace_hh_id=trace_hh_id,
+            trace_label=trace_label,
+            add_joint_tour_utility=add_joint_tour_utility)
+    else:
+        choices = cdap.run_cdap(
+            persons=persons_merged,
+            person_type_map=person_type_map,
+            cdap_indiv_spec=cdap_indiv_spec,
+            cdap_interaction_coefficients=cdap_interaction_coefficients,
+            cdap_fixed_relative_proportions=cdap_fixed_relative_proportions,
+            locals_d=constants,
+            chunk_size=chunk_size,
+            trace_hh_id=trace_hh_id,
+            trace_label=trace_label,
+            add_joint_tour_utility=add_joint_tour_utility)
 
     if estimator:
         estimator.write_choices(choices)
@@ -155,6 +168,11 @@ def cdap_simulate(persons_merged, persons, households,
 
     # - annotate households table
     households = households.to_frame()
+
+    if add_joint_tour_utility:
+        hh_joint = hh_joint.reindex(households.index)
+        households['has_joint_tour'] = hh_joint
+
     expressions.assign_columns(
         df=households,
         model_settings=model_settings.get('annotate_households'),
