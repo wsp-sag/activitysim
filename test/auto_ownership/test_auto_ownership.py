@@ -6,6 +6,9 @@ import pandas as pd
 import numpy as np
 from numpy import dot
 from numpy.linalg import norm
+import orca
+from numpy.random import randint
+import scipy.stats as stats
 
 # import models is necessary to initalize the model steps with orca
 from activitysim.abm import models
@@ -52,6 +55,15 @@ def initialize_network_los() -> bool:
     return False
 
 
+# Used by conftest.py reconnect_pipeline method
+@pytest.fixture(scope='module')
+def load_checkpoint() -> bool:
+    """
+    checkpoint to be loaded from the pipeline when reconnecting. 
+    """
+    return 'initialize_households'
+
+
 @pytest.mark.skipif(os.path.isfile('test/auto_ownership/output/pipeline.h5'), reason = "no need to recreate pipeline store if alreayd exist")
 def test_prepare_input_pipeline(initialize_pipeline: pipeline.Pipeline, caplog):
     # Run summarize model
@@ -71,9 +83,6 @@ def test_auto_ownership(reconnect_pipeline: pipeline.Pipeline, caplog):
     
     caplog.set_level(logging.INFO)
 
-    #logger.info("household_df columns: ", household_df.columns.tolist())
-    #logger.info("persons_df columns: ", persons_df.columns.tolist())
-
     # run model step
     pipeline.run(
         models = ['auto_ownership_simulate'],
@@ -82,32 +91,110 @@ def test_auto_ownership(reconnect_pipeline: pipeline.Pipeline, caplog):
     
     # get the updated pipeline data
     household_df = pipeline.get_table('households')
-    
     # logger.info("household_df columns: ", household_df.columns.tolist())
 
-    persons_df = pipeline.get_table('persons')    
-    
-    # logger.info("persons_df columns: ", persons_df.columns.tolist())
+    #target_col = "autos"
+    target_col = "pre_autos"
+    choice_col = "auto_ownership"
+    simulated_col = "autos_model"
 
-    target_key = "autos"
-    simulated_key = "auto_ownership"
-    similarity_threshold = 0.01
+    similarity_threshold = 0.99
     
-    MAX_AUTO_OWNERSHIP = max(household_df[target_key])
+    ao_alternatives_df = pd.DataFrame.from_dict({
+        choice_col: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'auto_choice_label': ['0_CARS', '1_CAR_1CV', '1_CAR_1AV', '2_CARS_2CV', '2_CARS_2AV', '2_CARS_1CV1AV', '3_CARS_3CV', '3_CARS_3AV', '3_CARS_2CV1AV', '3_CARS_1CV2AV', '4_CARS_4CV'],
+        simulated_col: [0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4]
+    })
+
+    household_df = pd.merge(
+        household_df, 
+        ao_alternatives_df,
+        how = 'left',
+        on = choice_col
+    )
 
     # AO summary from the model
-    household_df[simulated_key] = np.where(household_df[simulated_key] <= MAX_AUTO_OWNERSHIP, household_df[simulated_key], MAX_AUTO_OWNERSHIP)
-    simulated_df = create_summary(household_df, key=simulated_key, out_col="Simulated_Share")
+    simulated_df = create_summary(household_df, key=simulated_col, out_col="Simulated_Share")
 
     # AO summary from the results/target
-    target_df = create_summary(household_df, key=target_key, out_col="Target_Share")
+    target_df = create_summary(household_df, key=target_col, out_col="Target_Share")
 
-    # compare simulated and target results 
-    similarity_value = compare_simulated_against_target(target_df, simulated_df, target_key, simulated_key)
+    merged_df = pd.merge(target_df, simulated_df, left_on=target_col, right_on=simulated_col, how="outer")
+    merged_df = merged_df.fillna(0)
+    
+    # compare simulated and target results by computing the cosine similarity between them
+    similarity_value = cosine_similarity(merged_df["Target_Share"].tolist(), merged_df["Simulated_Share"].tolist())
+
+    # save the results to disk
+    merged_df.to_csv(os.path.join('test', 'auto_ownership', 'output', 'ao_test_results.csv'), index = False)
 
     # if the cosine_similarity >= threshold then the simulated and target results are "similar"
     assert similarity_value >= similarity_threshold
 
+
+@pytest.mark.skip
+def test_auto_ownership_variation(reconnect_pipeline: pipeline.Pipeline, caplog):
+    
+    caplog.set_level(logging.INFO)
+
+    target_col = "pre_autos"
+    choice_col = "auto_ownership"
+    simulated_col = "autos_model"
+    
+    ao_alternatives_df = pd.DataFrame.from_dict({
+        choice_col: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        'auto_choice_label': ['0_CARS', '1_CAR_1CV', '1_CAR_1AV', '2_CARS_2CV', '2_CARS_2AV', '2_CARS_1CV1AV', '3_CARS_3CV', '3_CARS_3AV', '3_CARS_2CV1AV', '3_CARS_1CV2AV', '4_CARS_4CV'],
+        simulated_col: [0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4]
+    })
+
+    NUM_SEEDS = 100
+
+    for i in range(1, NUM_SEEDS+1):
+        base_seed = randint(1, 99999)        
+        orca.add_injectable('rng_base_seed', base_seed)
+
+        # run model step
+        pipeline.run(
+            models = ['auto_ownership_simulate'],
+            resume_after = 'initialize_households'
+        )
+    
+        # get the updated pipeline data
+        household_df = pipeline.get_table('households')
+
+        household_df = pd.merge(
+            household_df, 
+            ao_alternatives_df,
+            how = 'left',
+            on = choice_col
+        )
+
+        # AO summary from the model
+        simulated_share_col_name = "simulation_" + str(i)
+        simulated_df = create_summary(household_df, key=simulated_col, out_col=simulated_share_col_name)
+
+        if i == 1:
+            out_df = create_summary(household_df, key=target_col, out_col="target")
+
+        out_df = pd.concat([out_df, simulated_df[[simulated_share_col_name]]], axis = 1)
+        
+        # since model_name is used as checkpoint name, the same model can not be run more than once.
+        # have to close the pipeline before running the same model again. 
+        pipeline.close_pipeline()
+
+    out_df["simulation_min"] = out_df.filter(like='simulation_').min(axis=1)
+    out_df["simulation_max"] = out_df.filter(like='simulation_').max(axis=1)
+    out_df["simulation_mean"] = out_df.filter(like='simulation_').mean(axis=1)
+
+    # reorder columns 
+    cols = ['pre_autos', 'target', 'simulation_mean', 'simulation_min', 'simulation_max']
+    cols = cols + [x for x in out_df.columns if x not in cols]
+    out_df = out_df[cols]
+
+    out_df.to_csv( os.path.join('test', 'auto_ownership', 'output', 'ao_results_variation.csv'), index = False)
+
+    #TODO: add some assert using chi-sqaure test or something else to measure the difference b/w simulation_mean and target
+    
 
 # fetch/prepare existing files for model inputs
 # e.g. read accessibilities.csv from ctramp result, rename columns, write out to accessibility.csv which is the input to activitysim
@@ -189,6 +276,18 @@ def prepare_module_inputs() -> None:
         on = 'household_id'
     )
 
+    tm2_pre_ao_results_df = pd.read_csv(
+        os.path.join(test_dir, 'tm2_outputs', 'aoResults_pre.csv')
+    )
+    tm2_pre_ao_results_df.rename(columns = {'HHID' : 'household_id', 'AO' : 'pre_autos'}, inplace = True)
+
+    household_df = pd.merge(
+        household_df,
+        tm2_pre_ao_results_df,
+        how = 'inner',
+        on = 'household_id'
+    )
+
     household_df.to_csv(
         os.path.join(test_dir, 'households.csv'),
         index = False
@@ -233,30 +332,6 @@ def prepare_module_inputs() -> None:
         on = ['household_id', 'person_id']
     )
 
-    # # get usual workplace and school location result
-    # tm2_simulated_wsloc_df = pd.read_csv(
-    #     os.path.join(test_dir, 'tm2_outputs', 'wsLocResults_3.csv')
-    # )
-    # tm2_simulated_wsloc_df.rename(columns = {'HHID' : 'household_id', 'PersonID' : 'person_id'}, inplace = True)
-
-    # person_df = pd.merge(
-    #     person_df,
-    #     tm2_simulated_wsloc_df[
-    #         [
-    #             'household_id', 
-    #             'person_id', 
-    #             'WorkLocation', 
-    #             'WorkLocationDistance',
-    #             'WorkLocationLogsum',
-    #             'SchoolLocation',
-    #             'SchoolLocationDistance',
-    #             'SchoolLocationLogsum'
-    #         ]
-    #     ],
-    #     how = 'inner', # ctramp might not be 100% sample run
-    #     on = ['household_id', 'person_id']
-    # )
-
     person_df.to_csv(
         os.path.join(test_dir, 'persons.csv'),
         index = False
@@ -290,18 +365,3 @@ def cosine_similarity(a, b):
     """
     
     return dot(a, b)/(norm(a)*norm(b))
-
-
-def compare_simulated_against_target(target_df: pd.DataFrame, simulated_df: pd.DataFrame, target_key: str, simulated_key:str) -> bool:
-    """
-    compares the simulated and target results by computing the cosine similarity between them. 
-
-    :return:
-    """
-    
-    merged_df = pd.merge(target_df, simulated_df, left_on=target_key, right_on=simulated_key, how="outer")
-    merged_df = merged_df.fillna(0)
-
-    similarity_value = cosine_similarity(merged_df["Target_Share"].tolist(), merged_df["Simulated_Share"].tolist())
-
-    return similarity_value

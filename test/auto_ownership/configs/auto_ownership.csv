@@ -51,7 +51,7 @@ Label,Description,Expression,0_CARS,1_CAR_1CV,1_CAR_1AV,2_CARS_2CV,2_CARS_2AV,2_
 ,TM2 Round 2 ASC adjustment for 2 workers in 0-car household,@df.num_workers==2,0.893156568,,,-0.17099367,-0.17099367,-0.17099367,-0.382492356,-0.382492356,-0.382492356,-0.382492356,-0.551034746
 ,TM2 Round 2 ASC adjustment for 3+ workers in 0-car household,@df.num_workers>=3,0.937133013,,,-0.553211417,-0.553211417,-0.553211417,0.065128979,0.065128979,0.065128979,0.065128979,-0.048670057
 ,TM2 Round 2 ASC adjustment for non-GQ PRE-AO,@df.hh_unit_type==1,-1.511025686,0,0,0.723793144,0.723793144,0.723793144,0.617090781,0.617090781,0.617090781,0.617090781,0.69421287
-,TM2 Round 2 ASC adjustment for non-GQ POST-AO,@((df.hh_unit_type==1) & (setting('use_accessibility') == 1)),0.479309206,0,0,0.1659721,0.1659721,0.1659721,0.209508704,0.209508704,0.209508704,0.209508704,0.04485358
+,TM2 Round 2 ASC adjustment for non-GQ POST-AO,@((df.hh_unit_type==1) & (setting('use_accessibility') == 1)),-0.115788174,0,0,0.16375467,0.16375467,0.16375467,0.222715484,0.222715484,0.222715484,0.222715484,0.2639107
 ,AV ASC - Household Income under $50k,@df.income<50000,,,-1,,-1,-1,,-1,-1,-1,
 ,AV ASC - Household Income 100k+,@df.income>=100000,,,1,,1,1,,1,1,1,
 ,AV ASC - Young household,@(df.num_persons_18_to_35>=df.num_persons_65_plus),,,0.5,,0.5,0.5,,0.5,0.5,0.5,
@@ -61,13 +61,4 @@ Label,Description,Expression,0_CARS,1_CAR_1CV,1_CAR_1AV,2_CARS_2CV,2_CARS_2AV,2_
 ,AV ASC - 90% AV Share,@setting('mobility_av_share')==0.9,,,,,,,,,,,
 ,AV ASC - 50% AV Share,@setting('mobility_av_share')==0.5,,,,,,,,,,,
 ,AV ASC - 10% AV Share,@setting('mobility_av_share')==0.1,,,,,,,,,,,
-,AV ASC - 0% AV Share,@setting('mobility_av_share')==0.0,,,-999,,-999,-999,,-999,-999,-999,
-,Alameda County Zero Auto Constant,@df.county_id == ID_ALAMEDA,0.314564,,,,,,,,,,
-,Contra Costa County Zero Auto Constant,@df.county_id == ID_CONTRA_COSTA,0.578768,,,,,,,,,,
-,Marin County Zero Auto Constant,@df.county_id == ID_MARIN,0.45353,,,,,,,,,,
-,Napa County Zero Auto Constant,@df.county_id == ID_NAPA,0.420917,,,,,,,,,,
-,San Francisco County Zero Auto Constant,@df.county_id == ID_SAN_FRANCISCO,0,,,,,,,,,,
-,San Mateo County Zero Auto Constant,@df.county_id == ID_SAN_MATEO,-0.040241,,,,,,,,,,
-,Santa Clara County Zero Auto Constant,@df.county_id == ID_SANTA_CLARA,-0.129926,,,,,,,,,,
-,Solano County Zero Auto Constant,@df.county_id == ID_SOLANO,0.677519,,,,,,,,,,
-,Sonoma County Zero Auto Constant,@df.county_id == ID_SONOMA,0.231099,,,,,,,,,,
+,AV ASC - 0% AV Share,@setting('mobility_av_share')==0,,,-999,,-999,-999,,-999,-999,-999,
