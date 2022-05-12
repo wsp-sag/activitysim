@@ -56,7 +56,7 @@ def initialize_pipeline(module: str, tables: dict[str, str], initialize_network_
         pipeline.close_pipeline()
 
 @pytest.fixture(scope='module')
-def reconnect_pipeline(module: str, initialize_network_los: bool) -> pipeline.Pipeline:
+def reconnect_pipeline(module: str, initialize_network_los: bool, load_checkpoint: str) -> pipeline.Pipeline:
     test_dir = os.path.join('test', module)
     configs_dir = os.path.join(test_dir, 'configs')
     data_dir = os.path.join(test_dir, 'data')
@@ -88,7 +88,7 @@ def reconnect_pipeline(module: str, initialize_network_los: bool) -> pipeline.Pi
         # directory already exists
         pass
 
-    pipeline.open_pipeline(resume_after='initialize_households')
+    pipeline.open_pipeline(resume_after=load_checkpoint)
     pipeline.add_checkpoint(module)
     pipeline.close_pipeline()
     # By convention, this method needs to yield something
