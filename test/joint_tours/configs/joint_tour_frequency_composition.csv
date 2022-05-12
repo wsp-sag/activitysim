@@ -1,0 +1,21 @@
+Label,Description,Expression,Coefficient
+,Constant for shopping tour,@df.num_shopping_tours,0
+,Constant for Maintenance tour,@df.num_maintenance_tours,-1.477
+,Constant for eating out tour,@df.num_eating_out_tours,0.5796
+,Constant for visiting tour,@df.num_visiting_tours,-1.0037
+,Constant for discretionary tour,@df.num_discretionary_tours,-1.1195
+,Constant for 2 shopping tour,@df.num_shopping_tours==2,-13.70946409
+,1 Shopping and 1 Maintenance Tour,@((df.num_shopping_tours==1) & (df.num_maintenance_tours==1)),-12.13684801
+,1 Shopping and 1 Eating Out Tour,@((df.num_shopping_tours==1) & (df.num_eating_out_tours==1)),-12.79892713
+,1 Shopping and 1 Visiting Tour,@((df.num_shopping_tours==1) & (df.num_visiting_tours==1)),-12.22077221
+,1 Shopping and 1 Discretionary Tour,@((df.num_shopping_tours==1) & (df.num_discretionary_tours==1)),-12.57867869
+,Constant for 2 Maintenance tour,@df.num_maintenance_tours==2,-13.43572169
+,1 Maintenance and 1 Eating Out Tour,@((df.num_maintenance_tours==1) & (df.num_eating_out_tours==1)),-12.18915033
+,1 Maintenance and 1 Visiting Tour,@((df.num_maintenance_tours==1) & (df.num_visiting_tours==1)),-11.81267905
+,1 Maintenance and 1 Discretionary Tour,@((df.num_maintenance_tours==1) & (df.num_discretionary_tours==1)),-12.28867197
+,Constant for 2 eating out tour,@df.num_eating_out_tours==2,-13.15388273
+,1 Eating Out and 1 Visiting Tour,@((df.num_eating_out_tours==1) & (df.num_visiting_tours==1)),-13.15388273
+,1 Eating Out and 1 Discretionary Tour,@((df.num_eating_out_tours==1) & (df.num_discretionary_tours==1)),-12.56102569
+,Constant for 2 visiting tour,@df.num_visiting_tours==2,-13.15388273
+,1 Visiting and 1 Discretionary Tour,@((df.num_visiting_tours==1) & (df.num_discretionary_tours==1)),-12.37222202
+,Constant for 2 discretionary tour,@df.num_discretionary_tours==2,-13.23532342

@@ -1,0 +1,6 @@
+Description,Target,Expression
+,num_shopping_tours,(purpose1 == 5 + purpose2 == 5)
+,num_maintenance_tours,(purpose1 == 6 + purpose2 == 6)
+,num_eating_out_tours,(purpose1 == 7 + purpose2 == 7)
+,num_visiting_tours,(purpose1 == 8 + purpose2 == 8)
+,num_discretionary_tours,(purpose1 == 9 + purpose2 == 9)
