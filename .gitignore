@@ -72,6 +72,9 @@ _test_est
 *_local/
 *_local.*
 
-**/output/
-**/test/auto_ownership/data
-**/test/**/data
+/output/
+
+test/**/data
+test/**/output/*
+!test/**/output/ao_test_results.csv
+!test/**/output/ao_results_variation.csv
