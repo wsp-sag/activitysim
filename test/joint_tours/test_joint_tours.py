@@ -26,8 +26,8 @@ def module() -> str:
 
 # Used by conftest.py initialize_pipeline method
 @pytest.fixture(scope='module')
-def tables() -> dict[str, str]:
-#def tables(prepare_module_inputs) -> dict[str, str]:
+#def tables() -> dict[str, str]:
+def tables(prepare_module_inputs) -> dict[str, str]:
     """
     A pytest fixture that returns the "mock" tables to build pipeline dataframes. The
     key-value pair is the name of the table and the index column.
@@ -74,16 +74,19 @@ def test_prepare_input_pipeline(initialize_pipeline: pipeline.Pipeline, caplog):
         'initialize_tours'
         ]
     )
-
+    person_df = pipeline.get_table('persons')
     pipeline.close_pipeline()
 
-
+@pytest.mark.skip
 def test_joint_tours_frequency_composition(reconnect_pipeline: pipeline.Pipeline, caplog):
     
     caplog.set_level(logging.INFO)
 
     # run model step
-    pipeline.run(models = ['joint_tour_frequency_composition'])
+    pipeline.run(
+        models = ['joint_tour_frequency_composition'],
+        resume_after = 'initialize_tours'
+    )
 
     pipeline.close_pipeline()
 
@@ -212,6 +215,8 @@ def prepare_module_inputs() -> None:
         on = ['household_id', 'person_id']
     )
 
+    person_df['PNUM'] = person_df.groupby('household_id')['person_id'].rank()
+
     person_df.to_csv(
         os.path.join(test_dir, 'persons.csv'),
         index = False
@@ -260,18 +265,3 @@ def cosine_similarity(a, b):
     """
     
     return dot(a, b)/(norm(a)*norm(b))
-
-
-def compare_simulated_against_target(target_df: pd.DataFrame, simulated_df: pd.DataFrame, target_key: str, simulated_key:str) -> bool:
-    """
-    compares the simulated and target results by computing the cosine similarity between them. 
-
-    :return:
-    """
-    
-    merged_df = pd.merge(target_df, simulated_df, left_on=target_key, right_on=simulated_key, how="outer")
-    merged_df = merged_df.fillna(0)
-
-    similarity_value = cosine_similarity(merged_df["Target_Share"].tolist(), merged_df["Simulated_Share"].tolist())
-
-    return similarity_value

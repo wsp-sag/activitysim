@@ -1,6 +1,6 @@
 Description,Target,Expression
-,num_shopping_tours,(purpose1 == 5 + purpose2 == 5)
-,num_maintenance_tours,(purpose1 == 6 + purpose2 == 6)
-,num_eating_out_tours,(purpose1 == 7 + purpose2 == 7)
-,num_visiting_tours,(purpose1 == 8 + purpose2 == 8)
-,num_discretionary_tours,(purpose1 == 9 + purpose2 == 9)
+,shopping,"np.where(alt_tdd.purpose1 == 5, 1, 0) + np.where(alt_tdd.purpose2 == 5, 1, 0)"
+,othmaint,"np.where(alt_tdd.purpose1 == 6, 1, 0) + np.where(alt_tdd.purpose2 == 6, 1, 0)"
+,eatout,"np.where(alt_tdd.purpose1 == 7, 1, 0) + np.where(alt_tdd.purpose2 == 7, 1, 0)"
+,social,"np.where(alt_tdd.purpose1 == 8, 1, 0) + np.where(alt_tdd.purpose2 == 8, 1, 0)"
+,othdiscr,"np.where(alt_tdd.purpose1 == 9, 1, 0) + np.where(alt_tdd.purpose2 == 9, 1, 0)"

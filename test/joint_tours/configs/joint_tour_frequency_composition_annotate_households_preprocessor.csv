@@ -1,2 +1,2 @@
 Description,Target,Expression
-test variable, test_var, 1
+test variable, test_var, "1"
