@@ -137,63 +137,103 @@ def test_auto_ownership_variation(reconnect_pipeline: pipeline.Pipeline, caplog)
     
     caplog.set_level(logging.INFO)
 
-    target_col = "pre_autos"
-    choice_col = "auto_ownership"
-    simulated_col = "autos_model"
-    
-    ao_alternatives_df = pd.DataFrame.from_dict({
-        choice_col: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-        'auto_choice_label': ['0_CARS', '1_CAR_1CV', '1_CAR_1AV', '2_CARS_2CV', '2_CARS_2AV', '2_CARS_1CV1AV', '3_CARS_3CV', '3_CARS_3AV', '3_CARS_2CV1AV', '3_CARS_1CV2AV', '4_CARS_4CV'],
-        simulated_col: [0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4]
-    })
+    output_file = os.path.join('test', 'auto_ownership', 'output', 'ao_results_variation.csv')
 
-    NUM_SEEDS = 100
+    if os.path.isfile(output_file): 
+        out_df = pd.read_csv(output_file)
 
-    for i in range(1, NUM_SEEDS+1):
-        base_seed = randint(1, 99999)        
-        orca.add_injectable('rng_base_seed', base_seed)
+        pipeline.open_pipeline(resume_after = 'initialize_households')
 
-        # run model step
-        pipeline.run(
-            models = ['auto_ownership_simulate'],
-            resume_after = 'initialize_households'
-        )
-    
-        # get the updated pipeline data
         household_df = pipeline.get_table('households')
 
-        household_df = pd.merge(
-            household_df, 
-            ao_alternatives_df,
-            how = 'left',
-            on = choice_col
-        )
+    else:
+        target_col = "pre_autos"
+        choice_col = "auto_ownership"
+        simulated_col = "autos_model"
+    
+        ao_alternatives_df = pd.DataFrame.from_dict({
+            choice_col: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            'auto_choice_label': ['0_CARS', '1_CAR_1CV', '1_CAR_1AV', '2_CARS_2CV', '2_CARS_2AV', '2_CARS_1CV1AV', '3_CARS_3CV', '3_CARS_3AV', '3_CARS_2CV1AV', '3_CARS_1CV2AV', '4_CARS_4CV'],
+            simulated_col: [0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4]
+        })
 
-        # AO summary from the model
-        simulated_share_col_name = "simulation_" + str(i)
-        simulated_df = create_summary(household_df, key=simulated_col, out_col=simulated_share_col_name)
+        NUM_SEEDS = 100
 
-        if i == 1:
-            out_df = create_summary(household_df, key=target_col, out_col="target")
+        for i in range(1, NUM_SEEDS+1):
+            base_seed = randint(1, 99999)        
+            orca.add_injectable('rng_base_seed', base_seed)
 
-        out_df = pd.concat([out_df, simulated_df[[simulated_share_col_name]]], axis = 1)
+            # run model step
+            pipeline.run(
+                models = ['auto_ownership_simulate'],
+                resume_after = 'initialize_households'
+            )
+    
+            # get the updated pipeline data
+            household_df = pipeline.get_table('households')
+
+            household_df = pd.merge(
+                household_df, 
+                ao_alternatives_df,
+                how = 'left',
+                on = choice_col
+            )
+
+            # AO summary from the model
+            simulated_share_col_name = "simulation_" + str(i)
+            simulated_df = create_summary(household_df, key=simulated_col, out_col=simulated_share_col_name)
+
+            if i == 1:
+                out_df = create_summary(household_df, key=target_col, out_col="target")
+
+            out_df = pd.concat([out_df, simulated_df[[simulated_share_col_name]]], axis = 1)
         
-        # since model_name is used as checkpoint name, the same model can not be run more than once.
-        # have to close the pipeline before running the same model again. 
-        pipeline.close_pipeline()
+            # since model_name is used as checkpoint name, the same model can not be run more than once.
+            # have to close the pipeline before running the same model again. 
+            pipeline.close_pipeline()
 
-    out_df["simulation_min"] = out_df.filter(like='simulation_').min(axis=1)
-    out_df["simulation_max"] = out_df.filter(like='simulation_').max(axis=1)
-    out_df["simulation_mean"] = out_df.filter(like='simulation_').mean(axis=1)
+        out_df['simulation_min'] = out_df.filter(like='simulation_').min(axis=1)
+        out_df['simulation_max'] = out_df.filter(like='simulation_').max(axis=1)
+        out_df['simulation_mean'] = out_df.filter(like='simulation_').mean(axis=1)
 
-    # reorder columns 
-    cols = ['pre_autos', 'target', 'simulation_mean', 'simulation_min', 'simulation_max']
-    cols = cols + [x for x in out_df.columns if x not in cols]
-    out_df = out_df[cols]
+        # reorder columns 
+        cols = ['pre_autos', 'target', 'simulation_mean', 'simulation_min', 'simulation_max']
+        cols = cols + [x for x in out_df.columns if x not in cols]
+        out_df = out_df[cols]
 
-    out_df.to_csv( os.path.join('test', 'auto_ownership', 'output', 'ao_results_variation.csv'), index = False)
+        out_df.to_csv(output_file, index = False)       
+    
+    # chi-square test
+    alpha = 0.05
+    observed_prob = out_df['simulation_mean']
+    expected_prob = out_df['target']
 
-    #TODO: add some assert using chi-sqaure test or something else to measure the difference b/w simulation_mean and target
+    num_hh = len(household_df)
+
+    observed = [p * num_hh for p in observed_prob]
+    expected = [p * num_hh for p in expected_prob]
+
+    observed_sum = sum(observed)
+    expected_sum = sum(expected)
+
+    # the sum of the observed and expected frequencies must be the same for the test
+    observed = [f * expected_sum/observed_sum for f in observed]
+     
+    chi_square, prob = stats.chisquare(observed, expected)
+    p_value = 1 - prob
+
+    # Ho: Target and Simulated results are from same distribution and there is no significant difference b/w the two. 
+    # Ha: Target and Simulated results are statistically different. 
+
+    conclusion = "Failed to reject the null hypothesis."
+    if p_value >= alpha:
+        conclusion = "Null Hypothesis is rejected. Obersved and Simulated results are statistically different."
+    
+    logger.info(conclusion)
+    
+    # if p-value is less than alpha, then difference between simulated and target results
+    # are statistically greater than the random variation of the model results
+    assert p_value < alpha
     
 
 # fetch/prepare existing files for model inputs
