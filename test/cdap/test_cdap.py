@@ -50,7 +50,12 @@ def initialize_network_los() -> bool:
     """
     return False
 
-# TODO prepare data with info from travel model two result
+@pytest.fixture(scope='module')
+def load_checkpoint() -> bool:
+    """
+    checkpoint to be loaded from the pipeline when reconnecting. 
+    """
+    return 'initialize_households'
 
 # make a reconnect_pipeline internal to cdap
 @pytest.mark.skipif(os.path.isfile('test/cdap/output/pipeline.h5'), reason = "no need to recreate pipeline store if alreayd exist")
