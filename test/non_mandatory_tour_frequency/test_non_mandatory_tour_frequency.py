@@ -58,7 +58,7 @@ def load_checkpoint() -> bool:
     """
     return 'initialize_households'
 
-# make a reconnect_pipeline internal to cdap
+# make a reconnect_pipeline internal to test module
 @pytest.mark.skipif(os.path.isfile('test/non_mandatory_tour_frequency/output/pipeline.h5'), reason = "no need to recreate pipeline store if alreayd exist")
 def test_prepare_input_pipeline(initialize_pipeline: pipeline.Pipeline, caplog):
     # Run summarize model
@@ -99,10 +99,10 @@ def test_nmtf_from_pipeline(reconnect_pipeline: pipeline.Pipeline, caplog):
     household_df = pipeline.get_table('households')
 
     ############################
-    # person cdap pattern validation
+    # person nmtf validation
     ############################
-    # cdap person result from the model
-    logger.info('person cdap pattern validation')
+    # nmtf person result from the model
+    logger.info('person nmtf pattern validation')
 
     target_key = "inmf_choice"
     simulated_key = "non_mandatory_tour_frequency"
@@ -110,7 +110,7 @@ def test_nmtf_from_pipeline(reconnect_pipeline: pipeline.Pipeline, caplog):
 
     simulated_df = create_summary(person_df, key=simulated_key, out_col="Simulated_Share")
 
-    # cdap person result from the TM2 run
+    # result from the TM2 run
     target_df = create_summary(person_df, key=target_key, out_col="Target_Share")
 
     # compare simulated and target results 
