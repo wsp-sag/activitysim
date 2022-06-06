@@ -17,14 +17,14 @@ from activitysim.core import expressions
 from .util import estimation
 
 from .util.overlap import hh_time_window_overlap
-from .util.tour_frequency import process_joint_tours
+from .util.tour_frequency import process_joint_tours_frequency_composition
 
 logger = logging.getLogger(__name__)
 
 
 @inject.step()
 def joint_tour_frequency_composition(
-        households,
+        households_merged,
         persons,
         chunk_size,
         trace_hh_id):
@@ -41,8 +41,8 @@ def joint_tour_frequency_composition(
 
     # - only interested in households with more than one cdap travel_active person and
     # - at least one non-preschooler
-    households = households.to_frame()
-    choosers = households[households.participates_in_jtf_model].copy()
+    households_merged = households_merged.to_frame()
+    choosers = households_merged[households_merged.participates_in_jtf_model].copy()
 
     # - only interested in persons in choosers households
     persons = persons.to_frame()
@@ -119,7 +119,7 @@ def joint_tour_frequency_composition(
         estimator.end_estimation()
         
     # add joint tour frequency composition column to household table
-    households['joint_tour_frequency_composition'] = choices.reindex(households.index).fillna(0)
+    households_merged['joint_tour_frequency_composition'] = choices.reindex(households_merged.index).fillna(0)
 
     # - create joint_tours based on choices
 
@@ -132,11 +132,9 @@ def joint_tour_frequency_composition(
     temp_point_persons = temp_point_persons.set_index('household_id')
     temp_point_persons = temp_point_persons[['person_id', 'home_zone_id']]
 
-    # TODO: add new method "process_joint_tours_with_composition" to process the joint tour frequency and composition based on the simulated choice
     # create a tours table of tour_category "joint" and different tour_types (e.g. shopping, eat)
     # and add the composition column (adults or children or mixed) to the tour 
     
-    # TODO: remove this after implementation
     # Choices
     # hhid	choice
     # 11111	1
@@ -156,23 +154,26 @@ def joint_tour_frequency_composition(
     # 22222	shop	joint	    mixed
     # 33333	shop	joint	    adults
 
+    joint_tours = process_joint_tours_frequency_composition(choices, alt_tdd, temp_point_persons)
 
-    joint_tours = process_joint_tours(choices, alt_tdd, temp_point_persons)
-    
     tours = pipeline.extend_table("tours", joint_tours)
 
     tracing.register_traceable_table('tours', joint_tours)
     pipeline.get_rn_generator().add_channel('tours', joint_tours)
 
-    households['num_hh_joint_tours'] = joint_tours.groupby('household_id').size().\
-        reindex(households.index).fillna(0).astype(np.int8)
+    # we expect there to be an alt with no tours - which we can use to backfill non-travelers
+    no_tours_alt = 0
+    households_merged['joint_tour_frequency_composition'] = choices.reindex(households_merged.index).fillna(no_tours_alt).astype(str)
 
-    pipeline.replace_table("households", households)
+    households_merged['num_hh_joint_tours'] = joint_tours.groupby('household_id').size().\
+        reindex(households_merged.index).fillna(0).astype(np.int8)
 
-    tracing.print_summary('joint_tour_frequency', households.joint_tour_frequency, value_counts=True)
+    pipeline.replace_table("households", households_merged)
+
+    tracing.print_summary('joint_tour_frequency_composition', households_merged.joint_tour_frequency_composition, value_counts=True)
 
     if trace_hh_id:
-        tracing.trace_df(households,
+        tracing.trace_df(households_merged,
                          label="joint_tour_frequency_composition.households")
 
         tracing.trace_df(joint_tours,
