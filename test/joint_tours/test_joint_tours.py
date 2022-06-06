@@ -37,7 +37,8 @@ def tables(prepare_module_inputs) -> dict[str, str]:
         'land_use': 'MAZ_ORIGINAL',
         'persons': 'person_id',
         'households': 'household_id',
-        'accessibility': 'MAZ_ORIGINAL'
+        'accessibility': 'MAZ_ORIGINAL',
+        'tours': 'tour_id'
     }
 
 
@@ -59,7 +60,7 @@ def load_checkpoint() -> bool:
     """
     checkpoint to be loaded from the pipeline when reconnecting. 
     """
-    return 'initialize_tours'
+    return 'initialize_households'
 
 
 @pytest.mark.skipif(os.path.isfile('test/joint_tours/output/pipeline.h5'), reason = "no need to recreate pipeline store if already exist")
@@ -70,22 +71,36 @@ def test_prepare_input_pipeline(initialize_pipeline: pipeline.Pipeline, caplog):
     # run model step
     pipeline.run(models=[
         'initialize_landuse',
-        'initialize_households',
-        'initialize_tours'
+        'initialize_households'
         ]
     )
     person_df = pipeline.get_table('persons')
     pipeline.close_pipeline()
 
-@pytest.mark.skip
 def test_joint_tours_frequency_composition(reconnect_pipeline: pipeline.Pipeline, caplog):
     
     caplog.set_level(logging.INFO)
 
     # run model step
     pipeline.run(
-        models = ['joint_tour_frequency_composition'],
-        resume_after = 'initialize_tours'
+        models = [
+            'joint_tour_frequency_composition'
+        ],
+        resume_after = 'initialize_households'
+    )
+
+    pipeline.close_pipeline()
+
+def test_joint_tours_participation(reconnect_pipeline: pipeline.Pipeline, caplog):
+    
+    caplog.set_level(logging.INFO)
+
+    # run model step
+    pipeline.run(
+        models = [
+            'joint_tour_participation'
+        ],
+        resume_after = 'joint_tour_frequency_composition'
     )
 
     pipeline.close_pipeline()
@@ -104,12 +119,12 @@ def prepare_module_inputs() -> None:
     """
     # https://wsponlinenam.sharepoint.com/sites/US-TM2ConversionProject/Shared%20Documents/Forms/
     # AllItems.aspx?id=%2Fsites%2FUS%2DTM2ConversionProject%2FShared%20Documents%2FTask%203%20ActivitySim&viewid=7a1eaca7%2D3999%2D4d45%2D9701%2D9943cc3d6ab1
-    accessibility_file = os.path.join('test', 'joint_tours', 'data', 'accessibilities.csv')
-    household_file = os.path.join('test', 'joint_tours', 'data', 'popsyn', 'households.csv')
-    person_file = os.path.join('test', 'joint_tours', 'data', 'popsyn', 'persons.csv')
-    landuse_file = os.path.join('test', 'joint_tours', 'data', 'landuse', 'maz_data_withDensity.csv')
-
     test_dir = os.path.join('test', 'joint_tours', 'data')
+
+    accessibility_file = os.path.join(test_dir, 'tm2_outputs', 'accessibilities.csv')
+    household_file = os.path.join(test_dir, 'popsyn', 'households.csv')
+    person_file = os.path.join(test_dir, 'popsyn', 'persons.csv')
+    landuse_file = os.path.join(test_dir, 'landuse', 'maz_data_withDensity.csv')
 
     shutil.copy(accessibility_file, os.path.join(test_dir, 'accessibility.csv'))
     shutil.copy(household_file, os.path.join(test_dir, 'households.csv'))
@@ -158,7 +173,7 @@ def prepare_module_inputs() -> None:
 
     # get columns from ctramp output
     tm2_simulated_household_df = pd.read_csv(
-        os.path.join(test_dir, 'tm2_outputs', 'householdData_3.csv')
+        os.path.join(test_dir, 'tm2_outputs', 'householdData_1.csv')
     )
     tm2_simulated_household_df.rename(columns = {'hh_id' : 'household_id'}, inplace = True)
 
@@ -190,7 +205,7 @@ def prepare_module_inputs() -> None:
 
     # get columns from ctramp result
     tm2_simulated_person_df = pd.read_csv(
-        os.path.join(test_dir, 'tm2_outputs', 'personData_3.csv')
+        os.path.join(test_dir, 'tm2_outputs', 'personData_1.csv')
     )
     tm2_simulated_person_df.rename(columns = {'hh_id' : 'household_id'}, inplace = True)
 
@@ -222,18 +237,23 @@ def prepare_module_inputs() -> None:
         index = False
     )
 
-    # get mandatory tours from ctramp output
-    tm2_mandatory_tours_df = pd.read_csv(
-        os.path.join(test_dir, 'tm2_outputs', 'indivTourData_3.csv')
-    )
+    ## get tour data from tm2 output
 
-    tm2_mandatory_tours_df = tm2_mandatory_tours_df[tm2_mandatory_tours_df['tour_category'] == 'MANDATORY']
-    tm2_mandatory_tours_df  = tm2_mandatory_tours_df[
-        ['hh_id', 'person_id', 'person_num', 'person_type', 'tour_id', 'tour_category', 'tour_purpose', 'orig_mgra', 'dest_mgra', 'start_period', 'end_period', 'tour_mode', 'tour_distance', 'tour_time']
+    tm2_simulated_indiv_tour_df = pd.read_csv(
+        os.path.join(test_dir, 'tm2_outputs', 'indivTourData_1.csv')
+    )
+    tm2_simulated_indiv_tour_df = tm2_simulated_indiv_tour_df[
+        tm2_simulated_indiv_tour_df.tour_category == 'MANDATORY'
     ]
 
-    tm2_mandatory_tours_df.to_csv(
-        os.path.join(test_dir, 'mandatory_tours.csv'),
+    tm2_simulated_tour_df = pd.concat(
+        [tm2_simulated_indiv_tour_df],
+        sort = False,
+        ignore_index = True
+    )
+
+    tm2_simulated_tour_df.rename(columns = {'hh_id' : 'household_id'}).to_csv(
+        os.path.join(test_dir, 'tours.csv'),
         index = False
     )
 
