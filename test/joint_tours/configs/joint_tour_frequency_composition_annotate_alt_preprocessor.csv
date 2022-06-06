@@ -4,3 +4,4 @@ Description,Target,Expression
 ,eatout,"np.where(alt_tdd.purpose1 == 7, 1, 0) + np.where(alt_tdd.purpose2 == 7, 1, 0)"
 ,social,"np.where(alt_tdd.purpose1 == 8, 1, 0) + np.where(alt_tdd.purpose2 == 8, 1, 0)"
 ,othdiscr,"np.where(alt_tdd.purpose1 == 9, 1, 0) + np.where(alt_tdd.purpose2 == 9, 1, 0)"
+,num_joint_tours,shopping+othmaint+eatout+social+othdiscr
