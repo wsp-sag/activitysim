@@ -2,20 +2,4 @@ Description,Target,Expression
 Trip mode is drive,drive_trip,df.trip_mode <= 8
 Parking segment,parking_segment,setting('segment')
 Parking eligible trip,is_park_eligible,(drive_trip & (df.dest_purpose != "Home"))
-Number of hourly stalls,hourly_stalls,"reindex(land_use.hstallsoth, df.dest_mgra)"
-Number of daily stalls,daily_stalls,"reindex(land_use.dstallsoth, df.dest_mgra)"
-Number of monthly stalls,monthly_stalls,"reindex(land_use.mstallsoth, df.dest_mgra)"
-Hourly stalls available,hourly_stalls_available,hourly_stalls > 0
-Daily stalls available,daily_stalls_available,daily_stalls > 0
-Monthly parking allowed,monthly_allowed,((df.dest_purpose == "Work") & ((df.person_type == 1) | (df.person_type == 3)))
-Monthly stalls available,monthly_stalls_available,(monthly_stalls > 0 & monthly_allowed)
-Hourly parking cost cents,hourly_parking_cost,"reindex(land_use.hparkcost, df.dest_mgra) * 100 * (df.activity_duration_in_hours - reindex(land_use.numfreehrs, df.dest_mgra))"
-Daily parking cost cents,daily_parking_cost,"reindex(land_use.dparkcost, df.dest_mgra) * 100"
-Monthly parking cost cents,monthly_parking_cost,"reindex(land_use.mparkcost, df.dest_mgra) * 100"
-Hourly cost is lowest,hourly_is_best,"hourly_stalls_available & np.where(daily_stalls_available, hourly_parking_cost < daily_parking_cost, True) & np.where(monthly_stalls_available, hourly_parking_cost < monthly_parking_cost, True)"
-Daily cost is lowest,daily_is_best,"daily_stalls_available & np.where(hourly_stalls_available, daily_parking_cost < hourly_parking_cost, True) & np.where(monthly_stalls_available, daily_parking_cost < monthly_parking_cost, True)"
-Monthly cost is lowest,monthly_is_best,"monthly_stalls_available & np.where(hourly_stalls_available, monthly_parking_cost < hourly_parking_cost, True) & np.where(daily_stalls_available, monthly_parking_cost < daily_stalls_available, True)"
-Person reimbursement percent for work parking, reimbursement_pct, 0
-Person reimbursement amount cents, reimbursement_amount, reimbursement_pct * monthly_parking_cost * 100
-Parking cost,parking_cost,((hourly_is_best * hourly_parking_cost) + (daily_is_best * daily_parking_cost) + (monthly_is_best * monthly_parking_cost))
-Parking size,parking_size,((hourly_is_best * hourly_stalls) + (daily_is_best * daily_stalls) + (monthly_is_best * monthly_stalls))
+Activity duration,activity_duration,df.activity_duration_in_hours

@@ -117,7 +117,7 @@ def test_parking_location(reconnect_pipeline: pipeline.Pipeline, caplog):
     
     # get the updated trips data
     trips_df = pipeline.get_table('trips')
-    trips_df.to_csv('test/parking_location/output/trips_with_parking_choice.csv')
+    trips_df.to_csv('test/parking_location/output/trips_after_parking_choice.csv')
 
 
 # fetch/prepare existing files for model inputs
@@ -125,6 +125,7 @@ def test_parking_location(reconnect_pipeline: pipeline.Pipeline, caplog):
 @pytest.fixture(scope='module')
 def prepare_module_inputs() -> None:
     """
+
     copy input files from sharepoint into test folder
 
     create unique person id in person file
@@ -361,6 +362,7 @@ def prepare_module_inputs() -> None:
     # select only if target parking maz is > 0
     tm2_simulated_trip_df = tm2_simulated_trip_df[tm2_simulated_trip_df['parking_mgra'] > 0]
     
+    tm2_simulated_tour_df = tm2_simulated_tour_df[tm2_simulated_tour_df.household_id.isin(tm2_simulated_trip_df.household_id)]
     tm2_simulated_tour_df.to_csv(os.path.join(test_dir, 'tours.csv'), index = False)
     
     tm2_simulated_trip_df.to_csv(os.path.join(test_dir, 'trips.csv'), index = False)

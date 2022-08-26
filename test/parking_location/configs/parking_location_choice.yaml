@@ -6,6 +6,13 @@ PREPROCESSOR:
   TABLES:
     - land_use
 
+ALTS_PREPROCESSOR:
+  SPEC: parking_location_choice_annotate_alt_preprocessor.csv
+  DF: alt_tdd
+  TABLES:
+    - land_use
+
+
 # boolean column to filter choosers (True means keep)
 CHOOSER_FILTER_COLUMN_NAME: is_park_eligible
 CHOOSER_SEGMENT_COLUMN_NAME: parking_segment

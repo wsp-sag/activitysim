@@ -1,7 +1,21 @@
 Description,Expression,no_segmentation
-Log of alternative size,log(@df.parking_size),1
-Cost work trip,"@np.where(df.dest_purpose == 'Work',np.where(df.parking_cost > df.reimbursement_amount, df.parking_cost - df.reimbursement_amount, 0),0)",-0.0072 
-Cost other trip,"@np.where(df.dest_purpose != 'Work',df.parking_cost,0)",-0.0041
-Walk distance,"@pd_skims['DISTWALK']",-11.8
+Person is worker,_person_is_worker@((df.person_type == 1) | (df.person_type == 3)),1
+Trip is work purpose,_work_trip@(df.dest_purpose == 'Work'),1
+Monthly parking is allowed,_monthly_allowed@df.monthly_stalls_available & _work_trip & _person_is_worker,1
+Total hourly parking cost,_total_hourly_parking_cost@(df.hourly_parking_cost * (df.activity_duration - df.num_free_hours)),1
+Hourly is cheaper than daily,"_hourly_cheaper_than_daily@np.where(df.daily_stalls_available, _total_hourly_parking_cost < df.daily_parking_cost,True)",1
+Hourly is cheaper than monthly,"_hourly_cheaper_than_monthly@np.where(_monthly_allowed, _total_hourly_parking_cost < df.monthly_parking_cost,True)",1
+Hourly parking is best,_hourly_best@df.hourly_stalls_available & _hourly_cheaper_than_daily & _hourly_cheaper_than_monthly,1
+Daily is cheaper than hourly,"_daily_cheaper_than_hourly@np.where(df.hourly_stalls_available, df.daily_parking_cost < _total_hourly_parking_cost,True)",1
+Daily is cheaper than monthly,"_daily_cheaper_than_monthly@np.where(_monthly_allowed, df.daily_parking_cost < df.monthly_parking_cost,True)",1
+Daily parking is best,_daily_best@df.daily_stalls_available & _daily_cheaper_than_hourly & _daily_cheaper_than_monthly,1
+Monthly is cheaper than hourly,"_monthly_cheaper_than_hourly@np.where(df.hourly_stalls_available, df.monthly_parking_cost < _total_hourly_parking_cost,True)",1
+Monthly is cheaper than daily,"_monthly_cheaper_than_daily@np.where(df.daily_stalls_available, df.monthly_parking_cost < df.daily_stalls_available,True)",1
+Monthly parking is best,_monthly_best@_monthly_allowed & _monthly_cheaper_than_hourly & _monthly_cheaper_than_daily,1
+Parking cost,_parking_cost@(_hourly_best * _total_hourly_parking_cost) + (_daily_best * df.daily_parking_cost) + (_monthly_best * df.monthly_parking_cost),1
+Log of parking size,@(_hourly_best * np.log(df.hourly_stalls)) + (_daily_best * np.log(df.daily_stalls)) + (_monthly_best * np.log(df.monthly_stalls)),1
+Cost work trip,"@np.where(df.dest_purpose == 'Work', _parking_cost, 0)",-0.0072
+Cost other trip,"@np.where(df.dest_purpose != 'Work', _parking_cost, 0)",-0.0041
+Walk distance,@pd_skims['DISTWALK'],-11.8
 Walk Unavailability,"@np.where(pd_skims['DISTWALK'] == 0, 1, 0)",-9999
 Require parking zone to be less than 0.75 mile from dest,"@np.where(pd_skims['DISTWALK'] > 0.75, 1, 0) * (df.dest_maz != df.parking_maz)",-9999
