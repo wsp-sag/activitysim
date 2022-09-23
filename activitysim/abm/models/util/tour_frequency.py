@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 
 from activitysim.core.util import reindex
+from activitysim.core import config
 from activitysim.abm.models.util.canonical_ids import set_tour_index
 
 logger = logging.getLogger(__name__)
@@ -596,11 +597,27 @@ def create_joint_tours(tour_counts, tour_category, parent_col='person_id'):
     2588676       2         0         0
     2588677       1         1         0
     """
-    tour_type_dict={5:'shopping',6:'othmaint',7:'eatout',8:'social',9:'othdiscr'}
-    tour_comp_dict={1:'adults',2:'children',3:'mixed'}
+    model_settings_file_name = 'joint_tour_frequency_composition.yaml'
+
+    model_settings = config.read_model_settings(model_settings_file_name)
+
+    alts_table_structure = model_settings.get('ALTS_TABLE_STRUCTURE', None)
+    assert alts_table_structure is not None, f"Expected to find ALTS_TABLE_STRUCTURE setting in joint_tour_frequency_composition.yaml"
+
+    tour_type_dict = alts_table_structure.get('PURPOSE', None).get('VALUE_MAP', None)
+    assert tour_type_dict is not None, f"Expected to find PURPOSE.VALUE_MAP setting in ALTS_TABLE_STRUCTURE"
+
+    tour_type_cols = alts_table_structure.get('PURPOSE', None).get('COLUMNS', None)
+    assert tour_type_cols is not None, f"Expected to find PURPOSE.COLUMNS setting in ALTS_TABLE_STRUCTURE"
+
+    tour_comp_dict = alts_table_structure.get('COMPOSITION', None).get('VALUE_MAP', None)
+    assert tour_comp_dict is not None, f"Expected to find COMPOSITION.VALUE_MAP setting in ALTS_TABLE_STRUCTURE"
+
+    tour_comp_cols = alts_table_structure.get('COMPOSITION', None).get('COLUMNS', None)
+    assert tour_comp_cols is not None, f"Expected to find COMPOSITION.COLUMNS setting in ALTS_TABLE_STRUCTURE"
 
     # reformat with the columns given below
-    tours_purp = tour_counts[['purpose1','purpose2']].stack().reset_index()
+    tours_purp = tour_counts[tour_type_cols].stack().reset_index()
     tours_purp.columns = [parent_col, "tour_id_temp", "tour_type"]
     tours_purp['tour_id_temp'] = range(1, 1+len(tours_purp))
     tours_purp['tour_type'] = tours_purp['tour_type'].map(tour_type_dict)
@@ -618,7 +635,7 @@ def create_joint_tours(tour_counts, tour_category, parent_col='person_id'):
     tour_type is the column name from non_mandatory_tour_frequency_alts
     tour_type_count is the count value of the tour's chosen alt's tour_type from alts table
     """
-    tours_comp = tour_counts[['party1','party2']].stack().reset_index()
+    tours_comp = tour_counts[tour_comp_cols].stack().reset_index()
     tours_comp.columns = [parent_col, "tour_id_temp", "composition"]
     tours_comp['tour_id_temp'] = range(1, 1+len(tours_comp))
     tours_comp['composition'] = tours_comp['composition'].map(tour_comp_dict)
