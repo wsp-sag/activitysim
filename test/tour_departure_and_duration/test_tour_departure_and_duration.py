@@ -7,6 +7,7 @@ import numpy as np
 from numpy import dot
 from numpy.linalg import norm
 import orca
+import itertools
 
 # import models is necessary to initalize the model steps with orca
 from activitysim.abm import models
@@ -40,7 +41,7 @@ def tables(prepare_module_inputs) -> dict[str, str]:
         'households': 'household_id',
         'accessibility': 'maz',
         'tours': 'tour_id',
-        'trips': 'trip_id'
+        'joint_tour_participants': 'participant_num'
     }
 
 
@@ -69,14 +70,9 @@ def load_checkpoint() -> bool:
 def test_prepare_input_pipeline(initialize_pipeline: pipeline.Pipeline, caplog):
     # Run summarize model
     caplog.set_level(logging.INFO)
-
-    data_dir = os.path.join('test', 'tour_departure_and_duration', 'data')
+    
     output_dir = os.path.join('test', 'tour_departure_and_duration', 'output')
 
-    joint_tour_participants = pd.read_csv(os.path.join(data_dir, 'joint_tour_participants.csv'))
-    orca.add_table('joint_tour_participants', joint_tour_participants)
-
-    # run model step
     pipeline.run(models=[
         'initialize_landuse',
         'initialize_households'
@@ -99,61 +95,24 @@ def test_prepare_input_pipeline(initialize_pipeline: pipeline.Pipeline, caplog):
     tours_df = pipeline.get_table('tours')
     tours_df.to_csv(os.path.join(output_dir, 'tours.csv'))
 
-    trips_df = pipeline.get_table('trips')
-    trips_df.to_csv(os.path.join(output_dir, 'trips.csv'))
-
     pipeline.close_pipeline()
 
-# Test Order:
-    # mandatory_tour_scheduling
-    # non_mandatory_tour_scheduling
-    # joint_tour_scheduling
-    # atwork_subtour_scheduling
 
 #@pytest.mark.skip
-def test_mandatory_tour_scheduing(reconnect_pipeline: pipeline.Pipeline, caplog):
+def test_tour_scheduling(reconnect_pipeline: pipeline.Pipeline, caplog):
     
     caplog.set_level(logging.INFO)
-
-    pipeline.run(models=['mandatory_tour_scheduling'],
-        resume_after = 'initialize_households'
-    )
-
-    pipeline.close_pipeline()
-
-
-@pytest.mark.skip
-def test_nonmandatory_tour_scheduing(reconnect_pipeline: pipeline.Pipeline, caplog):
     
-    caplog.set_level(logging.INFO)
-
-    pipeline.run(models=['non_mandatory_tour_scheduling'],
-        resume_after = 'mandatory_tour_scheduling'
-    )
-
-    pipeline.close_pipeline()
-
-
-@pytest.mark.skip
-def test_joint_tour_scheduing(reconnect_pipeline: pipeline.Pipeline, caplog):
+    output_dir = os.path.join('test', 'tour_departure_and_duration', 'output')
     
-    caplog.set_level(logging.INFO)
+    pipeline.open_pipeline(resume_after = 'initialize_households')
+    pipeline.run_model('mandatory_tour_scheduling')
+    pipeline.run_model('joint_tour_scheduling')
+    pipeline.run_model('non_mandatory_tour_scheduling')
+    pipeline.run_model('atwork_subtour_scheduling')
 
-    pipeline.run(models=['joint_tour_scheduling'],
-        resume_after = 'non_mandatory_tour_scheduling'
-    )
-
-    pipeline.close_pipeline()
-
-
-@pytest.mark.skip
-def test_atwork_tour_scheduing(reconnect_pipeline: pipeline.Pipeline, caplog):
-    
-    caplog.set_level(logging.INFO)
-
-    pipeline.run(models=['atwork_subtour_scheduling'],
-        resume_after = 'joint_tour_scheduling'
-    )
+    tours_df = pipeline.get_table('tours')
+    tours_df.to_csv(os.path.join(output_dir, 'tours_after_scheduling.csv'))
 
     pipeline.close_pipeline()
 
@@ -194,7 +153,7 @@ def prepare_module_inputs() -> None:
         os.path.join(test_dir, 'land_use.csv'),
         index = False
     )
-
+    # land_use_df[['maz', 'maz_county_based']]
     accessibility_df = pd.read_csv(
         os.path.join(test_dir, 'accessibility.csv')
     )
@@ -213,14 +172,23 @@ def prepare_module_inputs() -> None:
     household_df = pd.read_csv(
         os.path.join(test_dir, 'households.csv')
     )
-
+    
     household_columns_dict = {
         'HHID' : 'household_id',
         'TAZ' : 'taz',
-        'MAZ' : 'home_zone_id'
+        'MAZ' : 'maz_county_based'
     }
 
     household_df.rename(columns = household_columns_dict, inplace = True)
+
+    # maz in the households.csv is the county based maz, get the sequential maz for home zone
+    household_df = pd.merge(
+        household_df,
+        land_use_df[['maz', 'maz_county_based']],
+        how='left',
+        on='maz_county_based'
+    )
+    household_df.rename(columns = {'maz' : 'home_zone_id'}, inplace = True)
 
     tm2_simulated_household_df = pd.read_csv(
         os.path.join(test_dir, 'tm2_outputs', 'householdData_1.csv')
@@ -296,36 +264,118 @@ def prepare_module_inputs() -> None:
         on = ['household_id', 'person_id']
     )
 
+    person_df['WorkLocation'] = np.where(person_df['WorkLocation'] == 99999, -1, person_df['WorkLocation'])
+    person_df['SchoolLocation'] = np.where(person_df['SchoolLocation'] == 88888, -1, person_df['SchoolLocation'])
+    person_df['WorkLocation'] = np.where(person_df['WorkLocation'] == 0, -1, person_df['WorkLocation'])
+    person_df['SchoolLocation'] = np.where(person_df['SchoolLocation'] == 0, -1, person_df['SchoolLocation'])
+
     ## get tour data from tm2 output
     tm2_simulated_indiv_tour_df = pd.read_csv(
         os.path.join(test_dir, 'tm2_outputs', 'indivTourData_1.csv')
     )
 
-    # tm2_simulated_joint_tour_df = pd.read_csv(
-    #     os.path.join(test_dir, 'tm2_outputs', 'jointTourData_1.csv')
-    # )
-
-    # using joint tours data after running joint tour participation model 
     tm2_simulated_joint_tour_df = pd.read_csv(
-        os.path.join(test_dir, 'joint_tours.csv')
+        os.path.join(test_dir, 'tm2_outputs', 'jointTourData_1.csv')
     )
 
-    # tours_df = pd.concat(
-    #     [tm2_simulated_indiv_tour_df, tm2_simulated_joint_tour_df],
-    #     sort = False,
-    #     ignore_index = True
+    tm2_simulated_indiv_tour_df.drop(tm2_simulated_indiv_tour_df.filter(regex='util').columns, axis=1, inplace=True)
+    tm2_simulated_indiv_tour_df.drop(tm2_simulated_indiv_tour_df.filter(regex='prob').columns, axis=1, inplace=True)
+
+    tm2_simulated_indiv_tour_df['tour_id'] = range(1, len(tm2_simulated_indiv_tour_df) + 1)
+
+
+    number_of_participants = [*map(lambda x: len(x.split(" ")),tm2_simulated_joint_tour_df.tour_participants.tolist())]
+    primary_participant_num = [*map(lambda x: x.split(" ")[0],tm2_simulated_joint_tour_df.tour_participants.tolist())]
+    tour_participants = [*map(lambda x: x.split(" "),tm2_simulated_joint_tour_df.tour_participants.tolist())]
+    tour_participants = list(itertools.chain.from_iterable(tour_participants))
+
+    tm2_simulated_joint_tour_df['tour_id'] = range(len(tm2_simulated_indiv_tour_df) + 1, len(tm2_simulated_indiv_tour_df) + len(tm2_simulated_joint_tour_df) + 1)
+    tm2_simulated_joint_tour_df['composition'] = tm2_simulated_joint_tour_df['tour_composition']
+    tm2_simulated_joint_tour_df['composition'] = np.where(tm2_simulated_joint_tour_df['composition'] == 1, 'adult', tm2_simulated_joint_tour_df['composition'])
+    tm2_simulated_joint_tour_df['composition'] = np.where(tm2_simulated_joint_tour_df['composition'] == 2, 'children', tm2_simulated_joint_tour_df['composition'])
+    tm2_simulated_joint_tour_df['composition'] = np.where(tm2_simulated_joint_tour_df['composition'] == 3, 'mixed', tm2_simulated_joint_tour_df['composition'])
+
+    tm2_simulated_joint_tour_df['primary_participant_num'] = primary_participant_num
+    tm2_simulated_joint_tour_df['number_of_participants'] = number_of_participants
+    
+    tm2_simulated_joint_tour_df['primary_participant_num'] = tm2_simulated_joint_tour_df['primary_participant_num'].astype(int)
+    tm2_simulated_joint_tour_df['number_of_participants'] = tm2_simulated_joint_tour_df['number_of_participants'].astype(int)
+
+    joint_tours_participants_df = tm2_simulated_joint_tour_df.take(np.repeat(tm2_simulated_joint_tour_df.index, tm2_simulated_joint_tour_df['number_of_participants'])).copy()
+    joint_tours_participants_df['participant_num'] = tour_participants
+    joint_tours_participants_df['participant_num'] = joint_tours_participants_df['participant_num'].astype(int)
+    joint_tours_participants_df.rename(columns = {'hh_id' : 'household_id'}, inplace = True)
+    joint_tours_participants_df = joint_tours_participants_df[['tour_id', 'household_id', 'participant_num']]
+
+    joint_tours_participants_df = pd.merge(
+        joint_tours_participants_df, 
+        person_df[['household_id', 'person_id', 'person_num']],
+        how='left',
+        left_on=['household_id', 'participant_num'],
+        right_on=['household_id', 'person_num'],
+    )
+
+    joint_tours_participants_df.drop(['person_num'], axis=1, inplace=True)
+
+    tm2_simulated_joint_tour_df = pd.merge(
+        tm2_simulated_joint_tour_df, 
+        person_df[['household_id', 'person_id', 'person_num']],
+        how='left',
+        left_on=['hh_id', 'primary_participant_num'],
+        right_on=['household_id', 'person_num'],
+    )
+
+    tm2_simulated_joint_tour_df.drop(tm2_simulated_joint_tour_df.filter(regex='util').columns, axis=1, inplace=True)
+    tm2_simulated_joint_tour_df.drop(tm2_simulated_joint_tour_df.filter(regex='prob').columns, axis=1, inplace=True)
+    tm2_simulated_joint_tour_df.drop(['tour_composition', 'tour_participants', 'primary_participant_num', 'household_id'], axis=1, inplace=True)
+
+    tm2_simulated_tour_df = pd.concat(
+        [tm2_simulated_indiv_tour_df, tm2_simulated_joint_tour_df],
+        sort = False,
+        ignore_index = True
+    )
+
+    tm2_simulated_tour_df.rename(columns = {'hh_id' : 'household_id'}, inplace=True)
+    
+    tm2_simulated_tour_df['tour_category'] = tm2_simulated_tour_df['tour_category'].str.lower()
+    tm2_simulated_tour_df['tour_category'] = np.where(tm2_simulated_tour_df.tour_category == 'individual_non_mandatory', 'non_mandatory', tm2_simulated_tour_df.tour_category)
+    tm2_simulated_tour_df['tour_category'] = np.where(tm2_simulated_tour_df.tour_category == 'joint_non_mandatory', 'joint', tm2_simulated_tour_df.tour_category)
+    tm2_simulated_tour_df['tour_category'] = np.where(tm2_simulated_tour_df.tour_category == 'at_work', 'atwork', tm2_simulated_tour_df.tour_category)
+
+    tm2_simulated_tour_df['tour_purpose'] = np.where(tm2_simulated_tour_df.tour_purpose == 'Work-Based', 'atwork', tm2_simulated_tour_df.tour_purpose)
+    tm2_simulated_tour_df['tour_purpose'] = tm2_simulated_tour_df['tour_purpose'].str.lower()
+    
+    tm2_simulated_tour_df['tour_type'] = tm2_simulated_tour_df['tour_purpose']
+    tm2_simulated_tour_df['tour_type'] = np.where(tm2_simulated_tour_df.tour_type == 'university', 'univ', tm2_simulated_tour_df.tour_type)
+    tm2_simulated_tour_df['tour_type'] = np.where(tm2_simulated_tour_df.tour_type == 'escort', 'escort', tm2_simulated_tour_df.tour_type)
+    tm2_simulated_tour_df['tour_type'] = np.where(tm2_simulated_tour_df.tour_type == 'shop', 'shopping', tm2_simulated_tour_df.tour_type)
+    tm2_simulated_tour_df['tour_type'] = np.where(tm2_simulated_tour_df.tour_type == 'eating out', 'eatout', tm2_simulated_tour_df.tour_type)
+    tm2_simulated_tour_df['tour_type'] = np.where(tm2_simulated_tour_df.tour_type == 'discretionary', 'othdiscr', tm2_simulated_tour_df.tour_type)
+    tm2_simulated_tour_df['tour_type'] = np.where(tm2_simulated_tour_df.tour_type == 'maintenance', 'othmaint', tm2_simulated_tour_df.tour_type)
+    tm2_simulated_tour_df['tour_type'] = np.where(tm2_simulated_tour_df.tour_type == 'visiting', 'social', tm2_simulated_tour_df.tour_type)
+
+    tm2_simulated_tour_df['origin'] = tm2_simulated_tour_df['orig_mgra']
+    tm2_simulated_tour_df['destination'] = tm2_simulated_tour_df['dest_mgra']
+
+    #orig_mgra and dest_mgra is sequential, we need maz county based
+    # origin and destination will be maz county based 
+    # tm2_simulated_tour_df = pd.merge(
+    #     tm2_simulated_tour_df,
+    #     land_use_df[['maz', 'maz_county_based']],
+    #     how='left',
+    #     left_on='orig_mgra',
+    #     right_on='maz'
     # )
-    tours_df = tm2_simulated_indiv_tour_df.copy()
+    # tm2_simulated_tour_df.rename(columns = {'maz_county_based' : 'origin'}, inplace = True)
 
-    tours_df.rename(columns = {'hh_id' : 'household_id'}, inplace=True)
-
-    #tours_df['unique_tour_id'] = range(1, len(tours_df) + 1)
-    tours_df['tour_category'] = tours_df['tour_category'].str.lower()
-    tours_df['tour_category'] = np.where(tours_df.tour_category == 'individual_non_mandatory', 'non_mandatory', tours_df.tour_category)
-    tours_df['tour_category'] = np.where(tours_df.tour_category == 'at_work', 'atwork', tours_df.tour_category)
-    tours_df['tour_type'] = tours_df['tour_purpose'].str.lower()
-    tours_df['origin'] = tours_df['orig_mgra']
-    tours_df['destination'] = tours_df['dest_mgra']
+    # tm2_simulated_tour_df = pd.merge(
+    #     tm2_simulated_tour_df,
+    #     land_use_df[['maz', 'maz_county_based']],
+    #     how='left',
+    #     left_on='dest_mgra',
+    #     right_on='maz'
+    # )
+    # tm2_simulated_tour_df.rename(columns = {'maz_county_based' : 'destination'}, inplace = True)
 
     def _process_tours(tours_df, parent_col): 
         tours = tours_df.copy()
@@ -340,65 +390,30 @@ def prepare_module_inputs() -> None:
         
         return tours
 
-    mandatory_tours = tours_df[tours_df.tour_category == 'mandatory']
-    non_mandatory_tours = tours_df[tours_df.tour_category == 'non_mandatory']
-    atwork_tours = tours_df[tours_df.tour_category == 'atwork']
-    joint_tours = tm2_simulated_joint_tour_df.copy()
+    mandatory_tours = tm2_simulated_tour_df[tm2_simulated_tour_df.tour_category == 'mandatory']
+    non_mandatory_tours = tm2_simulated_tour_df[tm2_simulated_tour_df.tour_category == 'non_mandatory']
+    atwork_tours = tm2_simulated_tour_df[tm2_simulated_tour_df.tour_category == 'atwork']
+    joint_tours = tm2_simulated_tour_df[tm2_simulated_tour_df.tour_category == 'joint']
 
     mandatory_tours = _process_tours(mandatory_tours, parent_col='person_id')
     non_mandatory_tours = _process_tours(non_mandatory_tours, parent_col='person_id')
+    joint_tours = _process_tours(joint_tours, parent_col='household_id')
+    
+    # add parent (mandatory) tour id for atwork tours
+    atwork_tours = pd.merge(
+        atwork_tours, 
+        mandatory_tours[['tour_id', 'household_id', 'person_id', 'destination']].rename(columns = {'tour_id' : 'parent_tour_id', 'destination' : 'origin'}),
+        how='left',
+        on=['household_id', 'person_id', 'origin']
+    )
+    atwork_tours.drop_duplicates(subset=['tour_id'], inplace=True)
+
+    atwork_tours = _process_tours(atwork_tours, parent_col='parent_tour_id')
 
     tours_df = pd.concat(
-        [mandatory_tours, non_mandatory_tours, joint_tours, atwork_tours],
+        [mandatory_tours, joint_tours, non_mandatory_tours, atwork_tours],
         ignore_index = True
     )
-
-    ## get trip data from tm2 output
-    tm2_simulated_indiv_trip_df = pd.read_csv(
-        os.path.join(test_dir, 'tm2_outputs', 'indivTripData_1.csv')
-    )
-    tm2_simulated_joint_trip_df = pd.read_csv(
-        os.path.join(test_dir, 'tm2_outputs', 'jointTripData_1.csv')
-    )
-
-    trips_df = pd.concat(
-        [tm2_simulated_indiv_trip_df, tm2_simulated_joint_trip_df],
-        sort = False,
-        ignore_index = True
-    )
-
-    trips_df.rename(columns = {'hh_id' : 'household_id'}, inplace=True)
-
-    trips_df['trip_id'] = range(1, len(trips_df) + 1)
-
-    # trips_df = pd.merge(
-    #     trips_df,
-    #     tours_df[['household_id', 'person_id', 'tour_id', 'tour_purpose', 'unique_tour_id', 'start_period', 'end_period']],
-    #     how='left',
-    #     on=['household_id', 'person_id', 'tour_id', 'tour_purpose']
-    # )
-
-    # drop tour id and rename unique_tour_id to tour_id
-    #tours_df.drop(['tour_id'], axis=1, inplace=True)
-    #tours_df.rename(columns = {'unique_tour_id' : 'tour_id'}, inplace=True)
-
-    # trips_df.drop(['tour_id'], axis=1, inplace=True)
-    # trips_df.rename(
-    #     columns = {
-    #         'unique_tour_id' : 'tour_id',
-    #         'orig_mgra': 'orig_maz',
-    #         'dest_mgra': 'dest_maz',
-    #         'start_period': 'tour_start_period',
-    #         'end_period': 'tour_end_period'
-    #     },
-    #     inplace=True
-    # )
-
-    #take sample data
-    household_df = household_df.sample(10000, random_state=1)
-    person_df = person_df[person_df.household_id.isin(household_df.household_id)]
-    tours_df = tours_df[tours_df.household_id.isin(household_df.household_id)]
-    trips_df = trips_df[trips_df.household_id.isin(household_df.household_id)]
 
     household_df.to_csv(
         os.path.join(test_dir, 'households.csv'),
@@ -415,55 +430,7 @@ def prepare_module_inputs() -> None:
         index = False
     )
     
-    trips_df.to_csv(
-        os.path.join(test_dir, 'trips.csv'),
+    joint_tours_participants_df.to_csv(
+        os.path.join(test_dir, 'joint_tour_participants.csv'),
         index = False
-    )
-
-
-def create_summary(input_df, key, out_col = "Share") -> pd.DataFrame:
-    """
-    Create summary for the input data. 
-    1. group input data by the "key" column
-    2. calculate the percent of input data records in each "key" category. 
-
-    :return: pd.DataFrame
-    """
-
-    out_df = input_df.groupby(key).size().reset_index(name='Count')
-    out_df[out_col] = round(out_df["Count"]/out_df["Count"].sum(), 4)
-    
-    return out_df[[key, out_col]]
-
-
-def cosine_similarity(a, b): 
-    """
-    Computes cosine similarity between two vectors.
-    
-    Cosine similarity is used here as a metric to measure similarity between two sequence of numbers.
-    Two sequence of numbers are represented as vectors (in a multi-dimensional space) and cosine similiarity is defined as the cosine of the angle between them
-    i.e., dot products of the vectors divided by the product of their lengths. 
-
-    :return: 
-    """
-    
-    return dot(a, b)/(norm(a)*norm(b))
-
-
-def compare_simulated_against_target(target_df: pd.DataFrame, simulated_df: pd.DataFrame, target_key: str, simulated_key:str) -> bool:
-    """
-    compares the simulated and target results by computing the cosine similarity between them. 
-
-    :return:
-    """
-    
-    merged_df = pd.merge(target_df, simulated_df, left_on=target_key, right_on=simulated_key, how="outer")
-    merged_df = merged_df.fillna(0)
-
-    logger.info("simulated vs target share:\n%s" % merged_df)
-
-    similarity_value = cosine_similarity(merged_df["Target_Share"].tolist(), merged_df["Simulated_Share"].tolist())
-
-    logger.info("cosine similarity:\n%s" % similarity_value)
-
-    return similarity_value
+    )   

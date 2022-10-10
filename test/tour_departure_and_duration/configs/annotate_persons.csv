@@ -36,11 +36,12 @@ total shopping and maintenance tours,num_shop_maint_tours,num_shop_tours + num_m
 "total shopping, maintenance and escort tours",num_shop_maint_escort_tours,num_shop_tours + num_maint_tours + num_escort_tours
 number of additional shopping and maintenance tours,num_add_shop_maint_tours,"np.where (num_shop_maint_tours>0, 1, 0) *  (num_shop_maint_tours - 1)"
 total social and discretionary tours,num_soc_discr_tours,num_social_tours + num_discr_tours
-number of additional social and discretionary,num_add_soc_discr_tours,"np.where (num_soc_discr_tours>0, 1, 0) *  (num_soc_discr_tours - 1)"
-#AK#,_auto_time_home_to_work,"skim_dict.lookup(home_zone_id, persons.work_location, ('SOV_TIME', 'MD'))"
-#AK#,_auto_time_work_to_home,"skim_dict.lookup(persons.work_location, home_zone_id, ('SOV_TIME', 'MD'))"
-#AK#,roundtrip_auto_time_to_work,"np.where(persons.work_location>=0,_auto_time_home_to_work + _auto_time_wo_home,0)"
-#AK#,_auto_time_home_to_school,"skim_dict.lookup(home_zone_id, persons.school_location, ('SOV_TIME', 'MD'))"
-#AK#,_auto_time_school_to_home,"skim_dict.lookup(persons.school_location, home_zone_id, ('SOV_TIME', 'MD'))"
-#AK#,roundtrip_auto_time_to_school,"np.where(persons.school_location>=0,_auto_time_home_to_school + _auto_time_school_to_home,0)"
-#AK#,distance_to_school,"np.where(persons.school_location>=0,skim_dict.lookup(home_zone_id, persons.school_location, ('SOV_TIME', 'MD')),np.nan)"
+number of additional social and discretionary,num_add_soc_discr_tours,"np.where(num_soc_discr_tours>0, 1, 0) *  (num_soc_discr_tours - 1)"
+work location, _work_location@persons.work_location,1
+auto time from home to work,_auto_time_home_to_work,"np.where((persons.work_location > 0) & (persons.work_location < 99999),skim_dict.lookup(home_zone_id, persons.work_location, ('SOV_TIME', 'MD')), np.nan)"
+auto time from work to home,_auto_time_work_to_home,"np.where((persons.work_location > 0) & (persons.work_location < 99999),skim_dict.lookup(persons.work_location, home_zone_id, ('SOV_TIME', 'MD')), np.nan)"
+roundtrip time between home and work,roundtrip_auto_time_to_work,"(_auto_time_home_to_work + _auto_time_work_to_home)"
+auto time from home to school,_auto_time_home_to_school,"np.where((persons.school_location > 0) & (persons.school_location < 88888),skim_dict.lookup(home_zone_id, persons.school_location, ('SOV_TIME', 'MD')), np.nan)"
+auto time from school to home,_auto_time_school_to_home,"np.where((persons.school_location > 0) & (persons.school_location < 88888),skim_dict.lookup(persons.school_location, home_zone_id, ('SOV_TIME', 'MD')), np.nan)"
+roundtrip time between home and school,roundtrip_auto_time_to_school,"(_auto_time_home_to_school + _auto_time_school_to_home)"
+distance from home to school,distance_to_school,"np.where((persons.school_location > 0) & (persons.school_location < 88888),skim_dict.lookup(home_zone_id, persons.school_location, ('SOV_TIME', 'MD')), np.nan)"

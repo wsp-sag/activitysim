@@ -1,6 +1,6 @@
 Label,Description,Expression,Coefficient
 # writing out varibles we may need for estimation,,,
-#AK#round_trip_auto_time_to_work,round_trip_auto_time_to_work,@df.roundtrip_auto_time_to_work,zero_coef
+round_trip_auto_time_to_work,round_trip_auto_time_to_work,@df.roundtrip_auto_time_to_work,zero_coef
 age,age,@df.age,zero_coef
 util_Mode_Choice_Logsum,Mode Choice Logsum,mode_choice_logsum,coef_Mode_Choice_Logsum
 util_Female_Departure_before_7_am,Female - Departure before 7:00 am  - Linear,@((df.female) & (df.start < df.departureRefBin)) * df.departureLinearShift1,coef_Female_Departure_before_7_am
@@ -44,10 +44,10 @@ util_University_student_Arrival_after_6_pm,University student - Arrival after 6:
 #util_Retail_and_food_Departure_after_7_am,#Retail and food - Departure after 7:30 am - Linear,@((df.work_segment==4) & (df.start > df.departureRefBin)) * df.departureLinearShift1,coef_Retail_and_food_Departure_after_7_am
 #util_Retail_and_food_Arrival_before_5_pm,#Retail and food - Arrival before 5:30 pm  - Linear,@((df.work_segment==4) & (df.end < df.arrivalRefBin)) * df.arrivalLinearShift1,coef_Retail_and_food_Arrival_before_5_pm
 #util_Retail_and_food_Arrival_after_6_pm,#Retail and food - Arrival after 6:00 pm - Linear,@((df.work_segment==4) & (df.end > df.arrivalRefBin)) * df.arrivalLinearShift1,coef_Retail_and_food_Arrival_after_6_pm
-#AK#util_Time_SOV_freeflowto_destination_Departure_before_7_am,Time (SOV freeflow) to destination - Departure before 7:00 am  - Linear,@(df.start < df.departureRefBin) * df.departureLinearShift1* (df.roundtrip_auto_time_to_work),coef_Time_SOV_freeflowto_destination_Departure_before_7_am
-#AK#util_Time_SOV_freeflowto_destination_Departure_after_7_am,Time (SOV freeflow) to destination - Departure after 7:30 am - Linear,@(df.start > df.departureRefBin) * df.departureLinearShift1 * (df.roundtrip_auto_time_to_work),coef_Time_SOV_freeflowto_destination_Departure_after_7_am
-#AK#util_Time_SOV_freeflowto_destination_Arrival_before_5_pm,Time (SOV freeflow) to destination - Arrival before 5:30 pm - Linear,@(df.end < df.arrivalRefBin) * df.arrivalLinearShift1 * (df.roundtrip_auto_time_to_work),coef_Time_SOV_freeflowto_destination_Arrival_before_5_pm
-#AK#util_Time_SOV_freeflowto_destination_Arrival_after_6_pm,Time (SOV freeflow) to destination - Arrival after 6:00 pm  - Linear,@(df.end > df.arrivalRefBin) * df.arrivalLinearShift1  * (df.roundtrip_auto_time_to_work),coef_Time_SOV_freeflowto_destination_Arrival_after_6_pm
+util_Time_SOV_freeflowto_destination_Departure_before_7_am,Time (SOV freeflow) to destination - Departure before 7:00 am  - Linear,@(df.start < df.departureRefBin) * df.departureLinearShift1* (df.roundtrip_auto_time_to_work),coef_Time_SOV_freeflowto_destination_Departure_before_7_am
+util_Time_SOV_freeflowto_destination_Departure_after_7_am,Time (SOV freeflow) to destination - Departure after 7:30 am - Linear,@(df.start > df.departureRefBin) * df.departureLinearShift1 * (df.roundtrip_auto_time_to_work),coef_Time_SOV_freeflowto_destination_Departure_after_7_am
+util_Time_SOV_freeflowto_destination_Arrival_before_5_pm,Time (SOV freeflow) to destination - Arrival before 5:30 pm - Linear,@(df.end < df.arrivalRefBin) * df.arrivalLinearShift1 * (df.roundtrip_auto_time_to_work),coef_Time_SOV_freeflowto_destination_Arrival_before_5_pm
+util_Time_SOV_freeflowto_destination_Arrival_after_6_pm,Time (SOV freeflow) to destination - Arrival after 6:00 pm  - Linear,@(df.end > df.arrivalRefBin) * df.arrivalLinearShift1  * (df.roundtrip_auto_time_to_work),coef_Time_SOV_freeflowto_destination_Arrival_after_6_pm
 util_Presence_of_NonWorking_Adult_in_the_HH_Departure_before_7_am,Presence of Non-Working Adult in the HH - Departure before 7:00 am  - Linear,@((df.is_non_worker_in_HH) & (df.start < df.departureRefBin)) * df.departureLinearShift1,coef_Presence_of_NonWorking_Adult_in_the_HH_Departure_before_7_am
 util_Presence_of_NonWorking_Adult_in_the_HH_Arrival_before_5_pm,Presence of Non-Working Adult in the HH - Arrival before 5:30 pm  - Linear,@((df.is_non_worker_in_HH) & (df.end < df.arrivalRefBin)) * df.arrivalLinearShift1,coef_Presence_of_NonWorking_Adult_in_the_HH_Arrival_before_5_pm
 util_Presence_of_PreDriving_Age_Children_in_the_HH_Departure_before_7_am,Presence of Pre-Driving Age Children in the HH - Departure before 7:30 am  - Linear,@((df.is_pre_drive_child_in_HH) & (df.start < df.departureRefBin)) * df.departureLinearShift1,coef_Presence_of_PreDriving_Age_Children_in_the_HH_Departure_before_7_am

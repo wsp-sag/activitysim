@@ -24,7 +24,7 @@ annotate_tables:
   - tablename: households
     column_map:
       HHID: household_id
-      MAZ: home_zone_id
+      maz: home_zone_id
       HHINCADJ: income
       NWRKRS_ESR: num_workers
       VEH: auto_ownership
