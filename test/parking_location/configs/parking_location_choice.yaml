@@ -1,5 +1,7 @@
 SPECIFICATION: parking_location_choice.csv
 
+COEFFICIENTS: parking_location_choice_coeffs.csv
+
 PREPROCESSOR:
   SPEC: parking_location_choice_annotate_trips_preprocessor
   DF: trips_merged

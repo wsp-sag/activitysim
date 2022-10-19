@@ -27,8 +27,8 @@ Parking cost,_parking_cost@(_hourly_best * _total_hourly_parking_cost) + (_daily
 Parking to destination distance skim,_walk_distance@pd_skims['DISTWALK'],1
 # actual utility terms starts from here
 Log of parking size,"@np.where(_parking_size>0,np.log(_parking_size),-9999)",1
-Cost work trip,"@np.where(df.dest_purpose == 'Work', _parking_cost, 0)",-0.0072
-Cost other trip,"@np.where(df.dest_purpose != 'Work', _parking_cost, 0)",-0.0041
-Walk distance,@_walk_distance,-11.8
-Walk Unavailability,"@np.where(_walk_distance == 0, 1, 0)",-9999
-Require parking zone to be less than 0.75 mile from dest,"@np.where(_walk_distance > 0.75, 1, 0) * (df.dest_maz != df.parking_maz)",-9999
+Cost work trip,"@np.where(df.dest_purpose == 'Work', _parking_cost, 0)",coef_cost_work_trip
+Cost other trip,"@np.where(df.dest_purpose != 'Work', _parking_cost, 0)",coef_cost_other_trip
+Walk distance,@_walk_distance,coef_walk_distance
+Walk Unavailability,"@np.where(_walk_distance == 0, 1, 0)",coef_unavailable
+Require parking zone to be less than 0.75 mile from dest,"@np.where(_walk_distance > 0.75, 1, 0) * (df.destination != df.parking_maz)",coef_unavailable
