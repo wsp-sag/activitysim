@@ -1,6 +1,6 @@
 Description,Expression,no_segmentation
-Person is worker,_person_is_worker@((df.person_type == 1) | (df.person_type == 3)),1
-Trip is work purpose,_work_trip@(df.dest_purpose == 'Work'),1
+Person is worker,_person_is_worker@((df.ptype == 1) | (df.ptype == 2)),1
+Trip is work purpose,_work_trip@(df.purpose == 'work'),1
 Number of hourly stalls,_hourly_stalls@df.hstallsoth,1
 Number of daily stalls,_daily_stalls@df.dstallsoth,1
 Number of monthly stalls,_monthly_stalls@df.mstallsoth,1
@@ -27,8 +27,8 @@ Parking cost,_parking_cost@(_hourly_best * _total_hourly_parking_cost) + (_daily
 Parking to destination distance skim,_walk_distance@pd_skims['DISTWALK'],1
 # actual utility terms starts from here
 Log of parking size,"@np.where(_parking_size>0,np.log(_parking_size),-9999)",1
-Cost work trip,"@np.where(df.dest_purpose == 'Work', _parking_cost, 0)",coef_cost_work_trip
-Cost other trip,"@np.where(df.dest_purpose != 'Work', _parking_cost, 0)",coef_cost_other_trip
+Cost work trip,"@np.where(df.purpose == 'work', _parking_cost, 0)",coef_cost_work_trip
+Cost other trip,"@np.where(df.purpose != 'work', _parking_cost, 0)",coef_cost_other_trip
 Walk distance,@_walk_distance,coef_walk_distance
 Walk Unavailability,"@np.where(_walk_distance == 0, 1, 0)",coef_unavailable
-Require parking zone to be less than 0.75 mile from dest,"@np.where(_walk_distance > 0.75, 1, 0) * (df.destination != df.parking_maz)",coef_unavailable
+Require parking zone to be less than 0.75 mile from dest,"@np.where(_walk_distance > 0.75, 1, 0) * (df.destination != df.parking_zone)",coef_unavailable

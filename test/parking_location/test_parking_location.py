@@ -320,14 +320,16 @@ def prepare_module_inputs() -> None:
     tm2_simulated_trip_df.rename(
         columns = {
             'unique_tour_id' : 'tour_id',
-            'orig_mgra': 'orig_maz',
-            'dest_mgra': 'dest_maz',
+            'orig_mgra': 'origin',
+            'dest_mgra': 'destination',
             'start_period': 'tour_start_period',
             'end_period': 'tour_end_period'
         },
         inplace=True
     )
     
+    tm2_simulated_trip_df['purpose'] = tm2_simulated_trip_df['dest_purpose'].str.lower()
+
     period_map_df = pd.read_csv(os.path.join(test_dir, 'period_mapping_mtc.csv'))
     
     tm2_simulated_trip_df.sort_values(by=['household_id','person_id','person_num','stop_period','tour_id'], inplace=True)
