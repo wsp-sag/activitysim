@@ -1,0 +1,23 @@
+Description,Target,Expression
+#,, annotate households table after import
+,_PERSON_COUNT,"lambda query, persons, households: persons.query(query).groupby('household_id').size().reindex(households.index).fillna(0).astype(np.int8)"
+number of adults,num_adults,"_PERSON_COUNT('age >= 18', persons, households)"
+number of children,num_children,"_PERSON_COUNT('age < 18', persons, households)"
+number of fulltime workers,num_full_time_workers,"_PERSON_COUNT('ptype == 1', persons, households)"
+number of parttime workers,num_part_time_workers,"_PERSON_COUNT('ptype == 2', persons, households)"
+number of university student,num_university_students,"_PERSON_COUNT('ptype == 3', persons, households)"
+number of non-workers,num_non_workers,"_PERSON_COUNT('ptype == 4', persons, households)"
+number of retirees,num_retirees,"_PERSON_COUNT('ptype == 5', persons, households)"
+number of driving age students,num_driving_age_students,"_PERSON_COUNT('ptype == 6', persons, households)"
+number of pre-driving age school kids,num_pre_driving_age_school_kids,"_PERSON_COUNT('ptype == 7', persons, households)"
+number of pre-school kids,num_pre_school_kids,"_PERSON_COUNT('ptype == 8', persons, households)"
+number of retired adults in the household,num_retired_adults,"_PERSON_COUNT('ptype == 5', persons, households)"
+all the adults in the household are full time workers,is_all_adults_full_time_workers,(num_adults) == (num_full_time_workers)
+all the adults in the household are retired,retired_adults_only_hh,(households.hhsize > 0) & (households.hhsize == num_retired_adults)
+presence of nonworker in the household,is_non_worker_in_HH,num_non_workers>0
+presence of predrive child in the household,is_pre_drive_child_in_HH,num_pre_driving_age_school_kids>0
+income less than 25K,is_income_less25K,households.income<25000
+income 25K to 60K,is_income_25K_to_60K,(households.income>=25000) & (households.income<60000)
+income 60K to 120K,is_income_60K_to_120K, (households.income>=60000) & (households.income<120000)
+income greater than 60K,is_income_greater60K,households.income>=60000
+income greater than 120K,is_income_greater120K,households.income>=120000

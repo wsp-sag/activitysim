@@ -1,0 +1,46 @@
+Description,Target,Expression
+#,, annotate persons table after import
+,_PERSON_TOUR_COUNT,"lambda exp, persons, tours: tours.query(exp).groupby('person_id').size().reindex(persons.index).fillna(0).astype(np.int8)"
+,_Q,lambda s: "'{}'".format(s)
+age_16_to_19,age_16_to_19,"persons.age.between(16, 19)"
+age_16_p,age_16_p,persons.age >= 16
+adult,adult,persons.age >= 18
+male,male,persons.sex == 1
+female,female,persons.sex == 2
+is_university,is_university,type == 'University student'
+home_zone_id,home_zone_id,"reindex(households.home_zone_id, persons.household_id)"
+,ptype,0
+,ptype,"np.where(persons.type == 'Full-time worker', 1, ptype)"
+,ptype,"np.where(persons.type == 'Part-time worker', 2, ptype)"
+,ptype,"np.where(persons.type == 'University student', 3, ptype)"
+,ptype,"np.where(persons.type == 'Non-worker', 4, ptype)"
+,ptype,"np.where(persons.type == 'Retired', 5, ptype)"
+,ptype,"np.where(persons.type == 'Student of driving age', 6, ptype)"
+,ptype,"np.where(persons.type == 'Student of non-driving age', 7, ptype)"
+,ptype,"np.where(persons.type == 'Child too young for school', 8, ptype)"
+,_JOINT_TOURS,tours[tours.tour_category=='joint']
+,num_hh_joint_tours,"reindex_i(_JOINT_TOURS.groupby('household_id').size(), persons.household_id)"
+number of mandatory tours for each person,num_mand,"_PERSON_TOUR_COUNT('tour_category==%s' % _Q('mandatory'), persons, tours).fillna(0)"
+presence of pre school kid with mandatory tours,has_pre_school_child_with_mandatory,"other_than(persons.household_id, (ptype == 8) & (num_mand > 0))"
+presence of driving age school children with mandatory tours,has_driving_age_child_with_mandatory,"other_than(persons.household_id, (ptype == 6) & (num_mand > 0))"
+num_non_mand,num_non_mand,tours[tours.tour_category=='non_mandatory'].groupby('person_id').size().reindex(persons.index).fillna(0).astype(np.int8)
+num_escort_tours,num_escort_tours,tours[tours.tour_type == 'escort'].groupby('person_id').size().reindex(persons.index).fillna(0).astype(np.int8)
+num_eatout_tours,num_eatout_tours,tours[tours.tour_type == 'eatout'].groupby('person_id').size().reindex(persons.index).fillna(0).astype(np.int8)
+num_shop_tours,num_shop_tours,tours[tours.tour_type == 'shopping'].groupby('person_id').size().reindex(persons.index).fillna(0).astype(np.int8)
+num_maint_tours,num_maint_tours,tours[tours.tour_type == 'othmaint'].groupby('person_id').size().reindex(persons.index).fillna(0).astype(np.int8)
+num_discr_tours,num_discr_tours,tours[tours.tour_type == 'othdiscr'].groupby('person_id').size().reindex(persons.index).fillna(0).astype(np.int8)
+num_social_tours,num_social_tours,tours[tours.tour_type == 'social'].groupby('person_id').size().reindex(persons.index).fillna(0).astype(np.int8)
+num_non_escort_tours,num_non_escort_tours,num_non_mand-num_escort_tours
+total shopping and maintenance tours,num_shop_maint_tours,num_shop_tours + num_maint_tours
+"total shopping, maintenance and escort tours",num_shop_maint_escort_tours,num_shop_tours + num_maint_tours + num_escort_tours
+number of additional shopping and maintenance tours,num_add_shop_maint_tours,"np.where (num_shop_maint_tours>0, 1, 0) *  (num_shop_maint_tours - 1)"
+total social and discretionary tours,num_soc_discr_tours,num_social_tours + num_discr_tours
+number of additional social and discretionary,num_add_soc_discr_tours,"np.where(num_soc_discr_tours>0, 1, 0) *  (num_soc_discr_tours - 1)"
+work location, _work_location@persons.work_location,1
+auto time from home to work,_auto_time_home_to_work,"np.where((persons.work_location > 0) & (persons.work_location < 99999),skim_dict.lookup(home_zone_id, persons.work_location, ('SOV_TIME', 'MD')), np.nan)"
+auto time from work to home,_auto_time_work_to_home,"np.where((persons.work_location > 0) & (persons.work_location < 99999),skim_dict.lookup(persons.work_location, home_zone_id, ('SOV_TIME', 'MD')), np.nan)"
+roundtrip time between home and work,roundtrip_auto_time_to_work,"(_auto_time_home_to_work + _auto_time_work_to_home)"
+auto time from home to school,_auto_time_home_to_school,"np.where((persons.school_location > 0) & (persons.school_location < 88888),skim_dict.lookup(home_zone_id, persons.school_location, ('SOV_TIME', 'MD')), np.nan)"
+auto time from school to home,_auto_time_school_to_home,"np.where((persons.school_location > 0) & (persons.school_location < 88888),skim_dict.lookup(persons.school_location, home_zone_id, ('SOV_TIME', 'MD')), np.nan)"
+roundtrip time between home and school,roundtrip_auto_time_to_school,"(_auto_time_home_to_school + _auto_time_school_to_home)"
+distance from home to school,distance_to_school,"np.where((persons.school_location > 0) & (persons.school_location < 88888),skim_dict.lookup(home_zone_id, persons.school_location, ('SOV_TIME', 'MD')), np.nan)"

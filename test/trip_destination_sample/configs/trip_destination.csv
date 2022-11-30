@@ -1,0 +1,6 @@
+Label,Description,Expression,work,univ,school,escort,shopping,othmaint,eatout,social,othdiscr,atwork
+local_dist_od,,"_od_DIST@od_skims[('SOV_DIST','MD')]",1,1,1,1,1,1,1,1,1,1
+local_dist_dp,,"_dp_DIST@dp_skims[('SOV_DIST','MD')]",1,1,1,1,1,1,1,1,1,1
+local_dist_op,,"_op_DIST@op_skims[('SOV_DIST','MD')]",1,1,1,1,1,1,1,1,1,1
+util_DistanceDeviationLinearRelative,Distance Deviation Linear - Relative,"@np.minimum((_od_DIST +_dp_DIST - _op_DIST)/_op_DIST, 100)",,,,coef_DistanceDeviationLinearRelative_maint,coef_DistanceDeviationLinearRelative_maint,coef_DistanceDeviationLinearRelative_maint,coef_DistanceDeviationLinearRelative_discr,coef_DistanceDeviationLinearRelative_discr,coef_DistanceDeviationLinearRelative_discr,coef_DistanceDeviationLinearRelative_discr
+util_DistanceDeviationLinearAbsolute,Distance Deviation Linear - Absolute,@(_od_DIST +_dp_DIST - _op_DIST),coef_DistanceDeviationLinearAbsolute_mandatory,coef_DistanceDeviationLinearAbsolute_mandatory,coef_DistanceDeviationLinearAbsolute_mandatory,coef_DistanceDeviationLinearAbsolute_maint,coef_DistanceDeviationLinearAbsolute_maint,coef_DistanceDeviationLinearAbsolute_maint,coef_DistanceDeviationLinearAbsolute_discr,coef_DistanceDeviationLinearAbsolute_discr,coef_DistanceDeviationLinearAbsolute_discr,coef_DistanceDeviationLinearAbsolute_discr

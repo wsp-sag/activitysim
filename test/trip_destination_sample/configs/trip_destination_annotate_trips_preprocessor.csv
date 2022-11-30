@@ -1,0 +1,4 @@
+Description,Target,Expression
+tour_mode,tour_mode,"reindex(tours.tour_mode, df.tour_id)"
+tour_leg_origin,tour_leg_origin,"np.where(df.outbound, reindex(tours.origin, df.tour_id), reindex(tours.destination, df.tour_id))"
+tour_leg_dest,tour_leg_dest,"np.where(df.outbound, reindex(tours.destination, df.tour_id), reindex(tours.origin, df.tour_id))"
