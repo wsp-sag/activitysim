@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>InputTable &#8212; ActivitySim 1.0.5.dev890+g71d3e919</title>
+    <title>OutputTables &#8212; ActivitySim 1.0.5.dev890+g71d3e919</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -35,8 +35,8 @@
     <script src="../../_static/design-tabs.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="OutputTable" href="activitysim.core.configuration.OutputTable.html" />
-    <link rel="prev" title="Settings" href="activitysim.core.configuration.Settings.html" />
+    <link rel="next" title="MultiprocessStep" href="activitysim.core.configuration.MultiprocessStep.html" />
+    <link rel="prev" title="OutputTable" href="activitysim.core.configuration.OutputTable.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -104,14 +104,14 @@
 
 <!-- NOTE: this JS must live here (not in our global JS file) because it relies
      on being processed by Jinja before it is run (specifically for replacing
-     variables users-guide/_generated/activitysim.core.configuration.InputTable and {'json_url': 'https://wsp-sag.github.io/activitysim/switcher.json', 'version_match': '1.0.5'}.
+     variables users-guide/_generated/activitysim.core.configuration.OutputTables and {'json_url': 'https://wsp-sag.github.io/activitysim/switcher.json', 'version_match': '1.0.5'}.
 -->
 
 <script type="text/javascript">
 // Check if corresponding page path exists in other version of docs
 // and, if so, go there instead of the homepage of the other docs version
 function checkPageExistsAndRedirect(event) {
-    const currentFilePath = "users-guide/_generated/activitysim.core.configuration.InputTable.html",
+    const currentFilePath = "users-guide/_generated/activitysim.core.configuration.OutputTables.html",
           tryUrl = event.target.getAttribute("href");
     let otherDocsHomepage = tryUrl.replace(currentFilePath, "");
     $.ajax({
@@ -132,7 +132,7 @@ function checkPageExistsAndRedirect(event) {
 // Populate the version switcher from the JSON config file
 (function () {
     $.getJSON("https://wsp-sag.github.io/activitysim/switcher.json", function(data, textStatus, jqXHR) {
-        const currentFilePath = "users-guide/_generated/activitysim.core.configuration.InputTable.html";
+        const currentFilePath = "users-guide/_generated/activitysim.core.configuration.OutputTables.html";
         // create links to the corresponding page in the other docs versions
         $.each(data, function(index, entry) {
             // if no custom name specified (e.g., "latest"), use version string
@@ -218,8 +218,8 @@ function checkPageExistsAndRedirect(event) {
      Settings
     </a>
    </li>
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
+   <li class="toctree-l2">
+    <a class="reference internal" href="activitysim.core.configuration.InputTable.html">
      InputTable
     </a>
    </li>
@@ -228,8 +228,8 @@ function checkPageExistsAndRedirect(event) {
      OutputTable
     </a>
    </li>
-   <li class="toctree-l2">
-    <a class="reference internal" href="activitysim.core.configuration.OutputTables.html">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
      OutputTables
     </a>
    </li>
@@ -314,92 +314,59 @@ function checkPageExistsAndRedirect(event) {
               
               <div>
                 
-  <section id="inputtable">
-<h1>InputTable<a class="headerlink" href="#inputtable" title="Permalink to this headline">#</a></h1>
+  <section id="outputtables">
+<h1>OutputTables<a class="headerlink" href="#outputtables" title="Permalink to this headline">#</a></h1>
 <dl class="py class pydantic_model">
-<dt class="sig sig-object py" id="activitysim.core.configuration.InputTable">
-<em class="property"><span class="pre">settings</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">activitysim.core.configuration.</span></span><span class="sig-name descname"><span class="pre">InputTable</span></span><a class="headerlink" href="#activitysim.core.configuration.InputTable" title="Permalink to this definition">#</a></dt>
-<dd><p>The features that define an input table to be read by ActivitySim.</p>
+<dt class="sig sig-object py" id="activitysim.core.configuration.OutputTables">
+<em class="property"><span class="pre">settings</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">activitysim.core.configuration.</span></span><span class="sig-name descname"><span class="pre">OutputTables</span></span><a class="headerlink" href="#activitysim.core.configuration.OutputTables" title="Permalink to this definition">#</a></dt>
+<dd><p>Instructions on how to write out final pipeline tables.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Fields</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filename</span> <span class="pre">(str)</span></code></p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">h5_tablename</span> <span class="pre">(str)</span></code></p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_col</span> <span class="pre">(str)</span></code></p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">keep_columns</span> <span class="pre">(list[str])</span></code></p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">recode_columns</span> <span class="pre">(dict[str,</span> <span class="pre">str])</span></code></p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rename_columns</span> <span class="pre">(dict[str,</span> <span class="pre">str])</span></code></p></li>
-<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tablename</span> <span class="pre">(str)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">action</span> <span class="pre">(str)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">h5_store</span> <span class="pre">(bool)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">prefix</span> <span class="pre">(str)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span> <span class="pre">(bool)</span></code></p></li>
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tables</span> <span class="pre">(list[typing.Union[str,</span> <span class="pre">activitysim.core.configuration.top.OutputTable]])</span></code></p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="activitysim.core.configuration.InputTable.filename">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">filename</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.core.configuration.InputTable.filename" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the CSV or HDF5 file to read.</p>
-<p>If not provided, defaults to <cite>input_store</cite></p>
+<dt class="sig sig-object py" id="activitysim.core.configuration.OutputTables.action">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">action</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#activitysim.core.configuration.OutputTables.action" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether to ‘include’ or ‘skip’ the enumerated tables in <cite>tables</cite>.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="activitysim.core.configuration.InputTable.h5_tablename">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">h5_tablename</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.core.configuration.InputTable.h5_tablename" title="Permalink to this definition">#</a></dt>
-<dd><p>table name if reading from HDF5 and different from <cite>tablename</cite></p>
+<dt class="sig sig-object py" id="activitysim.core.configuration.OutputTables.h5_store">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">h5_store</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#activitysim.core.configuration.OutputTables.h5_store" title="Permalink to this definition">#</a></dt>
+<dd><p>Write tables into a single HDF5 store instead of individual CSVs.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="activitysim.core.configuration.InputTable.index_col">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">index_col</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.core.configuration.InputTable.index_col" title="Permalink to this definition">#</a></dt>
-<dd><p>table column to use for the index</p>
+<dt class="sig sig-object py" id="activitysim.core.configuration.OutputTables.prefix">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prefix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'final_'</span></em><a class="headerlink" href="#activitysim.core.configuration.OutputTables.prefix" title="Permalink to this definition">#</a></dt>
+<dd><p>This prefix is added to the filename of each output table.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="activitysim.core.configuration.InputTable.keep_columns">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keep_columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.core.configuration.InputTable.keep_columns" title="Permalink to this definition">#</a></dt>
-<dd><p>Columns to keep once read in to memory.</p>
-<p>Save only the columns needed for modeling or analysis to save on memory
-and file I/O.  If not given, all columns in the input file will be read
-and retained.</p>
+<dt class="sig sig-object py" id="activitysim.core.configuration.OutputTables.sort">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sort</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#activitysim.core.configuration.OutputTables.sort" title="Permalink to this definition">#</a></dt>
+<dd><p>Sort output in each table consistent with well defined column names.</p>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="activitysim.core.configuration.InputTable.recode_columns">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">recode_columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.core.configuration.InputTable.recode_columns" title="Permalink to this definition">#</a></dt>
-<dd><p>Dictionary of column recoding instructions.</p>
-<p>Certain columns of data, notably TAZ and MAZ id’s, are more efficiently
-stored as the index (offset) position of each value within a fixed array of
-values, instead of as the value itself.  To recode a column into this offset
-format, give the value “zero-based” for that column name.  This will replace
-the named column with a RangeIndex, starting from zero, and will create a
-lookup column of the original values, which is not used by ActivitySim other
-than to recode other related variables, or to reconstitute the original
-labels for a final output table.  This zero-based recoding is typically
-done for the <cite>zone_id</cite> field in the land_use table, but might also be done
-elsewhere.</p>
-<p>Alternatively, for columns that contain <em>references</em> to recoded data, give
-the recode instruction as “tablename.fieldname” (often, “land_use.zone_id”).
-This will trigger a remapping of each value according to the stored lookup
-table for the original values, transforming the values in other columns to
-be consistent with the recoded zero-based values.  For example, if the
-<cite>zone_id</cite> field in the land_use table has been recoded to be zero-based,
-then the home_zone_id in the households table needs to be recoded to match.</p>
-<p>Note that recoding is done after renaming, so the key values in this mapping
-should correspond to the internally used names and not the original column
-names that appear in the input file (if they have been renamed).</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="activitysim.core.configuration.InputTable.rename_columns">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rename_columns</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.core.configuration.InputTable.rename_columns" title="Permalink to this definition">#</a></dt>
-<dd><p>Dictionary of column name mappings.</p>
-<p>This allows for renaming data columns from the original names found in the
-header of the input file itself, into the names used internally by
-ActivitySim, in configuration and specification files.</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="activitysim.core.configuration.InputTable.tablename">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tablename</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#activitysim.core.configuration.InputTable.tablename" title="Permalink to this definition">#</a></dt>
-<dd><p>Name of the injected table</p>
+<dt class="sig sig-object py" id="activitysim.core.configuration.OutputTables.tables">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tables</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="activitysim.core.configuration.OutputTable.html#activitysim.core.configuration.OutputTable" title="activitysim.core.configuration.top.OutputTable"><span class="pre">activitysim.core.configuration.top.OutputTable</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.core.configuration.OutputTables.tables" title="Permalink to this definition">#</a></dt>
+<dd><p>A list of pipeline tables to include or to skip when writing outputs.</p>
+<p>If <cite>action</cite> is ‘skip’, the values in this list must all be simple
+strings giving the names of tables to skip.  Also, no decoding will be
+applied to any output tables in this case.</p>
+<p>If <cite>action</cite> is ‘include’, the values in this list can be either simple
+strings giving the names of tables to include, or <a class="reference internal" href="activitysim.core.configuration.OutputTable.html#activitysim.core.configuration.OutputTable" title="activitysim.core.configuration.OutputTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">OutputTable</span></code></a>
+definitions giving a name and decoding instructions.</p>
+<p>If omitted, the all tables are written out and no decoding will be
+applied to any output tables.</p>
 </dd></dl>
 
 </dd></dl>
@@ -412,17 +379,17 @@ ActivitySim, in configuration and specification files.</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="activitysim.core.configuration.Settings.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="activitysim.core.configuration.OutputTable.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Settings</p>
+            <p class="prev-next-title">OutputTable</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="activitysim.core.configuration.OutputTable.html" title="next page">
+    <a class='right-next' id="next-link" href="activitysim.core.configuration.MultiprocessStep.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">OutputTable</p>
+        <p class="prev-next-title">MultiprocessStep</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
