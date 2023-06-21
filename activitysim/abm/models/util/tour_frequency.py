@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 
 from activitysim.abm.models.util.canonical_ids import set_tour_index
-from activitysim.core import config, workflow
+from activitysim.core import config, workflow, enum
 from activitysim.core.util import reindex
 
 logger = logging.getLogger(__name__)
@@ -57,6 +57,8 @@ def create_tours(tour_counts, tour_category, parent_col="person_id"):
     # reformat with the columns given below
     tours = tour_counts.stack().reset_index()
     tours.columns = [parent_col, "tour_type", "tour_type_count"]
+    # convert tour type to enum
+    tours["tour_type"] = tours["tour_type"].map(enum.TourPurpose.__dict__)
 
     """
         <parent_col> tour_type  tour_type_count
@@ -215,7 +217,7 @@ def process_mandatory_tours(
     tours = process_tours(
         persons.mandatory_tour_frequency.dropna(),
         mandatory_tour_frequency_alts,
-        tour_category="mandatory",
+        tour_category=enum.TourCategory.mandatory,
     )
 
     tours_merged = pd.merge(
@@ -228,7 +230,7 @@ def process_mandatory_tours(
     # by default work tours are first for work_and_school tours
     # swap tour_nums for non-workers so school tour is 1 and work is 2
     work_and_school_and_student = (
-        tours_merged.mandatory_tour_frequency == "work_and_school"
+        tours_merged.mandatory_tour_frequency == enum.MandatoryTourFrequency.work_and_school
     ) & ~tours_merged.is_worker
 
     tours.tour_num = tours.tour_num.where(
@@ -237,7 +239,7 @@ def process_mandatory_tours(
 
     # work tours destination is workplace_zone_id, school tours destination is school_zone_id
     tours["destination"] = tours_merged.workplace_zone_id.where(
-        (tours_merged.tour_type == "work"), tours_merged.school_zone_id
+        (tours_merged.tour_type == enum.TourPurpose.work), tours_merged.school_zone_id
     )
 
     tours["origin"] = tours_merged.home_zone_id
@@ -292,7 +294,7 @@ def process_non_mandatory_tours(state: workflow.State, persons, tour_counts):
         column names of the alternatives DataFrame supplied above.
     """
 
-    tours = create_tours(tour_counts, tour_category="non_mandatory")
+    tours = create_tours(tour_counts, tour_category=enum.TourCategory.non_mandatory)
 
     tours["household_id"] = reindex(persons.household_id, tours.person_id)
     tours["origin"] = reindex(persons.home_zone_id, tours.person_id)
@@ -362,7 +364,7 @@ def process_atwork_subtours(
     tours = process_tours(
         work_tours.atwork_subtour_frequency.dropna(),
         atwork_subtour_frequency_alts,
-        tour_category="atwork",
+        tour_category=enum.TourCategory.atwork,
         parent_col=parent_col,
     )
 
@@ -446,7 +448,7 @@ def process_joint_tours(
     tours = process_tours(
         joint_tour_frequency.dropna(),
         joint_tour_frequency_alts,
-        tour_category="joint",
+        tour_category=enum.TourCategory.joint,
         parent_col="household_id",
     )
 
@@ -515,7 +517,7 @@ def process_joint_tours_frequency_composition(
         state,
         joint_tour_frequency_composition.dropna(),
         joint_tour_frequency_composition_alts,
-        tour_category="joint",
+        tour_category=enum.TourCategory.joint,
         parent_col="household_id",
     )
 
@@ -693,6 +695,8 @@ def create_joint_tours(
     tours_purp.columns = [parent_col, "tour_id_temp", "tour_type"]
     tours_purp["tour_id_temp"] = range(1, 1 + len(tours_purp))
     tours_purp["tour_type"] = tours_purp["tour_type"].map(tour_type_dict)
+    # convert tour type to enum
+    tours_purp["tour_type"] = tours_purp["tour_type"].map(enum.TourPurpose.__dict__)
 
     """
         <parent_col> tour_id_temp  tour_type
@@ -711,6 +715,8 @@ def create_joint_tours(
     tours_comp.columns = [parent_col, "tour_id_temp", "composition"]
     tours_comp["tour_id_temp"] = range(1, 1 + len(tours_comp))
     tours_comp["composition"] = tours_comp["composition"].map(tour_comp_dict)
+    # convert tour type to enum
+    tours_comp["composition"] = tours_comp["composition"].map(enum.TourComposition.__dict__)
 
     """
         <parent_col> tour_id_temp  tour_composition
@@ -750,7 +756,7 @@ def create_joint_tours(
     """
 
     # set these here to ensure consistency across different tour categories
-    assert tour_category in ["mandatory", "non_mandatory", "atwork", "joint"]
+    assert tour_category in enum.TourCategory
     tours["tour_category"] = tour_category
 
     # for joint tours, the correct number will be filled in after participation step

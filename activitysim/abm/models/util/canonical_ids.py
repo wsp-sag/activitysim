@@ -8,7 +8,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from activitysim.core import simulate, workflow
+from activitysim.core import simulate, workflow, enum
 
 logger = logging.getLogger(__name__)
 
@@ -383,7 +383,7 @@ def set_tour_index(
     assert tour_num_col in tours.columns
 
     # create string tour_id corresonding to keys in possible_tours (e.g. 'work1', 'j_shopping2')
-    tours["tour_id"] = tours.tour_type + tours[tour_num_col].map(str)
+    tours["tour_id"] = tours.tour_type.apply(lambda x: x.name) + tours[tour_num_col].map(str)
 
     if parent_tour_num_col:
         # we need to distinguish between subtours of different work tours
