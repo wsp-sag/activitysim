@@ -8,7 +8,7 @@ from typing import Optional
 
 import pandas as pd
 
-from activitysim.core import config, expressions, simulate, workflow
+from activitysim.core import config, expressions, simulate, workflow, enum
 from activitysim.core.estimation import Estimator
 
 """
@@ -110,7 +110,7 @@ def run_tour_mode_choice_simulate(
 
     spec = state.filesystem.read_model_spec(file_name=model_settings["SPEC"])
     coefficients = state.filesystem.get_segment_coefficients(
-        model_settings, tour_purpose
+        model_settings, enum.TourPurpose._value2member_map_[tour_purpose].name
     )
 
     spec = simulate.eval_coefficients(state, spec, coefficients, estimator)
