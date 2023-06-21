@@ -16,6 +16,7 @@ from activitysim.core import (
     simulate,
     tracing,
     workflow,
+    enum,
 )
 
 logger = logging.getLogger(__name__)
@@ -40,6 +41,9 @@ def joint_tour_frequency(
     alternatives = simulate.read_model_alts(
         state, "joint_tour_frequency_alternatives.csv", set_index="alt"
     )
+    # add "j" in front of joint tour alternatives
+    alternatives.index = "j" + alternatives.index.to_series()
+    alternatives.index = alternatives.index.to_series().map(enum.JointTourFrequency.__dict__)
 
     # - only interested in households with more than one cdap travel_active person and
     # - at least one non-preschooler
@@ -60,6 +64,7 @@ def joint_tour_frequency(
         locals_dict = {
             "persons": persons,
             "hh_time_window_overlap": lambda *x: hh_time_window_overlap(state, *x),
+            "enum": enum,
         }
 
         expressions.assign_columns(
@@ -98,6 +103,9 @@ def joint_tour_frequency(
 
     # convert indexes to alternative names
     choices = pd.Series(model_spec.columns[choices.values], index=choices.index)
+    # add "j" in front of joint tour alternatives
+    choices = "j" + choices
+    choices = choices.map(enum.JointTourFrequency.__dict__)
 
     if estimator:
         estimator.write_choices(choices)
@@ -130,7 +138,7 @@ def joint_tour_frequency(
     # we expect there to be an alt with no tours - which we can use to backfill non-travelers
     no_tours_alt = (alternatives.sum(axis=1) == 0).index[0]
     households["joint_tour_frequency"] = (
-        choices.reindex(households.index).fillna(no_tours_alt).astype(str)
+        choices.reindex(households.index).fillna(enum.JointTourFrequency.na)
     )
 
     households["num_hh_joint_tours"] = (
@@ -156,7 +164,7 @@ def joint_tour_frequency(
 
     if estimator:
         survey_tours = estimation.manager.get_survey_table("tours")
-        survey_tours = survey_tours[survey_tours.tour_category == "joint"]
+        survey_tours = survey_tours[survey_tours.tour_category == enum.TourCategory.joint]
 
         print(f"len(survey_tours) {len(survey_tours)}")
         print(f"len(joint_tours) {len(joint_tours)}")

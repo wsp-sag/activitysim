@@ -14,6 +14,7 @@ from activitysim.core import (
     simulate,
     tracing,
     workflow,
+    enum,
 )
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 def add_null_results(state, trace_label, tours):
     logger.info("Skipping %s: add_null_results" % trace_label)
-    tours["composition"] = ""
+    tours["composition"] = enum.TourComposition.na
     state.add_table("tours", tours)
 
 
@@ -38,7 +39,7 @@ def joint_tour_composition(
     trace_label = "joint_tour_composition"
     model_settings_file_name = "joint_tour_composition.yaml"
 
-    joint_tours = tours[tours.tour_category == "joint"]
+    joint_tours = tours[tours.tour_category == enum.TourCategory.joint]
 
     # - if no joint tours
     if joint_tours.shape[0] == 0:
@@ -63,6 +64,7 @@ def joint_tour_composition(
         locals_dict = {
             "persons": persons,
             "hh_time_window_overlap": lambda *x: hh_time_window_overlap(state, *x),
+            "enum": enum,
         }
 
         expressions.assign_columns(
@@ -106,6 +108,7 @@ def joint_tour_composition(
 
     # convert indexes to alternative names
     choices = pd.Series(model_spec.columns[choices.values], index=choices.index)
+    choices = choices.map(enum.TourComposition.__dict__)
 
     if estimator:
         estimator.write_choices(choices)
@@ -117,7 +120,7 @@ def joint_tour_composition(
     joint_tours["composition"] = choices
 
     # reindex since we ran model on a subset of households
-    tours["composition"] = choices.reindex(tours.index).fillna("").astype(str)
+    tours["composition"] = choices.reindex(tours.index).fillna(enum.TourComposition.na)
     state.add_table("tours", tours)
 
     tracing.print_summary(

@@ -15,6 +15,7 @@ from activitysim.core import (
     simulate,
     tracing,
     workflow,
+    enum,
 )
 
 logger = logging.getLogger(__name__)
@@ -41,7 +42,7 @@ def atwork_subtour_frequency(
     trace_label = "atwork_subtour_frequency"
     model_settings_file_name = "atwork_subtour_frequency.yaml"
     trace_hh_id = state.settings.trace_hh_id
-    work_tours = tours[tours.tour_type == "work"]
+    work_tours = tours[tours.tour_type == enum.TourPurpose.work]
 
     # - if no work_tours
     if len(work_tours) == 0:
@@ -115,7 +116,7 @@ def atwork_subtour_frequency(
     state.add_table("tours", tours)
 
     # - create atwork_subtours based on atwork_subtour_frequency choice names
-    work_tours = tours[tours.tour_type == "work"]
+    work_tours = tours[tours.tour_type == enum.TourPurpose.work]
     assert not work_tours.atwork_subtour_frequency.isnull().any()
 
     subtours = process_atwork_subtours(state, work_tours, alternatives)
