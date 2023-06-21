@@ -8,7 +8,7 @@ import pandas as pd
 
 from activitysim.abm.models.util.tour_scheduling import run_tour_scheduling
 from activitysim.core import timetable as tt
-from activitysim.core import tracing, workflow
+from activitysim.core import tracing, workflow, enum
 from activitysim.core.util import assign_in_place, reindex
 
 logger = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ def mandatory_tour_scheduling(
     model_name = "mandatory_tour_scheduling"
     trace_label = model_name
 
-    mandatory_tours = tours[tours.tour_category == "mandatory"]
+    mandatory_tours = tours[tours.tour_category == enum.TourCategory.mandatory]
 
     # - if no mandatory_tours
     if mandatory_tours.shape[0] == 0:
@@ -46,11 +46,11 @@ def mandatory_tour_scheduling(
     # we conflate them by segmenting tour processing to align with primary_purpose
     tour_segment_col = "mandatory_tour_seg"
     assert tour_segment_col not in mandatory_tours
-    is_university_tour = (mandatory_tours.tour_type == "school") & reindex(
+    is_university_tour = (mandatory_tours.tour_type == enum.TourPurpose.school) & reindex(
         persons_merged.is_university, mandatory_tours.person_id
     )
     mandatory_tours[tour_segment_col] = mandatory_tours.tour_type.where(
-        ~is_university_tour, "univ"
+        ~is_university_tour, enum.TourPurpose.univ
     )
 
     choices = run_tour_scheduling(
@@ -66,7 +66,7 @@ def mandatory_tour_scheduling(
     state.add_table("tours", tours)
 
     # updated df for tracing
-    mandatory_tours = tours[tours.tour_category == "mandatory"]
+    mandatory_tours = tours[tours.tour_category == enum.TourCategory.mandatory]
 
     state.tracing.dump_df(
         DUMP,
