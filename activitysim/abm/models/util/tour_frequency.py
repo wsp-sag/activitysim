@@ -58,7 +58,7 @@ def create_tours(tour_counts, tour_category, parent_col="person_id"):
     tours = tour_counts.stack().reset_index()
     tours.columns = [parent_col, "tour_type", "tour_type_count"]
     # convert tour type to asim_enum
-    tours["tour_type"] = tours["tour_type"].map(asim_enum.TourPurpose.__dict__)
+    tours["tour_type"] = tours["tour_type"].map(asim_enum.TourPurpose._member_map_)
 
     """
         <parent_col> tour_type  tour_type_count
@@ -217,7 +217,7 @@ def process_mandatory_tours(
     tours = process_tours(
         persons.mandatory_tour_frequency.dropna(),
         mandatory_tour_frequency_alts,
-        tour_category=asim_enum.TourCategory.mandatory,
+        tour_category=asim_enum.TourCategory.mandatory.value,
     )
 
     tours_merged = pd.merge(
@@ -294,7 +294,7 @@ def process_non_mandatory_tours(state: workflow.State, persons, tour_counts):
         column names of the alternatives DataFrame supplied above.
     """
 
-    tours = create_tours(tour_counts, tour_category=asim_enum.TourCategory.non_mandatory)
+    tours = create_tours(tour_counts, tour_category=asim_enum.TourCategory.non_mandatory.value)
 
     tours["household_id"] = reindex(persons.household_id, tours.person_id)
     tours["origin"] = reindex(persons.home_zone_id, tours.person_id)
@@ -364,7 +364,7 @@ def process_atwork_subtours(
     tours = process_tours(
         work_tours.atwork_subtour_frequency.dropna(),
         atwork_subtour_frequency_alts,
-        tour_category=asim_enum.TourCategory.atwork,
+        tour_category=asim_enum.TourCategory.atwork.value,
         parent_col=parent_col,
     )
 
@@ -448,7 +448,7 @@ def process_joint_tours(
     tours = process_tours(
         joint_tour_frequency.dropna(),
         joint_tour_frequency_alts,
-        tour_category=asim_enum.TourCategory.joint,
+        tour_category=asim_enum.TourCategory.joint.value,
         parent_col="household_id",
     )
 
@@ -517,7 +517,7 @@ def process_joint_tours_frequency_composition(
         state,
         joint_tour_frequency_composition.dropna(),
         joint_tour_frequency_composition_alts,
-        tour_category=asim_enum.TourCategory.joint,
+        tour_category=asim_enum.TourCategory.joint.value,
         parent_col="household_id",
     )
 
@@ -696,7 +696,7 @@ def create_joint_tours(
     tours_purp["tour_id_temp"] = range(1, 1 + len(tours_purp))
     tours_purp["tour_type"] = tours_purp["tour_type"].map(tour_type_dict)
     # convert tour type to asim_enum
-    tours_purp["tour_type"] = tours_purp["tour_type"].map(asim_enum.TourPurpose.__dict__)
+    tours_purp["tour_type"] = tours_purp["tour_type"].map(asim_enum.TourPurpose._member_map_)
 
     """
         <parent_col> tour_id_temp  tour_type
@@ -716,7 +716,7 @@ def create_joint_tours(
     tours_comp["tour_id_temp"] = range(1, 1 + len(tours_comp))
     tours_comp["composition"] = tours_comp["composition"].map(tour_comp_dict)
     # convert tour type to asim_enum
-    tours_comp["composition"] = tours_comp["composition"].map(asim_enum.TourComposition.__dict__)
+    tours_comp["composition"] = tours_comp["composition"].map(asim_enum.TourComposition._member_map_)
 
     """
         <parent_col> tour_id_temp  tour_composition

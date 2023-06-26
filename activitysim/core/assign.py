@@ -9,7 +9,7 @@ from collections import OrderedDict
 import numpy as np
 import pandas as pd
 
-from activitysim.core import chunk, util, workflow
+from activitysim.core import chunk, util, workflow, asim_enum
 
 logger = logging.getLogger(__name__)
 
@@ -263,6 +263,7 @@ def assign_variables(
         _locals_dict[df_alias] = df
     else:
         _locals_dict["df"] = df
+    _locals_dict.update({"asim_enum":asim_enum})
     local_keys = list(_locals_dict.keys())
 
     # build a dataframe of eval results for non-temp targets

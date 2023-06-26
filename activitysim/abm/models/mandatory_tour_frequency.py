@@ -24,7 +24,7 @@ def add_null_results(state, trace_label, mandatory_tour_frequency_settings):
     logger.info("Skipping %s: add_null_results", trace_label)
 
     persons = state.get_dataframe("persons")
-    persons["mandatory_tour_frequency"] = asim_enum.MandatoryTourFrequency.na
+    persons["mandatory_tour_frequency"] = asim_enum.MandatoryTourFrequency.na.value
 
     tours = pd.DataFrame()
     tours["tour_category"] = None
@@ -111,7 +111,7 @@ def mandatory_tour_frequency(
 
     # convert indexes to alternative names
     choices = pd.Series(model_spec.columns[choices.values], index=choices.index)
-    choices = choices.map(asim_enum.MandatoryTourFrequency.__dict__)
+    choices = choices.map(asim_enum.MandatoryTourFrequency._member_map_)
 
     if estimator:
         estimator.write_choices(choices)
@@ -131,7 +131,7 @@ def mandatory_tour_frequency(
         state, "mandatory_tour_frequency_alternatives.csv", set_index="alt"
     )
     # change the alt index to asim_enum
-    alternatives.index = alternatives.index.to_series().map(asim_enum.MandatoryTourFrequency.__dict__)
+    alternatives.index = alternatives.index.to_series().map(asim_enum.MandatoryTourFrequency._member_map_)
     choosers["mandatory_tour_frequency"] = choices.reindex(choosers.index)
 
     mandatory_tours = process_mandatory_tours(
@@ -147,7 +147,7 @@ def mandatory_tour_frequency(
 
     # need to reindex as we only handled persons with cdap_activity == 'M'
     persons["mandatory_tour_frequency"] = (
-        choices.reindex(persons.index).fillna(asim_enum.MandatoryTourFrequency.na)
+        choices.reindex(persons.index).fillna(asim_enum.MandatoryTourFrequency.na.value)
     )
 
     expressions.assign_columns(

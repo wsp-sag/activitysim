@@ -50,7 +50,7 @@ def mandatory_tour_scheduling(
         persons_merged.is_university, mandatory_tours.person_id
     )
     mandatory_tours[tour_segment_col] = mandatory_tours.tour_type.where(
-        ~is_university_tour, asim_enum.TourPurpose.univ
+        ~is_university_tour, asim_enum.TourPurpose.univ.value
     )
 
     choices = run_tour_scheduling(
