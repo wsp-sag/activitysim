@@ -17,7 +17,7 @@ from activitysim.core import (
     simulate,
     tracing,
     workflow,
-    enum,
+    asim_enum,
 )
 from activitysim.core.util import assign_in_place, reindex
 
@@ -50,8 +50,8 @@ def joint_tour_participation_candidates(joint_tours, persons_merged):
 
     # - filter out ineligible candidates (adults for children-only tours, and vice-versa)
     eligible = ~(
-        ((candidates.composition == enum.TourComposition.adults) & ~candidates.adult)
-        | ((candidates.composition == enum.TourComposition.children) & candidates.adult)
+        ((candidates.composition == asim_enum.TourComposition.adults) & ~candidates.adult)
+        | ((candidates.composition == asim_enum.TourComposition.children) & candidates.adult)
     )
     candidates = candidates[eligible]
 
@@ -80,8 +80,8 @@ def get_tour_satisfaction(candidates, participate):
         candidates = candidates[participate]
 
         # if this happens, we would need to filter them out!
-        assert not ((candidates.composition == enum.TourComposition.adults) & ~candidates.adult).any()
-        assert not ((candidates.composition == enum.TourComposition.children) & candidates.adult).any()
+        assert not ((candidates.composition == asim_enum.TourComposition.adults) & ~candidates.adult).any()
+        assert not ((candidates.composition == asim_enum.TourComposition.children) & candidates.adult).any()
 
         # FIXME tour satisfaction - hack
         # annotate_households_cdap.csv says there has to be at least one non-preschooler in household
@@ -105,8 +105,8 @@ def get_tour_satisfaction(candidates, participate):
         #     (x.composition == 'children') & (x.participants > 1) & (x.preschoolers < x.participants) | \
         #     (x.composition == 'mixed') & (x.adults > 0) & (x.participants > x.adults)
 
-        satisfaction = (x.composition != enum.TourComposition.mixed) & (x.participants > 1) | (
-            x.composition == enum.TourComposition.mixed
+        satisfaction = (x.composition != asim_enum.TourComposition.mixed) & (x.participants > 1) | (
+            x.composition == asim_enum.TourComposition.mixed
         ) & (x.adults > 0) & (x.participants > x.adults)
 
         satisfaction = satisfaction.reindex(tour_ids).fillna(False).astype(bool)

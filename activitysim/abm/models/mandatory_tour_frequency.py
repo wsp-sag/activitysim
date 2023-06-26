@@ -14,7 +14,7 @@ from activitysim.core import (
     simulate,
     tracing,
     workflow,
-    enum,
+    asim_enum,
 )
 
 logger = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ def add_null_results(state, trace_label, mandatory_tour_frequency_settings):
     logger.info("Skipping %s: add_null_results", trace_label)
 
     persons = state.get_dataframe("persons")
-    persons["mandatory_tour_frequency"] = enum.MandatoryTourFrequency.na
+    persons["mandatory_tour_frequency"] = asim_enum.MandatoryTourFrequency.na
 
     tours = pd.DataFrame()
     tours["tour_category"] = None
@@ -111,7 +111,7 @@ def mandatory_tour_frequency(
 
     # convert indexes to alternative names
     choices = pd.Series(model_spec.columns[choices.values], index=choices.index)
-    choices = choices.map(enum.MandatoryTourFrequency.__dict__)
+    choices = choices.map(asim_enum.MandatoryTourFrequency.__dict__)
 
     if estimator:
         estimator.write_choices(choices)
@@ -130,8 +130,8 @@ def mandatory_tour_frequency(
     alternatives = simulate.read_model_alts(
         state, "mandatory_tour_frequency_alternatives.csv", set_index="alt"
     )
-    # change the alt index to enum
-    alternatives.index = alternatives.index.to_series().map(enum.MandatoryTourFrequency.__dict__)
+    # change the alt index to asim_enum
+    alternatives.index = alternatives.index.to_series().map(asim_enum.MandatoryTourFrequency.__dict__)
     choosers["mandatory_tour_frequency"] = choices.reindex(choosers.index)
 
     mandatory_tours = process_mandatory_tours(
@@ -147,14 +147,14 @@ def mandatory_tour_frequency(
 
     # need to reindex as we only handled persons with cdap_activity == 'M'
     persons["mandatory_tour_frequency"] = (
-        choices.reindex(persons.index).fillna(enum.MandatoryTourFrequency.na)
+        choices.reindex(persons.index).fillna(asim_enum.MandatoryTourFrequency.na)
     )
 
     expressions.assign_columns(
         state,
         df=persons,
         model_settings=model_settings.get("annotate_persons"),
-        locals_dict={"enum":enum},
+        locals_dict={"asim_enum":asim_enum},
         trace_label=tracing.extend_trace_label(trace_label, "annotate_persons"),
     )
 

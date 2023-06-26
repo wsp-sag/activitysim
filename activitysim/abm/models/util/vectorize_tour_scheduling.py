@@ -9,7 +9,7 @@ import pandas as pd
 
 from activitysim.core import chunk, config, expressions, los, simulate
 from activitysim.core import timetable as tt
-from activitysim.core import tracing, workflow, enum
+from activitysim.core import tracing, workflow, asim_enum
 from activitysim.core.interaction_sample_simulate import interaction_sample_simulate
 from activitysim.core.util import reindex
 
@@ -992,7 +992,7 @@ def vectorize_tour_scheduling(
                 )
 
                 nth_tours_in_segment = nth_tours[
-                    nth_tours[tour_segment_col] == enum.TourPurpose[tour_segment_name]
+                    nth_tours[tour_segment_col] == asim_enum.TourPurpose[tour_segment_name]
                 ]
                 if nth_tours_in_segment.empty:
                     logger.info("skipping empty segment %s" % tour_segment_name)

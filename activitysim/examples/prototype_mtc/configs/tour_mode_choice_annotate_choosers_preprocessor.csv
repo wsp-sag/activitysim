@@ -2,7 +2,7 @@ Description,Target,Expression
 #,,
 local,_DF_IS_TOUR,'tour_type' in df.columns
 ,number_of_participants,df.number_of_participants if _DF_IS_TOUR else 1
-,is_joint,(df.tour_category==enum.TourCategory.joint) if _DF_IS_TOUR else False
+,is_joint,(df.tour_category==asim_enum.TourCategory.joint) if _DF_IS_TOUR else False
 #,,
  local,_HAVE_PARENT_TOURS,'parent_tour_id' in df.columns
 ,_parent_tour_mode,"reindex(tours.tour_mode, df.parent_tour_id) if _HAVE_PARENT_TOURS else ''"
@@ -10,10 +10,10 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,work_tour_is_bike,_parent_tour_mode=='BIKE'
 ,work_tour_is_SOV,"_parent_tour_mode.isin(['DRIVEALONEFREE','DRIVEALONEPAY'])"
 #,,
-,is_mandatory,(df.tour_category==enum.TourCategory.mandatory) if 'tour_category' in df.columns else False
-,is_joint,(df.tour_category==enum.TourCategory.joint) if 'tour_category' in df.columns else False
+,is_mandatory,(df.tour_category==asim_enum.TourCategory.mandatory) if 'tour_category' in df.columns else False
+,is_joint,(df.tour_category==asim_enum.TourCategory.joint) if 'tour_category' in df.columns else False
 ,is_indiv,~is_joint
-,is_atwork_subtour,(df.tour_category==enum.TourCategory.atwork) if 'tour_category' in df.columns else False
+,is_atwork_subtour,(df.tour_category==asim_enum.TourCategory.atwork) if 'tour_category' in df.columns else False
 ,is_escort,(df.tour_type == 'escort') if _DF_IS_TOUR else False
 # FIXME why inverse of value of time? need better name?,,
 #,c_cost,(0.60 * c_ivt) / df.value_of_time
@@ -58,7 +58,7 @@ local,_DF_IS_TOUR,'tour_type' in df.columns
 ,totalWaitSingleTNC,origSingleTNCWaitTime + destSingleTNCWaitTime
 ,totalWaitSharedTNC,origSharedTNCWaitTime + destSharedTNCWaitTime
 #,,
-,_free_parking_available,(df.tour_type == enum.TourPurpose.work) & df.free_parking_at_work if _DF_IS_TOUR else False
+,_free_parking_available,(df.tour_type == asim_enum.TourPurpose.work) & df.free_parking_at_work if _DF_IS_TOUR else False
 ,_dest_hourly_peak_parking_cost,"reindex(land_use.PRKCST, df[dest_col_name])"
 ,_dest_hourly_offpeak_parking_cost,"reindex(land_use.OPRKCST, df[dest_col_name])"
 ,_hourly_peak_parking_cost,"np.where(_free_parking_available, 0, _dest_hourly_peak_parking_cost)"

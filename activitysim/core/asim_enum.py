@@ -13,11 +13,12 @@ class TourPurpose(IntEnum):
     work = 1
     school = 2
     univ = 3
-    shopping = 4
-    othmaint = 5
-    eatout = 6
-    social = 7
-    othdiscr = 8
+    escort = 4
+    shopping = 5
+    othmaint = 6
+    eatout = 7
+    social = 8
+    othdiscr = 9
 
     # @property
     # def __dict__(self):

@@ -8,7 +8,7 @@ import re
 import numpy as np
 import pandas as pd
 
-from activitysim.core import simulate, workflow, enum
+from activitysim.core import simulate, workflow, asim_enum
 
 logger = logging.getLogger(__name__)
 

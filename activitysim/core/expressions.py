@@ -6,7 +6,7 @@ import logging
 import io
 import os
 
-from . import assign, config, simulate, tracing, workflow, enum
+from . import assign, config, simulate, tracing, workflow, asim_enum
 from .util import assign_in_place, parse_suffix_args, suffix_expressions_df_str
 
 logger = logging.getLogger(__name__)
@@ -104,7 +104,7 @@ def compute_columns(state, df, model_settings, locals_dict={}, trace_label=None)
     _locals_dict = assign.local_utilities(state)
     _locals_dict.update(locals_dict)
     _locals_dict.update(tables)
-    _locals_dict.update({"enum":enum})
+    _locals_dict.update({"asim_enum":asim_enum})
 
     # FIXME a number of asim model preprocessors want skim_dict - should they request it in model_settings.TABLES?
     try:
@@ -159,23 +159,31 @@ def assign_columns(
     buffer = io.StringIO()
     results.info(memory_usage = 'deep', buf=buffer)
     s = buffer.getvalue()
-    with open(os.path.join(os.getcwd(), trace_label+".assign_columns.results.info.txt"), "w", encoding="utf-8") as f:
+    with open(os.path.join(state.filesystem.output_dir, trace_label+".assign_columns.results.info.txt"), "w", encoding="utf-8") as f:
         f.write(s)
     
-    results.memory_usage(deep = True).to_csv(trace_label+".assign_columns.results.memory_usage_deep.txt")
+    results.memory_usage(deep = True).to_csv(
+        os.path.join(state.filesystem.output_dir, trace_label+".assign_columns.results.memory_usage_deep.txt")
+    )
 
-    results.memory_usage().to_csv(trace_label+".assign_columns.results.memory_usage.txt")
+    results.memory_usage().to_csv(
+        os.path.join(state.filesystem.output_dir, trace_label+".assign_columns.results.memory_usage.txt")
+    )
 
 
     buffer = io.StringIO()
     df.info(memory_usage = 'deep', buf=buffer)
     s = buffer.getvalue()
-    with open(trace_label+".assign_columns.df.info.txt", "w", encoding="utf-8") as f:
+    with open(os.path.join(state.filesystem.output_dir, trace_label+".assign_columns.df.info.txt"), "w", encoding="utf-8") as f:
         f.write(s)
     
-    df.memory_usage(deep = True).to_csv(trace_label+".assign_columns.df.memory_usage_deep.txt")
+    df.memory_usage(deep = True).to_csv(
+        os.path.join(state.filesystem.output_dir, trace_label+".assign_columns.df.memory_usage_deep.txt")
+    )
 
-    df.memory_usage().to_csv(trace_label+".assign_columns.df.memory_usage.txt")
+    df.memory_usage().to_csv(
+        os.path.join(state.filesystem.output_dir, trace_label+".assign_columns.df.memory_usage.txt")
+    )
 
     assign_in_place(df, results)
 
