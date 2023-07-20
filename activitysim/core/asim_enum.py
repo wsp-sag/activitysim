@@ -8,6 +8,17 @@ class TimePeriod(IntEnum):
     PM = 4
     NT = 5
 
+
+# enum class for mandatory tour frequency
+class MandatoryTourFrequency(IntEnum):
+    na = 0
+    work1 = 1
+    work2 = 2
+    school1 = 3
+    school2 = 4
+    work_and_school = 5
+
+
 # enum class for the different tour purposes
 class TourPurpose(IntEnum):
     work = 1
@@ -21,9 +32,6 @@ class TourPurpose(IntEnum):
     othdiscr = 9
     atwork = 10
 
-    @property
-    def __name2valuedict__(self):
-        return {i.name: i.value for i in self}
 
 # enum class for the different tour category
 class TourCategory(IntEnum):
@@ -32,9 +40,6 @@ class TourCategory(IntEnum):
     non_mandatory = 3
     atwork = 4
 
-    @property
-    def __name2valuedict__(self):
-        return {i.name: i.value for i in self}
 
 # enum class for the different daily activity pattern
 class CdapCategory(IntEnum):
@@ -42,18 +47,6 @@ class CdapCategory(IntEnum):
     N = 2
     H = 3
 
-# enum class for mandatory tour frequency
-class MandatoryTourFrequency(IntEnum):
-    na = 0
-    work1 = 1
-    work2 = 2
-    school1 = 3
-    school2 = 4
-    work_and_school = 5
-
-    @property
-    def __name2valuedict__(self):
-        return {i.name: i.value for i in self}
 
 # enum class for joint tour frequency
 class JointTourFrequency(IntEnum):
