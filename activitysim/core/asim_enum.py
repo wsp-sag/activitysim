@@ -2,10 +2,10 @@ from enum import IntEnum
 
 # enum class for the different time periods
 class TimePeriod(IntEnum):
-    AM = 1
-    PM = 2
+    EA = 1
+    AM = 2
     MD = 3
-    EV = 4
+    PM = 4
     NT = 5
 
 # enum class for the different tour purposes
@@ -19,6 +19,7 @@ class TourPurpose(IntEnum):
     eatout = 7
     social = 8
     othdiscr = 9
+    atwork = 10
 
     @property
     def __name2valuedict__(self):
