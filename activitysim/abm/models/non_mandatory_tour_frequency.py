@@ -21,6 +21,7 @@ from activitysim.core import (
     simulate,
     tracing,
     workflow,
+    asim_enum,
 )
 from activitysim.core.interaction_simulate import interaction_simulate
 
@@ -177,7 +178,7 @@ def non_mandatory_tour_frequency(
     # - preprocessor
     preprocessor_settings = model_settings.get("preprocessor", None)
     if preprocessor_settings:
-        locals_dict = {"person_max_window": lambda x: person_max_window(state, x)}
+        locals_dict = {"person_max_window": lambda x: person_max_window(state, x), "asim_enum":asim_enum}
 
         expressions.assign_columns(
             state,

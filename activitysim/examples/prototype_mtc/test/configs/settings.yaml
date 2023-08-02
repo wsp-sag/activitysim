@@ -23,5 +23,8 @@ output_tables:
   sort: True
   tables:
     - trips
+    - persons
+    - households
+    - tours
 
 recode_pipeline_columns: False
