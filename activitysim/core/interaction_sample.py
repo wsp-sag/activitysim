@@ -132,6 +132,7 @@ def _interaction_sample(
     trace_label=None,
     zone_layer=None,
     chunk_sizer=None,
+    nest_spec=None,
 ):
     """
     Run a MNL simulation in the situation in which alternatives must
@@ -402,6 +403,42 @@ def _interaction_sample(
 
     state.tracing.dump_df(DUMP, utilities, trace_label, "utilities")
 
+    # nested destination choice for sandag cvm
+    if nest_spec is not None:
+        # make sure the utilties column names are string
+        utilities.columns = utilities.columns.astype(str)
+        # exponentiated utilities of leaves and nests
+        nested_exp_utilities = simulate.compute_nested_exp_utilities(utilities, nest_spec)
+        chunk_sizer.log_df(trace_label, "nested_exp_utilities", nested_exp_utilities)
+
+        # del utilities
+        # chunk_sizer.log_df(trace_label, "raw_utilities", None)
+
+        if have_trace_targets:
+            state.tracing.trace_df(
+                nested_exp_utilities,
+                "%s.nested_exp_utilities" % trace_label,
+                column_labels=["alternative", "utility"],
+            )
+
+        # probabilities of alternatives relative to siblings sharing the same nest
+        nested_probabilities = simulate.compute_nested_probabilities(
+            state, nested_exp_utilities, nest_spec, trace_label=trace_label
+        )
+        chunk_sizer.log_df(trace_label, "nested_probabilities", nested_probabilities)
+
+        # global (flattened) leaf probabilities based on relative nest coefficients (in spec order)
+        base_probabilities = simulate.compute_base_probabilities(
+            nested_probabilities, nest_spec, utilities
+        )
+        chunk_sizer.log_df(trace_label, "base_probabilities", base_probabilities)
+
+        choices, rands = logit.make_choices(
+            state, base_probabilities, trace_label=trace_label
+        )
+
+        return choices
+
     # convert to probabilities (utilities exponentiated and normalized to probs)
     # probs is same shape as utilities, one row per chooser and one column for alternative
     probs = logit.utils_to_probs(
@@ -521,6 +558,7 @@ def interaction_sample(
     chunk_tag: str | None = None,
     trace_label: str | None = None,
     zone_layer: str | None = None,
+    nest_spec=None,
 ):
     """
     Run a simulation in the situation in which alternatives must
@@ -616,6 +654,7 @@ def interaction_sample(
             trace_label=chunk_trace_label,
             zone_layer=zone_layer,
             chunk_sizer=chunk_sizer,
+            nest_spec=nest_spec,
         )
 
         if choices.shape[0] > 0:

@@ -27,6 +27,7 @@ from activitysim.core import (
 )
 from activitysim.core.configuration.base import PydanticBase
 from activitysim.core.configuration.logit import (
+    BaseLogitComponentSettings,
     LogitComponentSettings,
     LogitNestSpec,
     TemplatedLogitComponentSettings,
@@ -159,7 +160,7 @@ def read_model_coefficients(
         assert file_name is not None
     else:
         assert file_name is None
-        if isinstance(model_settings, LogitComponentSettings):
+        if isinstance(model_settings, BaseLogitComponentSettings):
             file_name = model_settings.COEFFICIENTS
         else:
             assert (
