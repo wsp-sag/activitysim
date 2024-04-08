@@ -405,19 +405,26 @@ class NumpyArraySkimFactory(AbstractSkimFactory):
             f"total size: {util.INT(csz)} ({util.GB(csz)})"
         )
 
-        if shared:
-            if dtype_name == "float64":
-                typecode = "d"
-            elif dtype_name == "float32":
-                typecode = "f"
-            else:
-                raise RuntimeError(
-                    "allocate_skim_buffer unrecognized dtype %s" % dtype_name
-                )
+        # if shared:
+            # if dtype_name == "float64":
+            #     typecode = "d"
+            # elif dtype_name == "float32":
+            #     typecode = "f"
+            # else:
+            #     raise RuntimeError(
+            #         "allocate_skim_buffer unrecognized dtype %s" % dtype_name
+            #     )
 
-            buffer = multiprocessing.RawArray(typecode, buffer_size)
-        else:
-            buffer = np.zeros(buffer_size, dtype=dtype)
+            # buffer = multiprocessing.RawArray(typecode, buffer_size)
+        shared_mem_name = f"skim_shared_memory__{skim_info.skim_tag}"
+        try:
+            buffer = multiprocessing.shared_memory.SharedMemory(name=shared_mem_name)
+            logger.info(f"skim buffer already allocated in shared memory: {shared_mem_name}, size: {buffer.size}")
+        except FileNotFoundError:
+            buffer = multiprocessing.shared_memory.SharedMemory(create=True, size=csz, name=shared_mem_name)
+            logger.info(f"allocating skim buffer in shared memory: {shared_mem_name}, size: {buffer.size}")
+        # else:
+        #     buffer = np.zeros(buffer_size, dtype=dtype)
 
         return buffer
 
@@ -436,8 +443,9 @@ class NumpyArraySkimFactory(AbstractSkimFactory):
         """
 
         dtype = np.dtype(skim_info.dtype_name)
-        assert len(skim_buffer) == util.iprod(skim_info.skim_data_shape)
-        skim_data = np.frombuffer(skim_buffer, dtype=dtype).reshape(
+        # assert len(skim_buffer) == util.iprod(skim_info.skim_data_shape)
+        assert skim_buffer.size >= util.iprod(skim_info.skim_data_shape) * dtype.itemsize
+        skim_data = np.frombuffer(skim_buffer.buf, dtype=dtype, count=util.iprod(skim_info.skim_data_shape)).reshape(
             skim_info.skim_data_shape
         )
         return skim_data
@@ -457,6 +465,9 @@ class NumpyArraySkimFactory(AbstractSkimFactory):
 
         skim_data = self._skim_data_from_buffer(skim_info, skim_buffer)
         assert skim_data.shape == skim_info.skim_data_shape
+
+        if skim_data.any():
+            return
 
         if read_cache:
             # returns None if cache file not found
