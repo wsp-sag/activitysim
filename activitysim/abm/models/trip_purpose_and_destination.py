@@ -59,6 +59,8 @@ class TripPurposeAndDestinationSettings(PydanticReadable):
     MAX_ITERATIONS: int = 5
     """Setting for the maximum iterations"""
 
+    drop_unused_columns: bool = True
+
 
 @workflow.step
 def trip_purpose_and_destination(

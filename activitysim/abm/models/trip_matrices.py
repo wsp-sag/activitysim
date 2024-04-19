@@ -13,6 +13,7 @@ import pandas as pd
 from activitysim.core import config, expressions, los, workflow
 from activitysim.core.configuration.base import PreprocessorSettings, PydanticReadable
 from activitysim.core.configuration.logit import LogitComponentSettings
+from activitysim.core.util import drop_unused_chooser_columns
 
 logger = logging.getLogger(__name__)
 
@@ -87,6 +88,8 @@ def write_trip_matrices(
             model_settings_file_name,
         )
 
+    annotate_trips_spec = model_settings.preprocessor
+    
     trips_df = annotate_trips(state, trips, network_los, model_settings)
 
     if model_settings.SAVE_TRIPS_TABLE:

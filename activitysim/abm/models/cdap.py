@@ -34,6 +34,7 @@ class CdapSettings(PydanticReadable, extra="forbid"):
     annotate_households: PreprocessorSettings | None = None
     COEFFICIENTS: Path
     CONSTANTS: dict[str, Any] = {}
+    drop_unused_columns: bool = True
 
 
 @workflow.step

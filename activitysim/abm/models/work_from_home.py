@@ -148,6 +148,7 @@ def work_from_home(
             choosers=choosers,
             spec=model_spec,
             nest_spec=nest_spec,
+            drop_unused_columns=model_settings.drop_unused_columns,
             locals_d=constants,
             trace_label=trace_label,
             trace_choice_name="work_from_home",

@@ -458,6 +458,8 @@ class TripSchedulingSettings(PydanticReadable):
 
     CONSTANTS: dict[str, Any] = {}
 
+    drop_unused_columns: bool = True
+
 
 @workflow.step(copy_tables=False)
 def trip_scheduling(

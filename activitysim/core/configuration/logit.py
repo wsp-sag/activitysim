@@ -78,6 +78,14 @@ class BaseLogitComponentSettings(PydanticReadable):
     sharrow_skip: bool = False
     """Skip sharrow when evaluating this component."""
 
+    drop_unused_columns: bool = True
+    """Drop unused columns in choosers table when evaluating this component.
+    
+    Default to dropping used columns for memory efficiency. 
+    However, user can set this to False to keep all columns in choosers table. 
+    This setting is component specific.
+    """
+
 
 class LogitComponentSettings(BaseLogitComponentSettings):
     """

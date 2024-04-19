@@ -242,6 +242,7 @@ def vehicle_allocation(
             choosers=choosers,
             spec=model_spec,
             nest_spec=nest_spec,
+            drop_unused_columns=model_settings.drop_unused_columns,
             skims=skims,
             locals_d=locals_dict,
             trace_label=trace_label,

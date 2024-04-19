@@ -83,6 +83,8 @@ class TourSchedulingProbabilisticSettings(PydanticReadable):
     PROBS_JOIN_COLS: list[str] | None = None
     """List of columns"""
 
+    drop_unused_columns: bool = True
+
 
 @workflow.step
 def tour_scheduling_probabilistic(

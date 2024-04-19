@@ -135,6 +135,7 @@ def joint_tour_frequency_composition(
         choosers=choosers,
         alternatives=alts,
         spec=model_spec,
+        drop_unused_columns=model_settings.drop_unused_columns,
         locals_d=constants,
         trace_label=trace_label,
         trace_choice_name=trace_label,

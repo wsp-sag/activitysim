@@ -115,6 +115,7 @@ def _destination_sample(
         alternatives=destination_size_terms,
         sample_size=sample_size,
         alt_col_name=alt_dest_col_name,
+        drop_unused_columns=model_settings.drop_unused_columns,
         log_alt_losers=log_alt_losers,
         spec=model_spec,
         skims=skims,
@@ -776,6 +777,7 @@ def run_destination_simulate(
         trace_label=trace_label,
         trace_choice_name="destination",
         estimator=estimator,
+        drop_unused_columns=model_settings.drop_unused_columns,
         skip_choice=skip_choice,
     )
 

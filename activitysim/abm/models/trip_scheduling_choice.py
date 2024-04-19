@@ -338,6 +338,8 @@ class TripSchedulingChoiceSettings(PydanticReadable, extra="forbid"):
     SPECIFICATION: str
     """file name of specification file"""
 
+    drop_unused_columns: bool = True
+
 
 @workflow.step
 def trip_scheduling_choice(

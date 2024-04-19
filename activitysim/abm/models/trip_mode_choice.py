@@ -270,6 +270,7 @@ def trip_mode_choice(
             nest_spec=simulate.eval_nest_coefficients(
                 nest_spec, coefficients, segment_trace_label
             ),
+            drop_unused_columns=model_settings.drop_unused_columns,
             skims=skims,
             locals_d=locals_dict,
             mode_column_name=mode_column_name,

@@ -175,6 +175,7 @@ class TripPurposeSettings(PydanticReadable):
     preprocessor: PreprocessorSettings | None = None
     use_depart_time: bool = True
     CONSTANTS: dict[str, Any] = {}
+    drop_unused_columns: bool = True
 
 
 def run_trip_purpose(

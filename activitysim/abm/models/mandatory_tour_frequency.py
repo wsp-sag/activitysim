@@ -130,6 +130,7 @@ def mandatory_tour_frequency(
         choosers=choosers,
         spec=model_spec,
         nest_spec=nest_spec,
+        drop_unused_columns=model_settings.drop_unused_columns,
         locals_d=constants,
         trace_label=trace_label,
         trace_choice_name="mandatory_tour_frequency",

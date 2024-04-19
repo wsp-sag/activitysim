@@ -315,6 +315,7 @@ def non_mandatory_tour_frequency(
             chooser_segment,
             alternatives,
             spec=segment_spec,
+            drop_unused_columns=model_settings.drop_unused_columns,
             log_alt_losers=log_alt_losers,
             locals_d=constants,
             trace_label="non_mandatory_tour_frequency.%s" % segment_name,

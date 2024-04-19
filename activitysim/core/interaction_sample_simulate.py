@@ -28,6 +28,7 @@ def _interaction_sample_simulate(
     trace_label,
     trace_choice_name,
     estimator,
+    drop_unused_columns,
     skip_choice=False,
     *,
     chunk_sizer: chunk.ChunkSizer,
@@ -140,7 +141,7 @@ def _interaction_sample_simulate(
 
     # check if tracing is enabled and if we have trace targets
     # if not estimation mode, drop unused columns
-    if not have_trace_targets:
+    if (not have_trace_targets) and (estimator is None) and drop_unused_columns:
 
         choosers = util.drop_unused_chooser_columns(
             choosers,
@@ -379,6 +380,7 @@ def interaction_sample_simulate(
     alternatives,
     spec,
     choice_column,
+    drop_unused_columns,
     allow_zero_probs=False,
     zero_prob_choice_val=None,
     log_alt_losers=False,
@@ -478,6 +480,7 @@ def interaction_sample_simulate(
             chunk_trace_label,
             trace_choice_name,
             estimator,
+            drop_unused_columns,
             skip_choice,
             chunk_sizer=chunk_sizer,
         )

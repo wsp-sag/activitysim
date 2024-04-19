@@ -142,6 +142,7 @@ def parking_destination_simulate(
         choosers=trips,
         alternatives=destination_sample,
         spec=spec,
+        drop_unused_columns=model_settings.drop_unused_columns,
         choice_column=alt_dest_col_name,
         want_logsums=False,
         allow_zero_probs=True,

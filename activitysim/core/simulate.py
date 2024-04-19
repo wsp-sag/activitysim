@@ -1454,6 +1454,7 @@ def _simple_simulate(
     choosers,
     spec,
     nest_spec,
+    drop_unused_choosers_columns,
     skims=None,
     locals_d=None,
     custom_chooser: CustomChooser_T = None,
@@ -1521,7 +1522,7 @@ def _simple_simulate(
 
     # if tracing is not enabled, drop unused columns
     # if not estimation mode, drop unused columns
-    if (not have_trace_targets) and (estimator is None):
+    if (not have_trace_targets) and (estimator is None) and drop_unused_choosers_columns:
         # drop unused variables in chooser table
         choosers = util.drop_unused_chooser_columns(
             choosers,
@@ -1590,6 +1591,7 @@ def simple_simulate(
     choosers,
     spec,
     nest_spec,
+    drop_unused_columns,
     skims=None,
     locals_d=None,
     custom_chooser=None,
@@ -1623,6 +1625,7 @@ def simple_simulate(
             chooser_chunk,
             spec,
             nest_spec,
+            drop_unused_columns,
             skims=skims,
             locals_d=locals_d,
             custom_chooser=custom_chooser,
@@ -1917,6 +1920,7 @@ def _simple_simulate_logsums(
     choosers,
     spec,
     nest_spec,
+    drop_unused_columns,
     skims=None,
     locals_d=None,
     trace_label=None,
@@ -1939,7 +1943,7 @@ def _simple_simulate_logsums(
     have_trace_targets = state.tracing.has_trace_targets(choosers)
 
     # if tracing is not enabled, drop unused columns
-    if not have_trace_targets:
+    if (not have_trace_targets) and drop_unused_columns:
         # drop unused variables in chooser table
         choosers = util.drop_unused_chooser_columns(
             choosers,
@@ -1978,6 +1982,7 @@ def simple_simulate_logsums(
     choosers,
     spec,
     nest_spec,
+    drop_unused_columns,
     skims=None,
     locals_d=None,
     chunk_size=0,
@@ -2011,6 +2016,7 @@ def simple_simulate_logsums(
             chooser_chunk,
             spec,
             nest_spec,
+            drop_unused_columns,
             skims,
             locals_d,
             chunk_trace_label,

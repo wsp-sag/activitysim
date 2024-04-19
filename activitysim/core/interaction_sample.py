@@ -126,6 +126,7 @@ def _interaction_sample(
     spec,
     sample_size,
     alt_col_name,
+    drop_unused_columns,
     allow_zero_probs=False,
     log_alt_losers=False,
     skims=None,
@@ -237,7 +238,7 @@ def _interaction_sample(
 
     # check if tracing is enabled and if we have trace targets
     # if not estimation mode, drop unused columns
-    if not have_trace_targets:
+    if (not have_trace_targets) and drop_unused_columns:
 
         choosers = util.drop_unused_chooser_columns(
             choosers,
@@ -529,6 +530,7 @@ def interaction_sample(
     spec: pd.DataFrame,
     sample_size: int,
     alt_col_name: str,
+    drop_unused_columns: bool,
     allow_zero_probs: bool = False,
     log_alt_losers: bool = False,
     skims: SkimWrapper | DatasetWrapper | None = None,
@@ -625,6 +627,7 @@ def interaction_sample(
             spec=spec,
             sample_size=sample_size,
             alt_col_name=alt_col_name,
+            drop_unused_columns=drop_unused_columns,
             allow_zero_probs=allow_zero_probs,
             log_alt_losers=log_alt_losers,
             skims=skims,

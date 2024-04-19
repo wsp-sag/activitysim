@@ -479,6 +479,7 @@ def iterate_vehicle_type_choice(
                 choosers=choosers,
                 alternatives=alts_wide,
                 spec=model_spec,
+                drop_unused_columns=model_settings.drop_unused_columns,
                 log_alt_losers=log_alt_losers,
                 locals_d=locals_dict,
                 trace_label=trace_label,

@@ -113,6 +113,7 @@ def atwork_subtour_frequency(
         choosers=work_tours,
         spec=model_spec,
         nest_spec=nest_spec,
+        drop_unused_columns=model_settings.drop_unused_columns,
         locals_d=constants,
         trace_label=trace_label,
         trace_choice_name="atwork_subtour_frequency",

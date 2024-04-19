@@ -599,6 +599,7 @@ def _interaction_simulate(
     choosers: pd.DataFrame,
     alternatives: pd.DataFrame,
     spec: pd.DataFrame,
+    drop_unused_columns,
     skims=None,
     locals_d: Mapping = None,
     sample_size=None,
@@ -701,7 +702,7 @@ def _interaction_simulate(
 
     # check if tracing is enabled and if we have trace targets
     # if not estimation mode, drop unused columns
-    if (not have_trace_targets) and (estimator is None):
+    if (not have_trace_targets) and (estimator is None) and drop_unused_columns:
 
         choosers = util.drop_unused_chooser_columns(
             choosers,
@@ -899,6 +900,7 @@ def interaction_simulate(
     choosers,
     alternatives,
     spec,
+    drop_unused_columns,
     log_alt_losers=False,
     skims=None,
     locals_d=None,
@@ -976,6 +978,7 @@ def interaction_simulate(
             chooser_chunk,
             alternatives,
             spec,
+            drop_unused_columns,
             skims=skims,
             locals_d=locals_d,
             sample_size=sample_size,
