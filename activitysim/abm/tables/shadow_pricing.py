@@ -216,7 +216,7 @@ class ShadowPriceCalculator:
                 "only 'simulation' shadow price method can use_shadow_pricing and not full_model_run"
             )
             logger.warning(f"Not using shadow pricing for {self.model_selector}")
-            self.use_shadow_pricing = False
+            # self.use_shadow_pricing = False
 
         if (
             self.use_shadow_pricing
@@ -1384,7 +1384,7 @@ def add_size_tables(
 
         scale_size_table = scale and scale_size_table
 
-        if (use_shadow_pricing and full_model_run) and scale_size_table:
+        if use_shadow_pricing or scale_size_table:
             # need to scale destination size terms because ctramp and daysim approaches directly
             # compare modeled size and target size when computing shadow prices
             # Does not apply to simulation approach which compares proportions.
