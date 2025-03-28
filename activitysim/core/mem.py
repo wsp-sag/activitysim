@@ -302,6 +302,9 @@ def shared_memory_size(data_buffers):
 
             shared_size += Dataset.shm.preload_shared_memory_size(data_buffer[11:])
             continue
+        if isinstance(data_buffer, multiprocessing.shared_memory.SharedMemory):
+            shared_size += data_buffer.size
+            continue
         try:
             obj = data_buffer.get_obj()
         except Exception:
