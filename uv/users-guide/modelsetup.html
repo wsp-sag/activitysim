@@ -503,12 +503,19 @@ on Windows, OS X, and Linux. It is 10-100x faster than conda, and pip itself, wh
 the standard Python package manager. The <em>uv</em> features include automatic
 environment management including installation and management of Python
 versions and dependency locking.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>There are two options for using <em>uv</em> to install ActivitySim.</p>
+</div>
 <p>The first is to use <em>uv</em> to install an official ActivitySim release from the Python Package Index (PyPI).
 The second is to use <em>uv</em> to install ActivitySim from a local directory, which should be the cloned ActivitySim repository.</p>
-<p>The first option is recommended for users who want to install ActivitySim from an official release and do not wish to change the Python code.
-The second option is recommended for users who want to customize the Python code, and who want to run ActivitySim
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The first <em>uv</em> option is recommended for users who want to install ActivitySim from an official release and do not wish to change the Python code.
+However, they may end up using different deep dependencies than those tested by the developers.
+The second <em>uv</em> option is recommended for users who may want to customize the Python code, and who want to run ActivitySim
 exactly as it was tested by the developers using the dependency lockfile which results in the exact same deep dependencies.</p>
+</div>
 <p>The steps involved are described as follows.</p>
 <section id="option-1-install-activitysim-from-pypi">
 <h4>Option 1: Install ActivitySim from PyPI<a class="headerlink" href="#option-1-install-activitysim-from-pypi" title="Permalink to this heading">#</a></h4>
@@ -721,7 +728,7 @@ use the <cite>project</cite> option to point <em>uv</em> to this project using r
       
         <div class="footer-item"><!-- This will display the version of the docs -->
 <p class="last-updated">
-ActivitySim 1.0.5.dev1897+ge26f61f7, documentation last updated Jul 11, 2025.<br/>
+ActivitySim 1.0.5.dev1898+gb7010760, documentation last updated Jul 11, 2025.<br/>
 </p></div>
       
         <div class="footer-item">
