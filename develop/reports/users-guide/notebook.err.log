@@ -1,96 +1,63 @@
 Traceback (most recent call last):
-  File "/usr/share/miniconda3/envs/docbuild/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+  File "/home/runner/work/activitysim/activitysim/.venv/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
     executenb(
-  File "/usr/share/miniconda3/envs/docbuild/lib/python3.10/site-packages/nbclient/client.py", line 1305, in execute
+  File "/home/runner/work/activitysim/activitysim/.venv/lib/python3.10/site-packages/nbclient/client.py", line 1269, in execute
     return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
-  File "/usr/share/miniconda3/envs/docbuild/lib/python3.10/site-packages/jupyter_core/utils/__init__.py", line 165, in wrapped
-    return loop.run_until_complete(inner)
-  File "/usr/share/miniconda3/envs/docbuild/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+  File "/home/runner/work/activitysim/activitysim/.venv/lib/python3.10/site-packages/nbclient/util.py", line 85, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/home/runner/work/activitysim/activitysim/.venv/lib/python3.10/site-packages/nbclient/util.py", line 60, in just_run
+    return loop.run_until_complete(coro)
+  File "/opt/hostedtoolcache/Python/3.10.19/x64/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
     return future.result()
-  File "/usr/share/miniconda3/envs/docbuild/lib/python3.10/site-packages/nbclient/client.py", line 705, in async_execute
+  File "/home/runner/work/activitysim/activitysim/.venv/lib/python3.10/site-packages/nbclient/client.py", line 707, in async_execute
     await self.async_execute_cell(
-  File "/usr/share/miniconda3/envs/docbuild/lib/python3.10/site-packages/nbclient/client.py", line 1058, in async_execute_cell
+  File "/home/runner/work/activitysim/activitysim/.venv/lib/python3.10/site-packages/nbclient/client.py", line 1025, in async_execute_cell
     await self._check_raise_for_error(cell, cell_index, exec_reply)
-  File "/usr/share/miniconda3/envs/docbuild/lib/python3.10/site-packages/nbclient/client.py", line 914, in _check_raise_for_error
+  File "/home/runner/work/activitysim/activitysim/.venv/lib/python3.10/site-packages/nbclient/client.py", line 919, in _check_raise_for_error
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-from activitysim.core import workflow
-from activitysim import abm
+state.settings.households_sample_size = 3500.8
+state.settings.households_sample_size
 ------------------
 
-
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-Cell [0;32mIn[1], line 2[0m
-[1;32m      1[0m [38;5;28;01mfrom[39;00m [38;5;21;01mactivitysim[39;00m[38;5;21;01m.[39;00m[38;5;21;01mcore[39;00m [38;5;28;01mimport[39;00m workflow
-[0;32m----> 2[0m [38;5;28;01mfrom[39;00m [38;5;21;01mactivitysim[39;00m [38;5;28;01mimport[39;00m abm
+[0;31mValidationError[0m                           Traceback (most recent call last)
+Cell [0;32mIn[6], line 1[0m
+[0;32m----> 1[0m [43mstate[49m[38;5;241;43m.[39;49m[43msettings[49m[38;5;241;43m.[39;49m[43mhouseholds_sample_size[49m [38;5;241m=[39m [38;5;241m3500.8[39m
+[1;32m      2[0m state[38;5;241m.[39msettings[38;5;241m.[39mhouseholds_sample_size
 
-File [0;32m/usr/share/miniconda3/envs/docbuild/lib/python3.10/site-packages/activitysim/abm/__init__.py:3[0m
-[1;32m      1[0m [38;5;66;03m# ActivitySim[39;00m
-[1;32m      2[0m [38;5;66;03m# See full license in LICENSE.txt.[39;00m
-[0;32m----> 3[0m [38;5;28;01mfrom[39;00m [38;5;21;01mactivitysim[39;00m[38;5;21;01m.[39;00m[38;5;21;01mabm[39;00m [38;5;28;01mimport[39;00m misc, models, tables
-[1;32m      4[0m [38;5;28;01mfrom[39;00m [38;5;21;01mactivitysim[39;00m[38;5;21;01m.[39;00m[38;5;21;01mcore[39;00m[38;5;21;01m.[39;00m[38;5;21;01msteps[39;00m [38;5;28;01mimport[39;00m output  [38;5;66;03m# also contains workflow.step # noqa: F401[39;00m
+File [0;32m~/work/activitysim/activitysim/.venv/lib/python3.10/site-packages/pydantic/main.py:995[0m, in [0;36mBaseModel.__setattr__[0;34m(self, name, value)[0m
+[1;32m    993[0m [38;5;28;01mdef[39;00m[38;5;250m [39m[38;5;21m__setattr__[39m([38;5;28mself[39m, name: [38;5;28mstr[39m, value: Any) [38;5;241m-[39m[38;5;241m>[39m [38;5;28;01mNone[39;00m:
+[1;32m    994[0m     [38;5;28;01mif[39;00m (setattr_handler [38;5;241m:=[39m [38;5;28mself[39m[38;5;241m.[39m__pydantic_setattr_handlers__[38;5;241m.[39mget(name)) [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[0;32m--> 995[0m         [43msetattr_handler[49m[43m([49m[38;5;28;43mself[39;49m[43m,[49m[43m [49m[43mname[49m[43m,[49m[43m [49m[43mvalue[49m[43m)[49m
+[1;32m    996[0m     [38;5;66;03m# if None is returned from _setattr_handler, the attribute was set directly[39;00m
+[1;32m    997[0m     [38;5;28;01melif[39;00m (setattr_handler [38;5;241m:=[39m [38;5;28mself[39m[38;5;241m.[39m_setattr_handler(name, value)) [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
 
-File [0;32m/usr/share/miniconda3/envs/docbuild/lib/python3.10/site-packages/activitysim/abm/models/__init__.py:5[0m
-[1;32m      1[0m [38;5;66;03m# flake8: noqa[39;00m
-[1;32m      2[0m [38;5;66;03m# ActivitySim[39;00m
-[1;32m      3[0m [38;5;66;03m# See full license in LICENSE.txt.[39;00m
-[0;32m----> 5[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m [38;5;28;01mimport[39;00m (
-[1;32m      6[0m     accessibility,
-[1;32m      7[0m     atwork_subtour_destination,
-[1;32m      8[0m     atwork_subtour_frequency,
-[1;32m      9[0m     atwork_subtour_mode_choice,
-[1;32m     10[0m     atwork_subtour_scheduling,
-[1;32m     11[0m     auto_ownership,
-[1;32m     12[0m     cdap,
-[1;32m     13[0m     disaggregate_accessibility,
-[1;32m     14[0m     free_parking,
-[1;32m     15[0m     initialize,
-[1;32m     16[0m     initialize_los,
-[1;32m     17[0m     initialize_tours,
-[1;32m     18[0m     input_checker,
-[1;32m     19[0m     joint_tour_composition,
-[1;32m     20[0m     joint_tour_destination,
-[1;32m     21[0m     joint_tour_frequency,
-[1;32m     22[0m     joint_tour_participation,
-[1;32m     23[0m     joint_tour_scheduling,
-[1;32m     24[0m     joint_tour_frequency_composition,
-[1;32m     25[0m     location_choice,
-[1;32m     26[0m     mandatory_scheduling,
-[1;32m     27[0m     mandatory_tour_frequency,
-[1;32m     28[0m     non_mandatory_destination,
-[1;32m     29[0m     non_mandatory_scheduling,
-[1;32m     30[0m     non_mandatory_tour_frequency,
-[1;32m     31[0m     parking_location_choice,
-[1;32m     32[0m     school_escorting,
-[1;32m     33[0m     stop_frequency,
-[1;32m     34[0m     summarize,
-[1;32m     35[0m     telecommute_frequency,
-[1;32m     36[0m     tour_mode_choice,
-[1;32m     37[0m     tour_od_choice,
-[1;32m     38[0m     tour_scheduling_probabilistic,
-[1;32m     39[0m     transit_pass_ownership,
-[1;32m     40[0m     transit_pass_subsidy,
-[1;32m     41[0m     trip_departure_choice,
-[1;32m     42[0m     trip_destination,
-[1;32m     43[0m     trip_matrices,
-[1;32m     44[0m     trip_mode_choice,
-[1;32m     45[0m     trip_purpose,
-[1;32m     46[0m     trip_purpose_and_destination,
-[1;32m     47[0m     trip_scheduling,
-[1;32m     48[0m     trip_scheduling_choice,
-[1;32m     49[0m     vehicle_allocation,
-[1;32m     50[0m     vehicle_type_choice,
-[1;32m     51[0m     work_from_home,
-[1;32m     52[0m )
+File [0;32m~/work/activitysim/activitysim/.venv/lib/python3.10/site-packages/pydantic/main.py:114[0m, in [0;36m<lambda>[0;34m(model, name, val)[0m
+[1;32m    108[0m         [38;5;28mobject[39m[38;5;241m.[39m[38;5;21m__setattr__[39m(model, [38;5;124m'[39m[38;5;124m__pydantic_private__[39m[38;5;124m'[39m, {})
+[1;32m    109[0m     model[38;5;241m.[39m__pydantic_private__[name] [38;5;241m=[39m val  [38;5;66;03m# pyright: ignore[reportOptionalSubscript][39;00m
+[1;32m    112[0m _SIMPLE_SETATTR_HANDLERS: Mapping[[38;5;28mstr[39m, Callable[[BaseModel, [38;5;28mstr[39m, Any], [38;5;28;01mNone[39;00m]] [38;5;241m=[39m {
+[1;32m    113[0m     [38;5;124m'[39m[38;5;124mmodel_field[39m[38;5;124m'[39m: _model_field_setattr_handler,
+[0;32m--> 114[0m     [38;5;124m'[39m[38;5;124mvalidate_assignment[39m[38;5;124m'[39m: [38;5;28;01mlambda[39;00m model, name, val: [43mmodel[49m[38;5;241;43m.[39;49m[43m__pydantic_validator__[49m[38;5;241;43m.[39;49m[43mvalidate_assignment[49m[43m([49m[43mmodel[49m[43m,[49m[43m [49m[43mname[49m[43m,[49m[43m [49m[43mval[49m[43m)[49m,  [38;5;66;03m# pyright: ignore[reportAssignmentType][39;00m
+[1;32m    115[0m     [38;5;124m'[39m[38;5;124mprivate[39m[38;5;124m'[39m: _private_setattr_handler,
+[1;32m    116[0m     [38;5;124m'[39m[38;5;124mcached_property[39m[38;5;124m'[39m: [38;5;28;01mlambda[39;00m model, name, val: model[38;5;241m.[39m[38;5;18m__dict__[39m[38;5;241m.[39m[38;5;21m__setitem__[39m(name, val),
+[1;32m    117[0m     [38;5;124m'[39m[38;5;124mextra_known[39m[38;5;124m'[39m: [38;5;28;01mlambda[39;00m model, name, val: _object_setattr(model, name, val),
+[1;32m    118[0m }
+[1;32m    121[0m [38;5;28;01mclass[39;00m[38;5;250m [39m[38;5;21;01mBaseModel[39;00m(metaclass[38;5;241m=[39m_model_construction[38;5;241m.[39mModelMetaclass):
+[1;32m    122[0m [38;5;250m    [39m[38;5;124;03m"""!!! abstract "Usage Documentation"[39;00m
+[1;32m    123[0m [38;5;124;03m        [Models](../concepts/models.md)[39;00m
+[1;32m    124[0m 
+[0;32m   (...)[0m
+[1;32m    151[0m [38;5;124;03m        __pydantic_private__: Values of private attributes set on the model instance.[39;00m
+[1;32m    152[0m [38;5;124;03m    """[39;00m
 
-File [0;32m/usr/share/miniconda3/envs/docbuild/lib/python3.10/site-packages/activitysim/abm/models/input_checker.py:11[0m
-[1;32m      9[0m [38;5;28;01mimport[39;00m [38;5;21;01mnumpy[39;00m [38;5;28;01mas[39;00m [38;5;21;01mnp[39;00m
-[1;32m     10[0m [38;5;28;01mimport[39;00m [38;5;21;01mpandas[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpd[39;00m
-[0;32m---> 11[0m [38;5;28;01mimport[39;00m [38;5;21;01mpandera[39;00m [38;5;28;01mas[39;00m [38;5;21;01mpa[39;00m
-[1;32m     12[0m [38;5;28;01mimport[39;00m [38;5;21;01mpydantic[39;00m
-[1;32m     14[0m [38;5;28;01mfrom[39;00m [38;5;21;01mactivitysim[39;00m[38;5;21;01m.[39;00m[38;5;21;01mcore[39;00m [38;5;28;01mimport[39;00m workflow
-
-[0;31mModuleNotFoundError[0m: No module named 'pandera'
+[0;31mValidationError[0m: 1 validation error for Settings
+households_sample_size
+  Input should be a valid integer, got a number with a fractional part [type=int_from_float, input_value=3500.8, input_type=float]
+    For further information visit https://errors.pydantic.dev/2.11/v/int_from_float
+ValidationError: 1 validation error for Settings
+households_sample_size
+  Input should be a valid integer, got a number with a fractional part [type=int_from_float, input_value=3500.8, input_type=float]
+    For further information visit https://errors.pydantic.dev/2.11/v/int_from_float
 

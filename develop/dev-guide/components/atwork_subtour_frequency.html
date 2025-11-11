@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>At-work Subtours Frequency &#8212; ActivitySim</title>
   
@@ -14,44 +15,48 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/autodoc_pydantic.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css?v=86d88d25" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/theme_overrides.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=4fb7dabe"></script>
-    <script src="../../_static/doctools.js?v=888ff710"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'dev-guide/components/atwork_subtour_frequency';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.15.2';
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://wsp-sag.github.io/activitysim/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.5';
-        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -59,7 +64,8 @@
     <link rel="prev" title="Tour Mode Choice" href="tour_mode_choice.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 21, 2024"/>
+  <meta name="docsearch:version" content="1.0.5" />
+    <meta name="docbuild:last-update" content="Nov 11, 2025"/>
   </head>
   
   
@@ -67,31 +73,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -99,7 +90,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -107,20 +97,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../../index.html">
@@ -141,22 +138,22 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../users-guide/index.html">
-                        Users Guide
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../users-guide/index.html">
+    Users Guide
+  </a>
+</li>
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="../index.html">
-                        Developers
-                      </a>
-                    </li>
-                
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Developers
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -168,41 +165,33 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
-<script>
-document.write(`
-  <div class="version-switcher__container dropdown">
-    <button id="pst-version-switcher-button-2"
-      type="button"
-      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
-      data-bs-toggle="dropdown"
-      aria-haspopup="listbox"
-      aria-controls="pst-version-switcher-list-2"
-      aria-label="Version switcher list"
-    >
-      Choose version  <!-- this text may get changed later by javascript -->
-      <span class="caret"></span>
-    </button>
-    <div id="pst-version-switcher-list-2"
-      class="version-switcher__menu dropdown-menu list-group-flush py-0"
-      role="listbox" aria-labelledby="pst-version-switcher-button-2">
-      <!-- dropdown will be populated by javascript on page load -->
-    </div>
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
   </div>
-`);
-</script></div>
+</div></div>
       
     </div>
     
@@ -211,22 +200,18 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
@@ -238,7 +223,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -247,25 +233,28 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../users-guide/index.html">
-                        Users Guide
-                      </a>
-                    </li>
-                
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../users-guide/index.html">
+    Users Guide
+  </a>
+</li>
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="../index.html">
-                        Developers
-                      </a>
-                    </li>
-                
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../index.html">
+    Developers
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -274,28 +263,24 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
-<script>
-document.write(`
-  <div class="version-switcher__container dropdown">
-    <button id="pst-version-switcher-button-3"
-      type="button"
-      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
-      data-bs-toggle="dropdown"
-      aria-haspopup="listbox"
-      aria-controls="pst-version-switcher-list-3"
-      aria-label="Version switcher list"
-    >
-      Choose version  <!-- this text may get changed later by javascript -->
-      <span class="caret"></span>
-    </button>
-    <div id="pst-version-switcher-list-3"
-      class="version-switcher__menu dropdown-menu list-group-flush py-0"
-      role="listbox" aria-labelledby="pst-version-switcher-button-3">
-      <!-- dropdown will be populated by javascript on page load -->
-    </div>
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
   </div>
-`);
-</script></div>
+</div></div>
         
       </div>
     
@@ -308,12 +293,35 @@ document.write(`
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../install.html">Developer Installation</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../core-workflow.html">Workflow State</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="../core-workflow-api.html">State API</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../core-workflow.html">Workflow State</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../core-workflow-api.html">State API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.__init__.html">State.__init__</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.make_default.html">State.make_default</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.make_temp.html">State.make_temp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.create_example.html">create_example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.run.heading_level.html">State.run.heading_level</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.checkpoint.last_checkpoint.html">State.checkpoint.last_checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.checkpoint.checkpoints.html">State.checkpoint.checkpoints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.checkpoint.store.html">State.checkpoint.store</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.initialize.html">State.tracing.initialize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.register_traceable_table.html">State.tracing.register_traceable_table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.deregister_traceable_table.html">State.tracing.deregister_traceable_table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.write_csv.html">State.tracing.write_csv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.trace_df.html">State.tracing.trace_df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.trace_interaction_eval_results.html">State.tracing.trace_interaction_eval_results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.get_trace_target.html">State.tracing.get_trace_target</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.trace_targets.html">State.tracing.trace_targets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.has_trace_targets.html">State.tracing.has_trace_targets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.dump_df.html">State.tracing.dump_df</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.delete_output_files.html">State.tracing.delete_output_files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.tracing.delete_trace_files.html">State.tracing.delete_trace_files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.extend.declare_table.html">State.extend.declare_table</a></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../core-workflow-steps.html">Workflow Steps</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../core-workflow-table.html">Workflow Tables</a></li>
 </ul>
-</li>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../using-sharrow.html">Using Sharrow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../skim-dataset.html">Using Skim Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../checkpointing.html">Checkpointing</a></li>
@@ -321,7 +329,8 @@ document.write(`
 <li class="toctree-l1"><a class="reference internal" href="../logging.html">Logging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../development.html">Software Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../component-configs.html">Component Configuration</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Components</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Components</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="input_checker.html">Input Checker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="initialize.html">Initialize</a></li>
 <li class="toctree-l2"><a class="reference internal" href="initialize_los.html">Initialize LOS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="initialize_tours.html">Initialize Tours</a></li>
@@ -363,10 +372,11 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="parking_location_choice.html">Parking Location Choice</a></li>
 <li class="toctree-l2"><a class="reference internal" href="write_trip_matrices.html">Write Trip Matrices</a></li>
 </ul>
-</li>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../core.html">Core Components</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../benchmarking.html">Benchmarking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../build-docs.html">Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changes.html">Change Log</a></li>
 </ul>
 </div>
 </nav></div>
@@ -374,29 +384,32 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -410,7 +423,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Components</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">At-work...</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">At-work Subtours Frequency</span></li>
   </ul>
 </nav>
 </div>
@@ -428,7 +441,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="at-work-subtours-frequency">
-<span id="component-atwork-subtour-frequency"></span><h1>At-work Subtours Frequency<a class="headerlink" href="#at-work-subtours-frequency" title="Link to this heading">#</a></h1>
+<span id="component-atwork-subtour-frequency"></span><h1>At-work Subtours Frequency<a class="headerlink" href="#at-work-subtours-frequency" title="Permalink to this heading">#</a></h1>
 <p>The at-work subtour frequency model selects the number of at-work subtours made for each work tour.
 It also creates at-work subtours by adding them to the tours table in the data pipeline.
 These at-work sub-tours are travel tours taken during the workday with their origin at the work
@@ -443,7 +456,7 @@ Outputs: work tour subtour frequency choice, at-work tours table (with only tour
 <a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.atwork_subtour_frequency" title="activitysim.abm.models.atwork_subtour_frequency.atwork_subtour_frequency"><span class="xref myst py py-func">atwork_subtour_frequency</span></a>
 function.  This function is registered as an Inject step in the example Pipeline.</p>
 <section id="structure">
-<h2>Structure<a class="headerlink" href="#structure" title="Link to this heading">#</a></h2>
+<h2>Structure<a class="headerlink" href="#structure" title="Permalink to this heading">#</a></h2>
 <ul class="simple">
 <li><p><em>Configuration File</em>: <code class="docutils literal notranslate"><span class="pre">atwork_subtour_frequency.yaml</span></code></p></li>
 <li><p><em>Core Table</em>: <code class="docutils literal notranslate"><span class="pre">tours</span></code></p></li>
@@ -451,10 +464,10 @@ function.  This function is registered as an Inject step in the example Pipeline
 </ul>
 </section>
 <section id="configuration">
-<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">#</a></h2>
 <dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings">
-<em class="property"><span class="pre">settings</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">activitysim.abm.models.atwork_subtour_frequency.</span></span><span class="sig-name descname"><span class="pre">AtworkSubtourFrequencySettings</span></span><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">settings</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">activitysim.abm.models.atwork_subtour_frequency.</span></span><span class="sig-name descname"><span class="pre">AtworkSubtourFrequencySettings</span></span><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../_generated/activitysim.core.configuration.logit.LogitComponentSettings.html#activitysim.core.configuration.logit.LogitComponentSettings" title="activitysim.core.configuration.logit.LogitComponentSettings"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogitComponentSettings</span></code></a></p>
 <p>Settings for the <cite>atwork_subtour_frequency</cite> component.</p>
 <dl class="field-list simple">
@@ -470,32 +483,56 @@ function.  This function is registered as an Inject step in the example Pipeline
 <li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.LOGIT_TYPE" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.LOGIT_TYPE"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LOGIT_TYPE</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.NESTS" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.NESTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NESTS</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.SPEC" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.SPEC"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPEC</span> <span class="pre">()</span></code></a></p></li>
-<li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.preprocessor" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.preprocessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocessor</span> <span class="pre">(PreprocessorSettings</span> <span class="pre">|</span> <span class="pre">None)</span></code></a></p></li>
-<li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.sharrow_skip" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.sharrow_skip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sharrow_skip</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_households" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_households"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotate_households</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_persons" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_persons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotate_persons</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_tours" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_tours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotate_tours</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_trips" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_trips"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotate_trips</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_vehicles" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_vehicles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotate_vehicles</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.compute_settings" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.compute_settings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_settings</span> <span class="pre">()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.preprocessor" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.preprocessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">preprocessor</span> <span class="pre">()</span></code></a></p></li>
 <li><p><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.source_file_paths" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.source_file_paths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">source_file_paths</span> <span class="pre">()</span></code></a></p></li>
+</ul>
+</dd>
+<dt class="field-odd">Validators<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code> » <code class="xref py py-obj docutils literal notranslate"><span class="pre">all</span> <span class="pre">fields</span></code></p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.COEFFICIENTS">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">COEFFICIENTS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.COEFFICIENTS" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">COEFFICIENTS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.COEFFICIENTS" title="Permalink to this definition">#</a></dt>
 <dd><p>Coefficients filename.</p>
 <p>This is a CSV file giving named parameters for use in the utility expression.
 If it is not provided, then it is assumed that all model coefficients are
 given explicitly in the <cite>SPEC</cite> as numerical values instead of named parameters.
 This is perfectly acceptable for use with ActivitySim for typical simulation
 applications, but may be problematic if used with “estimation mode”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.CONSTANTS">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CONSTANTS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.CONSTANTS" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CONSTANTS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.CONSTANTS" title="Permalink to this definition">#</a></dt>
 <dd><p>Named constants usable in the utility expressions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.LOGIT_TYPE">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LOGIT_TYPE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MNL'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'NL'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MNL'</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.LOGIT_TYPE" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LOGIT_TYPE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'MNL'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'NL'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MNL'</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.LOGIT_TYPE" title="Permalink to this definition">#</a></dt>
 <dd><p>Logit model mathematical form.</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -509,11 +546,18 @@ applications, but may be problematic if used with “estimation mode”.</p>
 </dl>
 </li>
 </ul>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.NESTS">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NESTS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../_generated/activitysim.core.configuration.logit.LogitNestSpec.html#activitysim.core.configuration.logit.LogitNestSpec" title="activitysim.core.configuration.logit.LogitNestSpec"><span class="pre">LogitNestSpec</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.NESTS" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NESTS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../_generated/activitysim.core.configuration.logit.LogitNestSpec.html#activitysim.core.configuration.logit.LogitNestSpec" title="activitysim.core.configuration.logit.LogitNestSpec"><span class="pre">LogitNestSpec</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.NESTS" title="Permalink to this definition">#</a></dt>
 <dd><p>Nesting structure for a nested logit model.</p>
 <p>The nesting structure is specified heirarchically from the top, so the
 value of this field should be the “root” level nest of the nested logit
@@ -535,55 +579,161 @@ transit alternatives grouped together in a nest:</p>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DRIVE_TO_TRANSIT</span>
 </pre></div>
 </div>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.SPEC">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SPEC</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.SPEC" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SPEC</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.SPEC" title="Permalink to this definition">#</a></dt>
 <dd><p>Utility specification filename.</p>
 <p>This is sometimes alternatively called the utility expressions calculator
 (UEC). It is a CSV file giving all the functions for the terms of a
 linear-in-parameters utility expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_households">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">annotate_households</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../_generated/activitysim.core.configuration.base.PreprocessorSettings.html#activitysim.core.configuration.base.PreprocessorSettings" title="activitysim.core.configuration.base.PreprocessorSettings"><span class="pre">PreprocessorSettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_households" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotate households output tables with additional columns.</p>
+<p>These settings are used to add additional columns to the output tables
+after the logit model is run. They are typically used to add
+additional attributes that are derived from the model results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_persons">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">annotate_persons</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../_generated/activitysim.core.configuration.base.PreprocessorSettings.html#activitysim.core.configuration.base.PreprocessorSettings" title="activitysim.core.configuration.base.PreprocessorSettings"><span class="pre">PreprocessorSettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_persons" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotate persons output tables with additional columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_tours">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">annotate_tours</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../_generated/activitysim.core.configuration.base.PreprocessorSettings.html#activitysim.core.configuration.base.PreprocessorSettings" title="activitysim.core.configuration.base.PreprocessorSettings"><span class="pre">PreprocessorSettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_tours" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotate tours output tables with additional columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_trips">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">annotate_trips</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../_generated/activitysim.core.configuration.base.PreprocessorSettings.html#activitysim.core.configuration.base.PreprocessorSettings" title="activitysim.core.configuration.base.PreprocessorSettings"><span class="pre">PreprocessorSettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_trips" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotate trips output tables with additional columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_vehicles">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">annotate_vehicles</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../_generated/activitysim.core.configuration.base.PreprocessorSettings.html#activitysim.core.configuration.base.PreprocessorSettings" title="activitysim.core.configuration.base.PreprocessorSettings"><span class="pre">PreprocessorSettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_vehicles" title="Permalink to this definition">#</a></dt>
+<dd><p>Annotate vehicles output tables with additional columns.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.compute_settings">
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compute_settings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ComputeSettings</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">ComputeSettings(sharrow_skip=False,</span> <span class="pre">fastmath=True,</span> <span class="pre">use_bottleneck=None,</span> <span class="pre">use_numexpr=None,</span> <span class="pre">use_numba=None,</span> <span class="pre">drop_unused_columns=True,</span> <span class="pre">protect_columns=[],</span> <span class="pre">performance_log=None)</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.compute_settings" title="Permalink to this definition">#</a></dt>
+<dd><p>Sharrow settings for this component.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.preprocessor">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">preprocessor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../_generated/activitysim.core.configuration.base.PreprocessorSettings.html#activitysim.core.configuration.base.PreprocessorSettings" title="activitysim.core.configuration.base.PreprocessorSettings"><span class="pre">PreprocessorSettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.preprocessor" title="Link to this definition">#</a></dt>
-<dd><p>Setting for the preprocessor.</p>
-</dd></dl>
-
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.sharrow_skip">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sharrow_skip</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.sharrow_skip" title="Link to this definition">#</a></dt>
-<dd><p>Skip sharrow when evaluating this component.</p>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">preprocessor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../_generated/activitysim.core.configuration.base.PreprocessorSettings.html#activitysim.core.configuration.base.PreprocessorSettings" title="activitysim.core.configuration.base.PreprocessorSettings"><span class="pre">PreprocessorSettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../_generated/activitysim.core.configuration.base.PreprocessorSettings.html#activitysim.core.configuration.base.PreprocessorSettings" title="activitysim.core.configuration.base.PreprocessorSettings"><span class="pre">PreprocessorSettings</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.preprocessor" title="Permalink to this definition">#</a></dt>
+<dd><p>Chooser preprocessor settings.</p>
+<p>This is a set of expressions to be evaluated on the choosers
+before the logit model is run. It is used to prepare the choosers
+for the logit model by adding columns that are used in the
+utility expressions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.source_file_paths">
-<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_file_paths</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.source_file_paths" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">field</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_file_paths</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.source_file_paths" title="Permalink to this definition">#</a></dt>
 <dd><p>A list of source files from which these settings were loaded.</p>
 <p>This value should not be set by the user within the YAML settings files,
 instead it is populated as those files are loaded.  It is primarily
 provided for debugging purposes, and does not actually affect the operation
 of any model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Validated by<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_sharrow_skip</span></code></p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.nests_are_for_nl">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nests_are_for_nl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.nests_are_for_nl" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nests_are_for_nl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nests</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.nests_are_for_nl" title="Permalink to this definition">#</a></dt>
 <dd><p>Checks that nests are provided if (and only if) <cite>LOGIT_TYPE</cite> is NL.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.model_computed_fields">
-<span class="sig-name descname"><span class="pre">model_computed_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.12)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ComputedFieldInfo</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.model_computed_fields" title="Link to this definition">#</a></dt>
-<dd><p>A dictionary of computed field names and their corresponding <cite>ComputedFieldInfo</cite> objects.</p>
-</dd></dl>
+<dl class="py method pydantic_validator">
+<dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.update_sharrow_skip">
+<em class="property"><span class="pre">validator</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_sharrow_skip</span></span><em class="autodoc_pydantic_validator_arrow property">&#160; <span class="pre">»</span>&#160; </em><em class="xref py py-obj"><span class="pre">all</span> <span class="pre">fields</span></em><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.update_sharrow_skip" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <section id="examples">
-<h3>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h3>
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/ActivitySim/activitysim/blob/main/activitysim/examples/prototype_mtc/configs/atwork_subtour_destination.yaml">Prototype MTC</a></p></li>
 <li><p><a class="reference external" href="https://github.com/ActivitySim/activitysim/blob/main/activitysim/examples/prototype_arc/configs/atwork_subtour_destination.yaml">Prototype ARC</a></p></li>
@@ -591,10 +741,10 @@ of any model.</p>
 </section>
 </section>
 <section id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="activitysim.abm.models.atwork_subtour_frequency.atwork_subtour_frequency">
-<span class="sig-prename descclassname"><span class="pre">activitysim.abm.models.atwork_subtour_frequency.</span></span><span class="sig-name descname"><span class="pre">atwork_subtour_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.html#activitysim.core.workflow.State" title="activitysim.core.workflow.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.0)"><span class="pre">DataFrame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">persons_merged</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.0)"><span class="pre">DataFrame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings"><span class="pre">AtworkSubtourFrequencySettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_settings_file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'atwork_subtour_frequency.yaml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'atwork_subtour_frequency'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.atwork_subtour_frequency" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">activitysim.abm.models.atwork_subtour_frequency.</span></span><span class="sig-name descname"><span class="pre">atwork_subtour_frequency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../_generated/activitysim.core.workflow.State.html#activitysim.core.workflow.State" title="activitysim.core.workflow.state.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tours</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.3.3)"><span class="pre">DataFrame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">persons_merged</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.3.3)"><span class="pre">DataFrame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_settings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings" title="activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings"><span class="pre">AtworkSubtourFrequencySettings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_settings_file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'atwork_subtour_frequency.yaml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'atwork_subtour_frequency'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#activitysim.abm.models.atwork_subtour_frequency.atwork_subtour_frequency" title="Permalink to this definition">#</a></dt>
 <dd><p>This model predicts the frequency of making at-work subtour tours
 (alternatives for this model come from a separate csv file which is
 configured by the user).</p>
@@ -610,7 +760,7 @@ configured by the user).</p>
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -638,7 +788,8 @@ configured by the user).</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -657,11 +808,16 @@ configured by the user).</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.LOGIT_TYPE"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.LOGIT_TYPE</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.NESTS"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.NESTS</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.SPEC"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.SPEC</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_households"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.annotate_households</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_persons"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.annotate_persons</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_tours"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.annotate_tours</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_trips"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.annotate_trips</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.annotate_vehicles"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.annotate_vehicles</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.compute_settings"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.compute_settings</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.preprocessor"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.preprocessor</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.sharrow_skip"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.sharrow_skip</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.source_file_paths"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.source_file_paths</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.nests_are_for_nl"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.nests_are_for_nl()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.model_computed_fields"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.model_computed_fields</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.abm.models.atwork_subtour_frequency.AtworkSubtourFrequencySettings.update_sharrow_skip"><code class="docutils literal notranslate"><span class="pre">AtworkSubtourFrequencySettings.update_sharrow_skip</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
@@ -675,13 +831,13 @@ configured by the user).</p>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../../_sources/dev-guide/components/atwork_subtour_frequency.md.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/dev-guide/components/atwork_subtour_frequency.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -696,8 +852,8 @@ configured by the user).</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -706,13 +862,13 @@ configured by the user).</p>
       
         <div class="footer-item"><!-- This will display the version of the docs -->
 <p class="last-updated">
-ActivitySim 1.0.5.dev1763+gff3e96b5, documentation last updated Feb 21, 2024.<br/>
+ActivitySim 1.0.5.dev1893+ged44a4061, documentation last updated Nov 11, 2025.<br/>
 </p></div>
       
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.0.
     <br/>
   </p>
 </div>
@@ -725,7 +881,8 @@ ActivitySim 1.0.5.dev1763+gff3e96b5, documentation last updated Feb 21, 2024.<br
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>

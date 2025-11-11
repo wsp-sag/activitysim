@@ -1,12 +1,13 @@
 
+
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../" >
+<html lang="en" data-content_root="" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
     <title>Example Models &#8212; ActivitySim</title>
   
@@ -14,52 +15,57 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="../_static/autodoc_pydantic.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
-    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css?v=86d88d25" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/theme_overrides.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4fb7dabe"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
-    <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/design-tabs.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'users-guide/example_models';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.15.2';
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://wsp-sag.github.io/activitysim/switcher.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.0.5';
-        DOCUMENTATION_OPTIONS.show_version_warning_banner = false;
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
         </script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Other Example Models" href="other_examples.html" />
+    <link rel="next" title="Example Model Performance Benchmarking" href="example_performance.html" />
     <link rel="prev" title="Visualization" href="visualization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Feb 21, 2024"/>
+  <meta name="docsearch:version" content="1.0.5" />
+    <meta name="docbuild:last-update" content="Nov 11, 2025"/>
   </head>
   
   
@@ -67,31 +73,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -99,7 +90,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -107,20 +97,27 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <label class="sidebar-toggle primary-toggle" for="__primary">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
-  </label>
+  </button>
   
   
   <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
+  
+    
   
 
 <a class="navbar-brand logo" href="../index.html">
@@ -141,22 +138,22 @@
     <div class="me-auto navbar-header-items__center">
       
         <div class="navbar-item">
-<nav class="navbar-nav">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="index.html">
-                        Users Guide
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Users Guide
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../dev-guide/index.html">
-                        Developers
-                      </a>
-                    </li>
-                
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../dev-guide/index.html">
+    Developers
+  </a>
+</li>
+
   </ul>
 </nav></div>
       
@@ -168,41 +165,33 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
-<script>
-document.write(`
-  <div class="version-switcher__container dropdown">
-    <button id="pst-version-switcher-button-2"
-      type="button"
-      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
-      data-bs-toggle="dropdown"
-      aria-haspopup="listbox"
-      aria-controls="pst-version-switcher-list-2"
-      aria-label="Version switcher list"
-    >
-      Choose version  <!-- this text may get changed later by javascript -->
-      <span class="caret"></span>
-    </button>
-    <div id="pst-version-switcher-list-2"
-      class="version-switcher__menu dropdown-menu list-group-flush py-0"
-      role="listbox" aria-labelledby="pst-version-switcher-button-2">
-      <!-- dropdown will be populated by javascript on page load -->
-    </div>
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
   </div>
-`);
-</script></div>
+</div></div>
       
     </div>
     
@@ -211,22 +200,18 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
   
-    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
-    </label>
+    </button>
   
 </div>
 
@@ -238,7 +223,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -247,25 +233,28 @@ document.write(`
     
       <div class="sidebar-header-items__center">
         
-          <div class="navbar-item">
-<nav class="navbar-nav">
+          
+          
+            <div class="navbar-item">
+<nav>
   <ul class="bd-navbar-elements navbar-nav">
     
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="index.html">
-                        Users Guide
-                      </a>
-                    </li>
-                
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="index.html">
+    Users Guide
+  </a>
+</li>
 
-                    <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../dev-guide/index.html">
-                        Developers
-                      </a>
-                    </li>
-                
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../dev-guide/index.html">
+    Developers
+  </a>
+</li>
+
   </ul>
 </nav></div>
+          
         
       </div>
     
@@ -274,28 +263,24 @@ document.write(`
       <div class="sidebar-header-items__end">
         
           <div class="navbar-item">
-<script>
-document.write(`
-  <div class="version-switcher__container dropdown">
-    <button id="pst-version-switcher-button-3"
-      type="button"
-      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
-      data-bs-toggle="dropdown"
-      aria-haspopup="listbox"
-      aria-controls="pst-version-switcher-list-3"
-      aria-label="Version switcher list"
-    >
-      Choose version  <!-- this text may get changed later by javascript -->
-      <span class="caret"></span>
-    </button>
-    <div id="pst-version-switcher-list-3"
-      class="version-switcher__menu dropdown-menu list-group-flush py-0"
-      role="listbox" aria-labelledby="pst-version-switcher-button-3">
-      <!-- dropdown will be populated by javascript on page load -->
-    </div>
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
   </div>
-`);
-</script></div>
+</div></div>
         
       </div>
     
@@ -309,12 +294,28 @@ document.write(`
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="modelsetup.html">Model Setup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ways_to_run.html">Ways to Run the Model</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="performance/index.html">Runtime Performance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="performance/multiprocessing.html">Multiprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance/multithreading.html">Multithreading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance/chunking.html">Chunking to Reduce Peak Memory Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance/sharrow.html">Compiling with Sharrow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance/skim-data-format.html">Skim Data Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance/expr-profiling.html">Expression Profiling</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="run_primary_example.html">Run the Primary Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_anatomy.html">Anatomy of a Model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../howitworks.html">How the System Works</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_dev.html">Model Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Example Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_performance.html">Example Model Performance Benchmarking</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="estimation-mode/index.html">Estimation Mode</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="estimation-mode/asim-est.html"> Running ActivitySim in Estimation Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="estimation-mode/larch.html"> Using Larch to Re-estimate Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="estimation-mode/larch-api.html"> ActivitySim Larch Tool API</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="other_examples.html">Other Example Models</a></li>
 </ul>
 </div>
@@ -323,29 +324,32 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
         <div class="header-article-item">
 
-
-
-<nav aria-label="Breadcrumb">
+<nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
     <li class="breadcrumb-item breadcrumb-home">
@@ -356,7 +360,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Users Guide</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">Example Models</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Example Models</span></li>
   </ul>
 </nav>
 </div>
@@ -373,23 +377,40 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="example-models">
-<span id="examples"></span><span id="example"></span><span id="index-1"></span><span id="index-0"></span><h1>Example Models<a class="headerlink" href="#example-models" title="Link to this heading">#</a></h1>
-<p>Several example models are available in <a class="reference external" href="https://github.com/ActivitySim/activitysim/tree/main/activitysim/examples">ActivitySim’s GitHub repository</a>.</p>
-<p>This page describes, in more detail, a couple of example models included with ActivitySim from the MTC and SEMCOG regions.</p>
+  <span class="target" id="index-0"></span><section id="example-models">
+<span id="examples"></span><span id="example"></span><span id="index-1"></span><h1>Example Models<a class="headerlink" href="#example-models" title="Permalink to this heading">#</a></h1>
+<p>The ActivitySim consortium maintains two supported “canonical” example
+implementations:</p>
+<ul class="simple">
+<li><p>the <a class="reference external" href="https://github.com/ActivitySim/sandag-abm3-example">SANDAG Model</a> is a two-zone
+model based on the SANDAG ABM3 model, and</p></li>
+<li><p>the <a class="reference external" href="https://github.com/ActivitySim/activitysim-prototype-mtc">MTC Model</a> is a
+one-zone model based on the MTC’s Travel Model One.</p></li>
+</ul>
+<p>Each example implementation includes a complete set of model components, input data,
+and configuration files, and is intended to serve as a reference for users to build
+their own models. They are provided as stand-alone repositories, to highlight the
+fact that model implementations are separate from the ActivitySim core codebase,
+and to make it easier for users to fork and modify the examples for their own use
+without needing to modify the ActivitySim core codebase. The examples are maintained
+by the ActivitySim Consortium and are kept up-to-date with the latest version of
+ActivitySim.</p>
+<p>A discussion of the runtime performance of the example models is available in the
+<a class="reference internal" href="example_performance.html#example-performance"><span class="std std-ref">example performance benchmarking</span></a> section.</p>
+<p>This page describes the structure of the MTC example model in more detail.</p>
 <section id="prototype-mtc">
-<span id="id1"></span><h2>prototype_mtc<a class="headerlink" href="#prototype-mtc" title="Link to this heading">#</a></h2>
+<span id="id1"></span><h2>prototype_mtc<a class="headerlink" href="#prototype-mtc" title="Permalink to this heading">#</a></h2>
 <section id="introduction">
-<h3>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h3>
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h3>
 <p>The initial example implemented in ActivitySim was prototype_mtc.  This section described the prototype_mtc
 model design, how to setup and run the example, and how to review outputs. The default configuration of the
 example is limited to a small sample of households and zones so that it can be run quickly and require
 less than 1 GB of RAM.  The full scale example can be configured and run as well.</p>
 </section>
 <section id="model-design">
-<h3>Model Design<a class="headerlink" href="#model-design" title="Link to this heading">#</a></h3>
+<h3>Model Design<a class="headerlink" href="#model-design" title="Permalink to this heading">#</a></h3>
 <section id="overview">
-<h4>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h4>
+<h4>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h4>
 <p>The prototype_mtc example is based on (but has evolved away from) the
 <a class="reference external" href="https://github.com/BayAreaMetro/travel-model-one">Bay Area Metro Travel Model One</a> (TM1).
 TM1 has its roots in a wide array of analytical approaches, including discrete
@@ -402,16 +423,16 @@ methods capture aggregate outcomes through the representation of the behavior of
 individual decision-makers.</p>
 </section>
 <section id="zone-system">
-<h4>Zone System<a class="headerlink" href="#zone-system" title="Link to this heading">#</a></h4>
+<h4>Zone System<a class="headerlink" href="#zone-system" title="Permalink to this heading">#</a></h4>
 <p>The prototype MTC model uses the 1454 TAZ zone system developed for the MTC trip-based model.  The zones are fairly large for the region,
 which may somewhat distort the representation of transit access in mode choice. To ameliorate this problem, the
 original model zones were further sub-divided into three categories of transit access: short walk, long walk, and not
 walkable.  However, support for transit subzones is not included in the activitysim implementation since the latest generation
 of activity-based models typically use an improved approach to spatial representation called multiple zone systems.  See
-<a class="reference internal" href="../examples.html#multiple-zone-systems"><span class="std std-ref">placeholder_multiple_zone</span></a> for more information.</p>
+<span class="xref std std-ref">multiple_zone_systems</span> for more information.</p>
 </section>
 <section id="decision-making-units">
-<h4>Decision-making units<a class="headerlink" href="#decision-making-units" title="Link to this heading">#</a></h4>
+<h4>Decision-making units<a class="headerlink" href="#decision-making-units" title="Permalink to this heading">#</a></h4>
 <p>Decision-makers in the model system are households and persons. These decision-makers are
 created for each simulation year based on a population synthesis process such as
 <a class="reference external" href="https://github.com/ActivitySim/PopulationSim">PopulationSim</a>. The decision-makers are used in the
@@ -422,7 +443,7 @@ the attributes of the various alternatives. The decision-making unit is an impor
 model estimation and implementation, and is explicitly identified for each model.</p>
 </section>
 <section id="person-type-segmentation">
-<h4>Person type segmentation<a class="headerlink" href="#person-type-segmentation" title="Link to this heading">#</a></h4>
+<h4>Person type segmentation<a class="headerlink" href="#person-type-segmentation" title="Permalink to this heading">#</a></h4>
 <p>TM1 is implemented in a micro-simulation framework. A key advantage of the
 micro-simulation approach is that there are essentially no computational constraints on the
 number of explanatory variables which can be included in a model specification. However, even
@@ -431,7 +452,7 @@ Segmentation is a useful tool both to structure models and also as a way to char
 roles within a household.</p>
 <p>The person types shown below are used for the example model. The person types are mutually exclusive
 with respect to age, work status, and school status.</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Person Type Code</p></th>
 <th class="head"><p>Person Type</p></th>
@@ -491,6 +512,7 @@ with respect to age, work status, and school status.</p>
 </tr>
 </tbody>
 </table>
+</div>
 <p>Household type segments are useful for pre-defining certain data items (such as destination
 choice size terms) so that these data items can be pre-calculated for each segment. Precalculation
 of these data items reduces model complexity and runtime. The segmentation is based on household income,
@@ -502,7 +524,7 @@ estimated using data from a stated preference survey performed for the SFCTA Mob
 Pricing Study, and is a lognormal distribution with a mean that varies by income segment.</p>
 </section>
 <section id="activity-type-segmentation">
-<h4>Activity type segmentation<a class="headerlink" href="#activity-type-segmentation" title="Link to this heading">#</a></h4>
+<h4>Activity type segmentation<a class="headerlink" href="#activity-type-segmentation" title="Permalink to this heading">#</a></h4>
 <p>The activity types are used in most model system components, from developing daily activity patterns
 and to predicting tour and trip destinations and modes by purpose.  The set of activity types is shown below.
 The activity types are also grouped according to whether the activity is mandatory or non-mandatory and
@@ -512,7 +534,7 @@ natural hierarchy of the activity, where work and school activities are typicall
 in terms of generation, scheduling and location, and discretionary activities are typically the most
 flexible on each of these dimensions. Each out-of-home location that a person travels to in the
 simulation is assigned one of these activity types.</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Purpose</p></th>
 <th class="head"><p>Description</p></th>
@@ -573,9 +595,10 @@ simulation is assigned one of these activity types.</p>
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 <section id="treatment-of-time">
-<h4>Treatment of time<a class="headerlink" href="#treatment-of-time" title="Link to this heading">#</a></h4>
+<h4>Treatment of time<a class="headerlink" href="#treatment-of-time" title="Permalink to this heading">#</a></h4>
 <p>The TM1 example model system functions at a temporal resolution of one hour. These one hour increments
 begin with 3 AM and end with 3 AM the next day. Temporal integrity is ensured so that no
 activities are scheduled with conflicting time windows, with the exception of short
@@ -588,7 +611,7 @@ each activity generated by the model system is identified with a start time and 
 increments, LOS matrices are only created for five aggregate time periods. The trips occurring in each time period
 reference the appropriate transport network depending on their trip mode and the mid-point trip
 time. The definition of time periods for LOS matrices is given below.</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Time Period</p></th>
 <th class="head"><p>Start Hour</p></th>
@@ -612,9 +635,10 @@ time. The definition of time periods for LOS matrices is given below.</p>
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 <section id="trip-modes">
-<h4>Trip modes<a class="headerlink" href="#trip-modes" title="Link to this heading">#</a></h4>
+<h4>Trip modes<a class="headerlink" href="#trip-modes" title="Permalink to this heading">#</a></h4>
 <p>The trip modes defined in the example model are below. The modes include auto by
 occupancy and toll/non-toll choice, walk and bike, walk and drive access to five different
 transit line-haul modes, and ride hail with taxi, single TNC (Transportation Network Company), and shared TNC.</p>
@@ -669,7 +693,7 @@ transit line-haul modes, and ride hail with taxi, single TNC (Transportation Net
 </div></blockquote>
 </section>
 <section id="sub-models">
-<h4>Sub-models<a class="headerlink" href="#sub-models" title="Link to this heading">#</a></h4>
+<h4>Sub-models<a class="headerlink" href="#sub-models" title="Permalink to this heading">#</a></h4>
 <p>The general design of the prototype_mtc model is presented below.  Long-term choices that relate to
 the usual workplace/university/school for each worker and student, household car ownership, and the
 availability of free parking at workplaces are first.</p>
@@ -703,7 +727,7 @@ can be aggregated into travel demand matrices for network loading.</p>
 </section>
 </section>
 <section id="setup">
-<h3>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h3>
+<h3>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h3>
 <p>The following describes the prototype_mtc model setup.</p>
 <p>Folder and File Setup</p>
 <p>The prototype_mtc has the following root folder/file setup:</p>
@@ -716,7 +740,7 @@ can be aggregated into travel demand matrices for network loading.</p>
 </ul>
 </div></blockquote>
 <section id="inputs">
-<h4>Inputs<a class="headerlink" href="#inputs" title="Link to this heading">#</a></h4>
+<h4>Inputs<a class="headerlink" href="#inputs" title="Permalink to this heading">#</a></h4>
 <p>In order to run prototype_mtc, you first need the input files in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder as identified in the <code class="docutils literal notranslate"><span class="pre">configs\settings.yaml</span></code> file and the <code class="docutils literal notranslate"><span class="pre">configs\network_los.yaml</span></code> file:</p>
 <ul>
 <li><p>input_table_list: the input CSV tables for MTC (see below for column definitions):</p>
@@ -735,9 +759,9 @@ of MTC households, persons, and OMX skims are on the ActivitySim <a class="refer
 <p>Additional details on these files is available in the original <a class="reference external" href="https://github.com/BayAreaMetro/modeling-website/wiki/DataDictionary">Travel Model 1 repository</a>,
 although many of the files described there are not used in ActivitySim.</p>
 <section id="data-schema">
-<h5>Data Schema<a class="headerlink" href="#data-schema" title="Link to this heading">#</a></h5>
+<h5>Data Schema<a class="headerlink" href="#data-schema" title="Permalink to this heading">#</a></h5>
 <p>The following table lists the pipeline data tables, field names, the data types and other details associated with each table in the model:</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Table</p></th>
 <th class="head"><p>Field</p></th>
@@ -2682,9 +2706,10 @@ although many of the files described there are not used in ActivitySim.</p>
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 <section id="households">
-<h5>Households<a class="headerlink" href="#households" title="Link to this heading">#</a></h5>
+<h5>Households<a class="headerlink" href="#households" title="Permalink to this heading">#</a></h5>
 <p>The households table contains the following synthetic population columns:</p>
 <ul class="simple">
 <li><p>household_id: numeric ID of this household, used in persons table to join with household characteristics</p></li>
@@ -2697,9 +2722,9 @@ although many of the files described there are not used in ActivitySim.</p>
 <li><p>sample_rate</p></li>
 </ul>
 <section id="household-types">
-<h6>Household types<a class="headerlink" href="#household-types" title="Link to this heading">#</a></h6>
+<h6>Household types<a class="headerlink" href="#household-types" title="Permalink to this heading">#</a></h6>
 <p>These are household types defined by the Census Bureau and used in <a class="reference external" href="https://censusreporter.org/tables/B11001/">ACS table B11001</a>.</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Code</p></th>
 <th class="head"><p>Description</p></th>
@@ -2732,10 +2757,11 @@ although many of the files described there are not used in ActivitySim.</p>
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 </section>
 <section id="persons">
-<h5>Persons<a class="headerlink" href="#persons" title="Link to this heading">#</a></h5>
+<h5>Persons<a class="headerlink" href="#persons" title="Permalink to this heading">#</a></h5>
 <p>This table describes attributes of the persons that constitute each household. This file contains the following columns:</p>
 <ul class="simple">
 <li><p>person_id: Unique integer identifier for each person. This value is globally unique, i.e.
@@ -2749,8 +2775,8 @@ no two individuals have the same person ID, even if they are in different househ
 <li><p>ptype: Person type (see person type segmentation above)</p></li>
 </ul>
 <section id="employment-status">
-<h6>Employment status<a class="headerlink" href="#employment-status" title="Link to this heading">#</a></h6>
-<table class="table">
+<h6>Employment status<a class="headerlink" href="#employment-status" title="Permalink to this heading">#</a></h6>
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Code</p></th>
 <th class="head"><p>Description</p></th>
@@ -2771,10 +2797,11 @@ no two individuals have the same person ID, even if they are in different househ
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 <section id="student-status">
-<h6>Student status<a class="headerlink" href="#student-status" title="Link to this heading">#</a></h6>
-<table class="table">
+<h6>Student status<a class="headerlink" href="#student-status" title="Permalink to this heading">#</a></h6>
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Code</p></th>
 <th class="head"><p>Description</p></th>
@@ -2792,10 +2819,11 @@ no two individuals have the same person ID, even if they are in different househ
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 </section>
 <section id="land-use">
-<h5>Land use<a class="headerlink" href="#land-use" title="Link to this heading">#</a></h5>
+<h5>Land use<a class="headerlink" href="#land-use" title="Permalink to this heading">#</a></h5>
 <p>All values are raw numbers and not proportions of the total.</p>
 <ul class="simple">
 <li><p>TAZ: Zone which this row describes</p></li>
@@ -2824,8 +2852,8 @@ no two individuals have the same person ID, even if they are in different househ
 <li><p>TERMINAL: Average time to travel from automobile storage location to origin/destination (floating-point minutes)</p></li>
 </ul>
 <section id="counties">
-<h6>Counties<a class="headerlink" href="#counties" title="Link to this heading">#</a></h6>
-<table class="table">
+<h6>Counties<a class="headerlink" href="#counties" title="Permalink to this heading">#</a></h6>
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Code</p></th>
 <th class="head"><p>Name</p></th>
@@ -2861,10 +2889,11 @@ no two individuals have the same person ID, even if they are in different househ
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 <section id="area-types">
-<h6>Area types<a class="headerlink" href="#area-types" title="Link to this heading">#</a></h6>
-<table class="table">
+<h6>Area types<a class="headerlink" href="#area-types" title="Permalink to this heading">#</a></h6>
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Code</p></th>
 <th class="head"><p>Description</p></th>
@@ -2891,6 +2920,7 @@ no two individuals have the same person ID, even if they are in different househ
 </tr>
 </tbody>
 </table>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>ActivitySim can optionally build an HDF5 file of the input CSV tables for use in subsequent runs since
@@ -2902,11 +2932,11 @@ Cube to OMX using the <code class="docutils literal notranslate"><span class="pr
 <p>The prototype_mtc_sf inputs were created by the <code class="docutils literal notranslate"><span class="pre">other_resources\scripts\create_sf_example.py</span></code> script, which creates the land use, synthetic population, and
 skim inputs for a subset of user-defined zones.</p>
 </div>
-</section>
+<span class="target" id="index-2"></span><span class="target" id="index-3"></span></section>
 </section>
 </section>
 <section id="skims">
-<span id="index-4"></span><span id="index-3"></span><span id="index-2"></span><span id="id2"></span><h4>Skims<a class="headerlink" href="#skims" title="Link to this heading">#</a></h4>
+<span id="index-4"></span><span id="id2"></span><h4>Skims<a class="headerlink" href="#skims" title="Permalink to this heading">#</a></h4>
 <p>The injectables and omx_file for the example are listed below.
 The skims are float64 matrix.</p>
 <p>Skims are named &lt;PATH TYPE&gt;_&lt;MEASURE&gt;__&lt;TIME PERIOD&gt;:</p>
@@ -2966,7 +2996,7 @@ The skims are float64 matrix.</p>
 </ul>
 </li>
 </ul>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
 <th class="head"><p>Type</p></th>
@@ -5453,20 +5483,21 @@ The skims are float64 matrix.</p>
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 <section id="configuration">
-<h4>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h4>
-<p>This section has been moved to <a class="reference internal" href="model_anatomy.html#configuration"><span class="std std-ref">Configuration</span></a>.</p>
+<h4>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">#</a></h4>
+<p>This section has been moved to <a class="reference internal" href="model_anatomy.html#user-configuration"><span class="std std-ref">Configuration</span></a>.</p>
 </section>
 <section id="sub-model-specification-files">
-<span id="sub-model-spec-files"></span><h4>Sub-Model Specification Files<a class="headerlink" href="#sub-model-specification-files" title="Link to this heading">#</a></h4>
+<span id="sub-model-spec-files"></span><h4>Sub-Model Specification Files<a class="headerlink" href="#sub-model-specification-files" title="Permalink to this heading">#</a></h4>
 <p>Included in the <code class="docutils literal notranslate"><span class="pre">configs</span></code> folder are the model specification files that store the
 Python/pandas/numpy expressions, alternatives, and other settings used by each model.  Some models includes an
 alternatives file since the alternatives are not easily described as columns in the expressions file.  An example
 of this is the <code class="docutils literal notranslate"><span class="pre">non_mandatory_tour_frequency_alternatives.csv</span></code> file, which lists each alternative as a row and each
 columns indicates the number of non-mandatory tours by purpose.  The  set of files for the prototype_mtc are below.  The
-<a class="reference internal" href="../examples.html#prototype-arc"><span class="std std-ref">prototype_arc</span></a>, <a class="reference internal" href="#prototype-semcog"><span class="std std-ref">prototype_semcog</span></a>, and <a class="reference internal" href="../examples.html#prototype-mtc-extended"><span class="std std-ref">prototype_mtc_extended</span></a> examples added additional submodels.</p>
-<table class="table">
+<span class="xref std std-ref">prototype_arc</span>, <span class="xref std std-ref">prototype_semcog</span>, and <span class="xref std std-ref">prototype_mtc_extended</span> examples added additional submodels.</p>
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Model</p></th>
 <th class="head"><p>Specification Files</p></th>
@@ -5773,29 +5804,29 @@ columns indicates the number of non-mandatory tours by purpose.  The  set of fil
 </tr>
 </tbody>
 </table>
+</div>
 </section>
 </section>
 <section id="running-the-model">
-<span id="model-example-run"></span><h3>Running the model<a class="headerlink" href="#running-the-model" title="Link to this heading">#</a></h3>
+<span id="model-example-run"></span><h3>Running the model<a class="headerlink" href="#running-the-model" title="Permalink to this heading">#</a></h3>
 <p>To run the example, do the following:</p>
 <ul class="simple">
-<li><p>Activate the correct conda environment if needed</p></li>
 <li><p>View the list of available examples</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">activitysim</span> <span class="n">create</span> <span class="o">--</span><span class="nb">list</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">run</span> <span class="n">activitysim</span> <span class="n">create</span> <span class="o">--</span><span class="nb">list</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Create a local copy of an example folder</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">activitysim</span> <span class="n">create</span> <span class="o">--</span><span class="n">example</span> <span class="n">prototype_mtc</span> <span class="o">--</span><span class="n">destination</span> <span class="n">my_test_example</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">run</span> <span class="n">activitysim</span> <span class="n">create</span> <span class="o">--</span><span class="n">example</span> <span class="n">prototype_mtc</span> <span class="o">--</span><span class="n">destination</span> <span class="n">my_test_example</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>Run the example</p></li>
 </ul>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">my_test_example</span>
-<span class="n">activitysim</span> <span class="n">run</span> <span class="o">-</span><span class="n">c</span> <span class="n">configs</span> <span class="o">-</span><span class="n">d</span> <span class="n">data</span> <span class="o">-</span><span class="n">o</span> <span class="n">output</span>
+<span class="n">uv</span> <span class="n">run</span> <span class="n">activitysim</span> <span class="n">run</span> <span class="o">-</span><span class="n">c</span> <span class="n">configs</span> <span class="o">-</span><span class="n">d</span> <span class="n">data</span> <span class="o">-</span><span class="n">o</span> <span class="n">output</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -5808,16 +5839,16 @@ columns indicates the number of non-mandatory tours by purpose.  The  set of fil
 This script takes many of the same arguments as the <code class="docutils literal notranslate"><span class="pre">activitysim</span> <span class="pre">run</span></code> command, including paths to
 <code class="docutils literal notranslate"><span class="pre">--config</span></code>, <code class="docutils literal notranslate"><span class="pre">--data</span></code>, and <code class="docutils literal notranslate"><span class="pre">--output</span></code> directories. The script looks for these folders in the current
 working directory by default.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">simulation</span><span class="o">.</span><span class="n">py</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">run</span> <span class="n">simulation</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 </div>
 <section id="multiprocessing">
-<span id="multiprocess-example"></span><h4>Multiprocessing<a class="headerlink" href="#multiprocessing" title="Link to this heading">#</a></h4>
+<span id="multiprocess-example"></span><h4>Multiprocessing<a class="headerlink" href="#multiprocessing" title="Permalink to this heading">#</a></h4>
 <p>The model system is parallelized via <a class="reference internal" href="ways_to_run.html#multiprocessing"><span class="std std-ref">Multiprocessing</span></a>.  To setup and run the <a class="reference internal" href="model_dev.html#example"><span class="std std-ref">Example</span></a> using
 multiprocessing, follow the same steps as the above <a class="reference internal" href="#model-example-run"><span class="std std-ref">Running the model</span></a>, but add an additional <code class="docutils literal notranslate"><span class="pre">-c</span></code> flag to
 include the multiprocessing configuration settings via settings file inheritance (see <a class="reference internal" href="../cli.html#cli"><span class="std std-ref">Command Line Interface</span></a>) as well:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">activitysim</span> <span class="n">run</span> <span class="o">-</span><span class="n">c</span> <span class="n">configs_mp</span> <span class="o">-</span><span class="n">c</span> <span class="n">configs</span> <span class="o">-</span><span class="n">d</span> <span class="n">data</span> <span class="o">-</span><span class="n">o</span> <span class="n">output</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">uv</span> <span class="n">run</span> <span class="n">activitysim</span> <span class="n">run</span> <span class="o">-</span><span class="n">c</span> <span class="n">configs_mp</span> <span class="o">-</span><span class="n">c</span> <span class="n">configs</span> <span class="o">-</span><span class="n">d</span> <span class="n">data</span> <span class="o">-</span><span class="n">o</span> <span class="n">output</span>
 </pre></div>
 </div>
 <p>The multiprocessing example also writes outputs to the output folder.</p>
@@ -5837,7 +5868,7 @@ discussed below. See <a class="reference internal" href="ways_to_run.html#multip
 </div>
 </section>
 <section id="configuring-chunking">
-<span id="id3"></span><h4>Configuring chunking<a class="headerlink" href="#configuring-chunking" title="Link to this heading">#</a></h4>
+<span id="id3"></span><h4>Configuring chunking<a class="headerlink" href="#configuring-chunking" title="Permalink to this heading">#</a></h4>
 <p>To configure chunking, ActivitySim must first be trained to determine reasonable chunking settings given the
 model setup and machine.  The steps to configure chunking are:</p>
 <ul class="simple">
@@ -5856,7 +5887,7 @@ runtimes and machine resources.</p></li>
 </section>
 </section>
 <section id="outputs">
-<h3>Outputs<a class="headerlink" href="#outputs" title="Link to this heading">#</a></h3>
+<h3>Outputs<a class="headerlink" href="#outputs" title="Permalink to this heading">#</a></h3>
 <p>The key output of ActivitySim is the HDF5 data pipeline file <code class="docutils literal notranslate"><span class="pre">outputs\pipeline.h5</span></code>.  By default, this datastore file
 contains a copy of each data table after each model step in which the table was modified.</p>
 <p>The example also writes the final tables to CSV files by using the <code class="docutils literal notranslate"><span class="pre">write_tables</span></code> step.  This step calls
@@ -5882,7 +5913,7 @@ the table below for a small sample of households.  The table shows that for each
 and/or columns changes as a result of the relevant model step.  A <code class="docutils literal notranslate"><span class="pre">checkpoints</span></code> table is also stored in the
 pipeline, which contains the crosswalk between model steps and table states in order to reload tables for
 restarting the pipeline at any step.</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Table</p></th>
 <th class="head"><p>Creator</p></th>
@@ -6048,8 +6079,9 @@ restarting the pipeline at any step.</p>
 </tr>
 </tbody>
 </table>
+</div>
 <section id="logging">
-<span id="logs"></span><span id="index-5"></span><h4>Logging<a class="headerlink" href="#logging" title="Link to this heading">#</a></h4>
+<span id="logs"></span><span id="index-5"></span><h4>Logging<a class="headerlink" href="#logging" title="Permalink to this heading">#</a></h4>
 <p>Included in the <code class="docutils literal notranslate"><span class="pre">configs</span></code> folder is the <code class="docutils literal notranslate"><span class="pre">logging.yaml</span></code>, which configures Python logging
 library.  The following key log files are created with a model run:</p>
 <ul class="simple">
@@ -6060,13 +6092,13 @@ library.  The following key log files are created with a model run:</p>
 <p>Refer to the <a class="reference internal" href="ways_to_run.html#tracing"><span class="std std-ref">Tracing</span></a> section for more detail on tracing.</p>
 </section>
 <section id="trip-matrices">
-<h4>Trip Matrices<a class="headerlink" href="#trip-matrices" title="Link to this heading">#</a></h4>
+<h4>Trip Matrices<a class="headerlink" href="#trip-matrices" title="Permalink to this heading">#</a></h4>
 <p>The <code class="docutils literal notranslate"><span class="pre">write_trip_matrices</span></code> step processes the trips table to create open matrix (OMX) trip matrices for
 assignment.  The matrices are configured and coded according to the expressions in the model step
 trip annotation file.  See <span class="xref std std-ref">write_trip_matrices</span> for more information.</p>
 </section>
 <section id="tracing">
-<span id="id4"></span><h4>Tracing<a class="headerlink" href="#tracing" title="Link to this heading">#</a></h4>
+<span id="id4"></span><h4>Tracing<a class="headerlink" href="#tracing" title="Permalink to this heading">#</a></h4>
 <p>There are two types of tracing in ActivtiySim: household and origin-destination (OD) pair.  If a household trace ID
 is specified, then ActivitySim will output a comprehensive set (i.e. hundreds) of trace files for all
 calculations for all household members:</p>
@@ -6082,7 +6114,7 @@ file:</p>
 help debug data and/or logic errors.</p>
 </section>
 <section id="writing-logsums">
-<span id="id5"></span><h4>Writing Logsums<a class="headerlink" href="#writing-logsums" title="Link to this heading">#</a></h4>
+<span id="id5"></span><h4>Writing Logsums<a class="headerlink" href="#writing-logsums" title="Permalink to this heading">#</a></h4>
 <p>The tour and trip destination and mode choice models calculate logsums but do not persist them by default.
 Mode and destination choice logsums are essential for re-estimating these models and can therefore be
 saved to the pipeline if desired.  To save the tour and trip destination and mode choice model logsums, include
@@ -6099,7 +6131,7 @@ the following optional settings in the model settings file.  The data is saved t
 destination choice sample table, which includes the mode choice logsum for each sampled
 alternative destination, adds significant size to the pipeline.  Therefore, this feature should
 only be activated when writing logsums for a small set of households for model estimation.</p>
-<table class="table">
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Field</p></th>
 <th class="head"><p>Description</p></th>
@@ -6123,49 +6155,8 @@ only be activated when writing logsums for a small set of households for model e
 </tr>
 </tbody>
 </table>
-</section>
-</section>
-</section>
-<section id="prototype-semcog">
-<span id="id6"></span><h2>prototype_semcog<a class="headerlink" href="#prototype-semcog" title="Link to this heading">#</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This example is in development</p>
 </div>
-<section id="id7">
-<h3>Introduction<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
-<p>The prototype_semcog model is a two-zone ActivitySim added which added a <span class="xref std std-ref">work_from_home</span>, <span class="xref std std-ref">telecommute_frequency</span>, <span class="xref std std-ref">transit_pass_subsidy</span>
-and <span class="xref std std-ref">transit_pass_ownership</span> submodel.  These submodel specification files are below, and are in addition to the <a class="reference internal" href="#prototype-mtc"><span class="std std-ref">prototype_mtc</span></a>
-submodel <a class="reference internal" href="#sub-model-spec-files"><span class="std std-ref">Sub-Model Specification Files</span></a>.  These submodels were added to prototype_semcog as extensions, which is a way for users to add
-submodels within their model setup as opposed to formally adding them to the activitysim package.  Extension submodels are run through
-the <cite>models</cite> settings.  However, the model must be run with the <cite>simulation.py</cite> script instead of the command line interface
-in order to load the extensions folder.</p>
 </section>
-<section id="id8">
-<h3>Model Design<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
-<section id="id9">
-<h4>Overview<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
-<p>The below figure shows the ActivitySim struture of the SEMCOG model:</p>
-<img alt="../_images/semcog_model_struct.png" src="../_images/semcog_model_struct.png" />
-<p>These submodels were added to prototype_semcog as extensions, which is a way for users to add submodels within their model setup as opposed to formally adding them to the activitysim package. Extension submodels are run through the models settings. However, the model must be run with the simulation.py script instead of the command line interface in order to load the extensions folder.</p>
-</section>
-<section id="id10">
-<h4>Zone System<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
-<p>The SEMCOG model implemented the 2-zone ActivitySim structure.</p>
-</section>
-</section>
-<section id="id11">
-<h3>Setup<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
-<section id="id12">
-<h4>Inputs<a class="headerlink" href="#id12" title="Link to this heading">#</a></h4>
-<p>ActivitySim-related inputs include: All-street network, synthetic population, and MAZ land use data: this set of inputs are read in by the ActivitySim framework to first create the MAZ-MAZ walk and bike skims, MAZ-stop transit access/egress skims, and then run the activity-based model for the region.</p>
-</section>
-</section>
-<section id="id13">
-<h3>Running the Model<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
-</section>
-<section id="id14">
-<h3>Outputs<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
 </section>
 </section>
 </section>
@@ -6177,7 +6168,7 @@ in order to load the extensions folder.</p>
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -6190,11 +6181,11 @@ in order to load the extensions folder.</p>
       </div>
     </a>
     <a class="right-next"
-       href="other_examples.html"
+       href="example_performance.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Other Example Models</p>
+        <p class="prev-next-title">Example Model Performance Benchmarking</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -6205,7 +6196,8 @@ in order to load the extensions folder.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -6267,32 +6259,17 @@ in order to load the extensions folder.</p>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prototype-semcog">prototype_semcog</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Introduction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Model Design</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Overview</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Zone System</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Setup</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Inputs</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">Running the Model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Outputs</a></li>
-</ul>
-</li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="../_sources/users-guide/example_models.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/users-guide/example_models.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -6307,8 +6284,8 @@ in order to load the extensions folder.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -6317,13 +6294,13 @@ in order to load the extensions folder.</p>
       
         <div class="footer-item"><!-- This will display the version of the docs -->
 <p class="last-updated">
-ActivitySim 1.0.5.dev1763+gff3e96b5, documentation last updated Feb 21, 2024.<br/>
+ActivitySim 1.0.5.dev1893+ged44a4061, documentation last updated Nov 11, 2025.<br/>
 </p></div>
       
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.0.
     <br/>
   </p>
 </div>
@@ -6336,7 +6313,8 @@ ActivitySim 1.0.5.dev1763+gff3e96b5, documentation last updated Feb 21, 2024.<br
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
