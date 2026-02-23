@@ -19,6 +19,7 @@ import yaml
 
 from activitysim.core import config, mem, tracing, util, workflow
 from activitysim.core.configuration import FileSystem, Settings
+from activitysim.core.exceptions import *
 from activitysim.core.run_id import RunId
 from activitysim.core.workflow.checkpoint import (
     CHECKPOINT_NAME,
@@ -27,7 +28,6 @@ from activitysim.core.workflow.checkpoint import (
     NON_TABLE_COLUMNS,
     ParquetStore,
 )
-from activitysim.core.exceptions import *
 
 logger = logging.getLogger(__name__)
 
@@ -255,6 +255,21 @@ def exception(state: workflow.State, msg, write_to_log_file=True):
     if write_to_log_file:
         logger.log(logging.ERROR, f"mp_tasks - {process_name} - {msg}")
         logger.log(logging.ERROR, f"\n---\n{traceback.format_exc()}---\n")
+
+
+def log_environment_info(state: workflow.State):
+    """log environment info for debugging purposes."""
+    if os.environ.get("ASIM_LOG_ENVIRON", False):
+        process_name = multiprocessing.current_process().name
+        environ_summary = f"OS.ENVIRON in process {process_name}:"
+        for k, v in os.environ.items():
+            environ_summary += f"\n--- {k}: {v}"
+        info(state, environ_summary)
+    else:
+        info(
+            state,
+            "ASIM_LOG_ENVIRON not set, skipping logging of environment variables. Set ASIM_LOG_ENVIRON=1 to log environment variables.",
+        )
 
 
 """
@@ -1097,6 +1112,7 @@ def mp_run_simulation(
         state,
         f"mp_run_simulation {step_info['name']} locutor={state.get_injectable('locutor', False)} ",
     )
+    log_environment_info(state)
 
     try:
         if step_info["num_processes"] > 1:
@@ -1417,6 +1433,7 @@ def run_sub_simulations(
     completed = set(previously_completed)
     failed = set([])  # so we can log process failure first time it happens
     drop_breadcrumb(state, step_name, "completed", list(completed))
+    log_environment_info(state)
 
     for i, process_name in enumerate(process_names):
         q = multiprocessing.Queue()
