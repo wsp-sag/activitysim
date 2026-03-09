@@ -306,7 +306,7 @@ provides an additional layer of control for users to skip problems when they are
 When ``skip_failed_choices`` is enabled, ActivitySim will automatically perform debug tracing for one of the failed households within each 
 model step where failed choices occur. The trace files will be saved in the output/trace directory with folders suffixed by 
 ``_resimulate``. This automatic tracing feature allows users to easily investigate the reasons behind the failed choices without needing to 
-manually specify trace IDs. This feature is partially implemented for simple simulate models, and is not yet available for interaction_simulate models.
+manually specify trace IDs. This feature is implemented for simple simulate models only, and is not yet available for interaction_simulate models.
 For interaction_simulate models, users can manually specify trace IDs to perform tracing of failed choices.
 
 Users can configure ActivitySim to not skip failed choices by setting the 
