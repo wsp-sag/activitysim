@@ -44,8 +44,18 @@ def prog():
 
 
 def main():
-    # set all these before we import numpy or any other math library
+    prevent_multithreading = False
     if len(sys.argv) > 1 and sys.argv[1] == "benchmark":
+        # We cannot use multiple threads for benchmarking, as it can foil timing
+        prevent_multithreading = True
+    if "--fast" not in sys.argv:
+        # If we are not in fast mode, we want to prevent multithreading to avoid
+        # issues with some libraries crashing. Fast mode is not stable enough
+        # at scale to use by default, but can be used for testing and development.
+        prevent_multithreading = True
+
+    # set all these before we import numpy or any other math library
+    if prevent_multithreading:
         os.environ["MKL_NUM_THREADS"] = "1"
         os.environ["OMP_NUM_THREADS"] = "1"
         os.environ["OPENBLAS_NUM_THREADS"] = "1"
