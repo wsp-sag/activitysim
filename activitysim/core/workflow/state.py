@@ -1053,33 +1053,32 @@ class State:
 
                 # Check if we've exceeded the allowed fraction of skipped households
                 # Use weighted households if expansion weight column exists, otherwise use counts
-                if "sample_rate" in df.columns:
-                    # Use weighted calculation
-                    skipped_household_weights = (1 / skipped_hh_df["sample_rate"]).sum()
-                    remaining_household_weights = (
-                        1 / df.loc[~mask, "sample_rate"]
-                    ).sum()
-                    total_household_weights = (
-                        skipped_household_weights + remaining_household_weights
-                    )
+                skipped_count = len(skipped_hh_df)
+                remaining_count = (~mask).sum()
+                skipped_fraction = skipped_count / (skipped_count + remaining_count)
+                metric_name = "households"
 
-                    if total_household_weights > 0:
-                        skipped_fraction = (
-                            skipped_household_weights / total_household_weights
+                if "sample_rate" in df.columns:
+                    # check if sample_rate column is all zero, if so, we will use count-based calculation to avoid division by zero
+                    if not (df["sample_rate"] == 0).all():
+                        # skip households with zero sample_rate when calculating weights, as they do not contribute to the weighted fraction
+                        skipped_household_weights = (
+                            1
+                            / skipped_hh_df.loc[
+                                skipped_hh_df["sample_rate"] > 0, "sample_rate"
+                            ]
+                        ).sum()
+                        remaining_household_weights = (
+                            1 / df.loc[~mask & (df["sample_rate"] > 0), "sample_rate"]
+                        ).sum()
+                        total_household_weights = (
+                            skipped_household_weights + remaining_household_weights
                         )
-                        metric_name = "weighted households"
-                    else:
-                        # Fallback to count-based if weights are zero
-                        skipped_fraction = len(skipped_hh_df) / (
-                            len(skipped_hh_df) + len(df.loc[~mask])
-                        )
-                        metric_name = "households"
-                else:
-                    # Use count-based calculation
-                    skipped_fraction = len(skipped_hh_df) / (
-                        len(skipped_hh_df) + len(df.loc[~mask])
-                    )
-                    metric_name = "households"
+                        if total_household_weights > 0:
+                            skipped_fraction = (
+                                skipped_household_weights / total_household_weights
+                            )
+                            metric_name = "weighted households"
 
                 max_allowed_fraction = self.settings.fraction_of_failed_choices_allowed
 
