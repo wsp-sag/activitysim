@@ -2,6 +2,7 @@ from __future__ import annotations
 
 # ActivitySim
 # See full license in LICENSE.txt.
+import glob
 import importlib.resources
 import os
 from shutil import copytree
@@ -136,6 +137,17 @@ def test_skip_failed_choices_high_threshold_prototype_mtc(state):
             # check no households in home zone 8 (recoded 7) in the remaining households
             assert all(state.get("households").loc[:, "home_zone_id"] != 7)
             assert all(state.get("persons").loc[:, "home_zone_id"] != 7)
+            # assert there's a trace file created
+            trace_file_pattern = os.path.join(
+                state.filesystem.get_output_dir(),
+                "trace",
+                "auto_ownership_simulate",
+                "simple_simulate",
+                "eval_mnl_resimulate",
+                "eval_utils",
+                "expression_values*.csv",
+            )
+            assert len(glob.glob(trace_file_pattern)) > 0
         elif model == "workplace_location":
             # assert one of the keys contains "workplace_location"
             assert any(
@@ -155,6 +167,18 @@ def test_skip_failed_choices_high_threshold_prototype_mtc(state):
             assert state.get("num_skipped_households", 0) == (69 + 598 + 276)
             # assert no DRIVEALONEFREE tours in the remaining tours
             assert all(state.get("tours").loc[:, "tour_mode"] != "DRIVEALONEFREE")
+            # assert there's a trace file created
+            trace_file_pattern = os.path.join(
+                state.filesystem.get_output_dir(),
+                "trace",
+                "trip_mode_choice",
+                "*",
+                "simple_simulate",
+                "eval_nl_resimulate",
+                "eval_utils",
+                "expression_values*.csv",
+            )
+            assert len(glob.glob(trace_file_pattern)) > 0
 
     # check that the number of skipped households is recorded in state
     assert state.get("num_skipped_households", 0) == 943
