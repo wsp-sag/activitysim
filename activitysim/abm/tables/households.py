@@ -99,7 +99,7 @@ def households(state: workflow.State) -> pd.DataFrame:
         if households_sample_size == 0:
             sample_rate = 1
         else:
-            sample_rate = round(households_sample_size / tot_households, 7)
+            sample_rate = round(households_sample_size / tot_households, 3)
 
         df["sample_rate"] = sample_rate
 
