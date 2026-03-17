@@ -140,7 +140,9 @@ def write_trip_matrices(
 
         # adjust the hh sample rates to account for skipped households
         # first get the total expansion weight of the skipped households, which will be the sum of inverse of their sample rates
-        skipped_household_weights = (1 / skipped_sample_rate[skipped_sample_rate != 0]).sum()
+        skipped_household_weights = (
+            1 / skipped_sample_rate[skipped_sample_rate != 0]
+        ).sum()
         # next get the total expansion weight of the remaining households
         remaining_household_weights = (
             1 / remaining_sample_rate[remaining_sample_rate != 0]
