@@ -603,14 +603,14 @@ def load_sparse_maz_skims(
     dataset : xarray.Dataset
         The existing dataset at TAZ resolution only.
     land_use_index : pandas.Index
-        The index of the land use table.  For two and three zone systems,
+        The index of the land use table.  For two zone systems,
         these index values should be MAZ identifiers.
     remapper : dict, optional
         A dictionary mapping where the keys are the original (nominal) zone
         id's, and the values are the recoded (typically zero-based contiguous)
         zone id's.  Recoding improves runtime efficiency.
     zone_system : int
-        Currently 1, 2 and 3 are supported.
+        Currently 1 and 2 are supported.
     maz2taz_file_name : str
     maz_to_maz_tables : Collection[]
     max_blend_distance : optional
@@ -620,19 +620,19 @@ def load_sparse_maz_skims(
     -------
     xarray.Dataset
     """
-    from ..core.los import THREE_ZONE, TWO_ZONE
+    from ..core.los import TWO_ZONE
 
     if data_file_resolver is None:
         raise ValueError("missing file resolver")
 
-    if zone_system in [TWO_ZONE, THREE_ZONE]:
+    if zone_system == TWO_ZONE:
         # maz
         maz_filename = data_file_resolver(maz2taz_file_name, mandatory=True)
         maz_taz = read_input_file(maz_filename)
         maz_taz = maz_taz[["MAZ", "TAZ"]].set_index("MAZ").sort_index()
 
         # MAZ alignment is ensured here, so no re-alignment check is
-        # needed below for TWO_ZONE or THREE_ZONE systems
+        # needed below for TWO_ZONE systems
         try:
             pd.testing.assert_index_equal(
                 maz_taz.index, land_use_index, check_names=False
@@ -838,11 +838,7 @@ def load_skim_dataset_to_shared_memory(state, skim_tag="taz") -> xr.Dataset:
             ]
             d = sh.dataset.from_omx_3d(
                 omx_file_handles,
-                index_names=(
-                    ("otap", "dtap", "time_period")
-                    if skim_tag == "tap"
-                    else ("otaz", "dtaz", "time_period")
-                ),
+                index_names=("otaz", "dtaz", "time_period"),
                 time_periods=time_periods,
                 max_float_precision=max_float_precision,
                 ignore=state.settings.omx_ignore_patterns,
@@ -971,8 +967,3 @@ def load_skim_dataset_to_shared_memory(state, skim_tag="taz") -> xr.Dataset:
 @workflow.cached_object
 def skim_dataset(state: workflow.State) -> xr.Dataset:
     return load_skim_dataset_to_shared_memory(state)
-
-
-@workflow.cached_object
-def tap_dataset(state: workflow.State) -> xr.Dataset:
-    return load_skim_dataset_to_shared_memory(state, "tap")

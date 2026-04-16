@@ -62,15 +62,13 @@ def write_trip_matrices(
     then aggregates trip counts and writes OD matrices to OMX.  Save annotated
     trips table to pipeline if desired.
 
-    Writes taz trip tables for one and two zone system.  Writes taz and tap
-    trip tables for three zone system.  Add ``is_tap:True`` to the settings file
-    to identify an output matrix as tap level trips as opposed to taz level trips.
+    Writes taz trip tables for one and two zone system.  Add ``is_tap:True`` to
+    the settings file to identify an output matrix as tap level trips as opposed
+    to taz level trips.
 
     For one zone system, uses the land use table for the set of possible tazs.
-    For two zone system, uses the taz skim zone names for the set of possible tazs.
-    For three zone system, uses the taz skim zone names for the set of possible tazs
-    and uses the tap skim zone names for the set of possible taps.
-
+    For two zone system, uses the taz skim zone names for the set of possible
+    tazs.
     """
 
     if trips is None:
@@ -271,97 +269,12 @@ def write_trip_matrices(
             state, aggregate_trips, zone_index, orig_index, dest_index, model_settings
         )
 
-    elif (
-        network_los.zone_system == los.THREE_ZONE
-    ):  # maz trips written to taz and tap matrices
-        logger.info("aggregating trips three zone taz...")
-        trips_df["otaz"] = (
-            state.get_dataframe("land_use").reindex(trips_df["origin"]).TAZ.tolist()
-        )
-        trips_df["dtaz"] = (
-            state.get_dataframe("land_use")
-            .reindex(trips_df["destination"])
-            .TAZ.tolist()
-        )
-        aggregate_trips = trips_df.groupby(["otaz", "dtaz"], sort=False).sum(
-            numeric_only=True
-        )
-
-        # use the average household weight for all trips in the origin destination pair
-        hh_weight_col = model_settings.HH_EXPANSION_WEIGHT_COL
-        aggregate_weight = (
-            trips_df[["otaz", "dtaz", hh_weight_col]]
-            .groupby(["otaz", "dtaz"], sort=False)
-            .mean()
-        )
-        aggregate_trips[hh_weight_col] = aggregate_weight[hh_weight_col]
-
-        orig_vals = aggregate_trips.index.get_level_values("otaz")
-        dest_vals = aggregate_trips.index.get_level_values("dtaz")
-
-        try:
-            land_use_taz = state.get_dataframe("land_use_taz")
-        except (KeyError, RuntimeError):
-            pass  # table missing, ignore
-        else:
-            if "_original_TAZ" in land_use_taz.columns:
-                orig_vals = orig_vals.map(land_use_taz["_original_TAZ"])
-                dest_vals = dest_vals.map(land_use_taz["_original_TAZ"])
-
-        zone_index = pd.Index(network_los.get_tazs(state), name="TAZ")
-        assert all(zone in zone_index for zone in orig_vals)
-        assert all(zone in zone_index for zone in dest_vals)
-
-        _, orig_index = zone_index.reindex(orig_vals)
-        _, dest_index = zone_index.reindex(dest_vals)
-
-        write_matrices(
-            state, aggregate_trips, zone_index, orig_index, dest_index, model_settings
-        )
-
-        logger.info("aggregating trips three zone tap...")
-        aggregate_trips = trips_df.groupby(["btap", "atap"], sort=False).sum(
-            numeric_only=True
-        )
-
-        # use the average household weight for all trips in the origin destination pair
-        hh_weight_col = model_settings.HH_EXPANSION_WEIGHT_COL
-        aggregate_weight = (
-            trips_df[["btap", "atap", hh_weight_col]]
-            .groupby(["btap", "atap"], sort=False)
-            .mean()
-        )
-        aggregate_trips[hh_weight_col] = aggregate_weight[hh_weight_col]
-
-        orig_vals = aggregate_trips.index.get_level_values("btap")
-        dest_vals = aggregate_trips.index.get_level_values("atap")
-
-        zone_index = pd.Index(network_los.get_taps(), name="TAP")
-        assert all(zone in zone_index for zone in orig_vals)
-        assert all(zone in zone_index for zone in dest_vals)
-
-        _, orig_index = zone_index.reindex(orig_vals)
-        _, dest_index = zone_index.reindex(dest_vals)
-
-        write_matrices(
-            state,
-            aggregate_trips,
-            zone_index,
-            orig_index,
-            dest_index,
-            model_settings,
-            True,
-        )
-
     if "parking_location" in state.settings.models:
         # Set trip origin and destination to be the actual location the person is and not where their vehicle is parked
         trips_df["origin"] = trips_df["true_origin"]
         trips_df["destination"] = trips_df["true_destination"]
         del trips_df["true_origin"], trips_df["true_destination"]
-        if (
-            network_los.zone_system == los.TWO_ZONE
-            or network_los.zone_system == los.THREE_ZONE
-        ):
+        if network_los.zone_system == los.TWO_ZONE:
             trips_df["otaz"] = (
                 state.get_table("land_use").reindex(trips_df["origin"]).TAZ.tolist()
             )
