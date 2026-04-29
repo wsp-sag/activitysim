@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>GenericCheckpointStore.is_readonly &#8212; ActivitySim</title>
+    <title>State.update_table &#8212; ActivitySim</title>
   
   
   
@@ -50,7 +50,7 @@
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>
     <script src="../../_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'dev-guide/_generated/activitysim.core.workflow.checkpoint.GenericCheckpointStore.is_readonly';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dev-guide/_generated/activitysim.core.workflow.State.update_table';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://wsp-sag.github.io/activitysim/switcher.json';
@@ -60,8 +60,8 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="HdfStore" href="activitysim.core.workflow.checkpoint.HdfStore.html" />
-    <link rel="prev" title="GenericCheckpointStore.is_open" href="activitysim.core.workflow.checkpoint.GenericCheckpointStore.is_open.html" />
+    <link rel="next" title="State.checkpoint" href="activitysim.core.workflow.State.checkpoint.html" />
+    <link rel="prev" title="State.uncheckpointed_table_names" href="activitysim.core.workflow.State.uncheckpointed_table_names.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0.5" />
@@ -420,12 +420,15 @@
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Developers</a></li>
     
     
-    <li class="breadcrumb-item"><a href="../checkpointing.html" class="nav-link">Checkpointing</a></li>
+    <li class="breadcrumb-item"><a href="../core-workflow.html" class="nav-link">Workflow State</a></li>
     
     
-    <li class="breadcrumb-item"><a href="activitysim.core.workflow.checkpoint.GenericCheckpointStore.html" class="nav-link">GenericCheckpointStore</a></li>
+    <li class="breadcrumb-item"><a href="../core-workflow-api.html" class="nav-link">State API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">GenericCheckpointStore.is_readonly</span></li>
+    
+    <li class="breadcrumb-item"><a href="activitysim.core.workflow.State.html" class="nav-link">State</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">State.update_table</span></li>
   </ul>
 </nav>
 </div>
@@ -442,12 +445,24 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="genericcheckpointstore-is-readonly">
-<h1>GenericCheckpointStore.is_readonly<a class="headerlink" href="#genericcheckpointstore-is-readonly" title="Permalink to this heading">#</a></h1>
-<dl class="py property">
-<dt class="sig sig-object py" id="activitysim.core.workflow.checkpoint.GenericCheckpointStore.is_readonly">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">GenericCheckpointStore.</span></span><span class="sig-name descname"><span class="pre">is_readonly</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></em><a class="headerlink" href="#activitysim.core.workflow.checkpoint.GenericCheckpointStore.is_readonly" title="Permalink to this definition">#</a></dt>
-<dd><p>This store is read-only.</p>
+  <section id="state-update-table">
+<h1>State.update_table<a class="headerlink" href="#state-update-table" title="Permalink to this heading">#</a></h1>
+<dl class="py method">
+<dt class="sig sig-object py" id="activitysim.core.workflow.State.update_table">
+<span class="sig-prename descclassname"><span class="pre">State.</span></span><span class="sig-name descname"><span class="pre">update_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#activitysim.core.workflow.State.update_table" title="Permalink to this definition">#</a></dt>
+<dd><p>Go through existing tables in the state and
+get rid of any rows that correspond to skipped households.
+Save skipped household records in state under households_skipped
+Parameters
+———-
+name : str, optional</p>
+<blockquote>
+<div><p>Name of table to update. If None, update all tables.</p>
+</div></blockquote>
+<section id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Permalink to this heading">#</a></h2>
+<p>None</p>
+</section>
 </dd></dl>
 
 </section>
@@ -463,20 +478,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="activitysim.core.workflow.checkpoint.GenericCheckpointStore.is_open.html"
+       href="activitysim.core.workflow.State.uncheckpointed_table_names.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">GenericCheckpointStore.is_open</p>
+        <p class="prev-next-title">State.uncheckpointed_table_names</p>
       </div>
     </a>
     <a class="right-next"
-       href="activitysim.core.workflow.checkpoint.HdfStore.html"
+       href="activitysim.core.workflow.State.checkpoint.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">HdfStore</p>
+        <p class="prev-next-title">State.checkpoint</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -499,7 +514,7 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.core.workflow.checkpoint.GenericCheckpointStore.is_readonly"><code class="docutils literal notranslate"><span class="pre">GenericCheckpointStore.is_readonly</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#activitysim.core.workflow.State.update_table"><code class="docutils literal notranslate"><span class="pre">State.update_table()</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -507,7 +522,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../../_sources/dev-guide/_generated/activitysim.core.workflow.checkpoint.GenericCheckpointStore.is_readonly.rst.txt"
+      <li><a href="../../_sources/dev-guide/_generated/activitysim.core.workflow.State.update_table.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
