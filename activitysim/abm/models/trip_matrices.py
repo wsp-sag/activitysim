@@ -26,7 +26,6 @@ class MatrixTableSettings(PydanticReadable):
 class MatrixSettings(PydanticReadable):
     file_name: Path
     tables: list[MatrixTableSettings] = []
-    is_tap: bool = False
 
 
 class WriteTripMatricesSettings(PydanticReadable):
@@ -62,9 +61,7 @@ def write_trip_matrices(
     then aggregates trip counts and writes OD matrices to OMX.  Save annotated
     trips table to pipeline if desired.
 
-    Writes taz trip tables for one and two zone system.  Add ``is_tap:True`` to
-    the settings file to identify an output matrix as tap level trips as opposed
-    to taz level trips.
+    Writes taz trip tables for one and two zone system.
 
     For one zone system, uses the land use table for the set of possible tazs.
     For two zone system, uses the taz skim zone names for the set of possible
@@ -351,7 +348,6 @@ def write_matrices(
     orig_index,
     dest_index,
     model_settings: WriteTripMatricesSettings,
-    is_tap=False,
 ):
     """
     Write aggregated trips to OMX format.
@@ -371,42 +367,40 @@ def write_matrices(
         logger.error("Missing MATRICES setting in write_trip_matrices.yaml")
 
     for matrix in matrix_settings:
-        matrix_is_tap = matrix.is_tap
 
-        if matrix_is_tap == is_tap:  # only write tap matrices to tap matrix files
-            filename = str(matrix.file_name)
-            filepath = state.get_output_file_path(filename)
-            logger.info("opening %s" % filepath)
-            file = omx.open_file(str(filepath), "w")  # possibly overwrite existing file
-            table_settings = matrix.tables
+        filename = str(matrix.file_name)
+        filepath = state.get_output_file_path(filename)
+        logger.info("opening %s" % filepath)
+        file = omx.open_file(str(filepath), "w")  # possibly overwrite existing file
+        table_settings = matrix.tables
 
-            for table in table_settings:
-                table_name = table.name
-                col = table.data_field
+        for table in table_settings:
+            table_name = table.name
+            col = table.data_field
 
-                if col not in aggregate_trips:
-                    logger.error(f"missing {col} column in aggregate_trips DataFrame")
-                    return
+            if col not in aggregate_trips:
+                logger.error(f"missing {col} column in aggregate_trips DataFrame")
+                return
 
-                hh_weight_col = model_settings.HH_EXPANSION_WEIGHT_COL
-                if hh_weight_col:
-                    aggregate_trips[col] = (
-                        aggregate_trips[col] / aggregate_trips[hh_weight_col]
-                    )
-
-                data = np.zeros((len(zone_index), len(zone_index)))
-                data[orig_index, dest_index] = aggregate_trips[col]
-                logger.debug(
-                    "writing %s sum %0.2f" % (table_name, aggregate_trips[col].sum())
+            hh_weight_col = model_settings.HH_EXPANSION_WEIGHT_COL
+            if hh_weight_col:
+                aggregate_trips[col] = (
+                    aggregate_trips[col] / aggregate_trips[hh_weight_col]
                 )
-                file[table_name] = data  # write to file
 
-            # include the index-to-zone map in the file
-            logger.info(
-                "adding %s mapping for %s zones to %s"
-                % (zone_index.name, zone_index.size, filename)
+            data = np.zeros((len(zone_index), len(zone_index)))
+            data[orig_index, dest_index] = aggregate_trips[col]
+            logger.debug(
+                "writing %s sum %0.2f" % (table_name, aggregate_trips[col].sum())
             )
-            file.create_mapping(zone_index.name, zone_index.to_numpy())
+            file[table_name] = data  # write to file
 
-            logger.info("closing %s" % filepath)
-            file.close()
+        # include the index-to-zone map in the file
+        logger.info(
+            "adding %s mapping for %s zones to %s"
+            % (zone_index.name, zone_index.size, filename)
+        )
+        file.create_mapping(zone_index.name, zone_index.to_numpy())
+
+        logger.info("closing %s" % filepath)
+        file.close()
