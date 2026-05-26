@@ -43,8 +43,8 @@ def _settings():
             "DURATION_CATEGORY_COLUMN_NAME": "telework_duration_category",
             "DURATION_HOURS_COLUMN_NAME": "telework_duration_hours",
             "ALTS": "telework_duration_alts.csv",
-            'ALT_NAME_COLUMN': "alt",
-            'ALT_DURATION_COLUMN': "duration_hours",
+            "ALT_NAME_COLUMN": "alt",
+            "ALT_DURATION_COLUMN": "duration_hours",
             "PROBS_SPEC": "telework_duration_probs.csv",
             "PROBS_JOIN_COLS": None,
             "CHOICE_MODEL": "PROBABILISTIC",
@@ -53,7 +53,9 @@ def _settings():
     )()
 
 
-def test_telework_duration_probabilistic_maps_choice_to_duration_monkeypatch(tmp_path, monkeypatch):
+def test_telework_duration_probabilistic_maps_choice_to_duration_monkeypatch(
+    tmp_path, monkeypatch
+):
     probs_path = tmp_path / "telework_duration_probs.csv"
     probs_path.write_text("short,long\n0.2,0.8\n")
 
@@ -68,15 +70,21 @@ def test_telework_duration_probabilistic_maps_choice_to_duration_monkeypatch(tmp
 
     called = {"choosers_index": None}
 
-    monkeypatch.setattr(model.estimation.manager, "begin_estimation", lambda *a, **k: None)
+    monkeypatch.setattr(
+        model.estimation.manager, "begin_estimation", lambda *a, **k: None
+    )
     monkeypatch.setattr(model.config, "get_model_constants", lambda *_: {})
-    monkeypatch.setattr(model.expressions, "annotate_preprocessors", lambda *a, **k: None)
+    monkeypatch.setattr(
+        model.expressions, "annotate_preprocessors", lambda *a, **k: None
+    )
     monkeypatch.setattr(model.expressions, "annotate_tables", lambda *a, **k: None)
     monkeypatch.setattr(model.tracing, "print_summary", lambda *a, **k: None)
     monkeypatch.setattr(
         model.simulate,
         "read_model_alts",
-        lambda *a, **k: pd.DataFrame({"alt": ["short", "long"], "duration_hours": [2.0, 4.0]}),
+        lambda *a, **k: pd.DataFrame(
+            {"alt": ["short", "long"], "duration_hours": [2.0, 4.0]}
+        ),
     )
 
     def fake_make_choices(state, chooser_probs, trace_label, trace_choosers):
@@ -123,9 +131,7 @@ def real_example_root(tmp_path_factory):
         "PROBS_SPEC: telework_duration_probs.csv\n"
     )
     (config_dir / "telework_duration_alts.csv").write_text(
-        "alt,duration_hours\n"
-        "short,2.0\n"
-        "long,4.0\n"
+        "alt,duration_hours\n" "short,2.0\n" "long,4.0\n"
     )
     (config_dir / "telework_duration_probs.csv").write_text("short,long\n0.0,1.0\n")
     (config_dir / "telework_duration_mnl.yaml").write_text(

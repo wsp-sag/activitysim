@@ -52,7 +52,9 @@ def test_telework_arrangement_monkeypatch(monkeypatch):
 
     called = {"annotate": False, "annotate_tables": False, "choosers_index": None}
 
-    monkeypatch.setattr(model.estimation.manager, "begin_estimation", lambda *a, **k: None)
+    monkeypatch.setattr(
+        model.estimation.manager, "begin_estimation", lambda *a, **k: None
+    )
     monkeypatch.setattr(model.config, "get_model_constants", lambda *_: {"CONST": 1})
     monkeypatch.setattr(model.config, "get_logit_model_settings", lambda *_: None)
 
@@ -73,7 +75,9 @@ def test_telework_arrangement_monkeypatch(monkeypatch):
         # alt 0 => True, alt 1 => False
         return pd.Series([0, 1], index=choosers.index)
 
-    monkeypatch.setattr(model.expressions, "annotate_preprocessors", fake_annotate_preprocessors)
+    monkeypatch.setattr(
+        model.expressions, "annotate_preprocessors", fake_annotate_preprocessors
+    )
     monkeypatch.setattr(model.expressions, "annotate_tables", fake_annotate_tables)
     monkeypatch.setattr(model.simulate, "eval_coefficients", fake_eval_coefficients)
     monkeypatch.setattr(model.simulate, "simple_simulate", fake_simple_simulate)
@@ -122,9 +126,7 @@ def model_settings(example_root, state):
 
 
 @pytest.fixture(scope="module")
-def state(
-    example_root, coeffs_configs_csv, configs_csv
-) -> workflow.State:
+def state(example_root, coeffs_configs_csv, configs_csv) -> workflow.State:
 
     settings = """
         input_table_list:
@@ -170,7 +172,9 @@ def state(
     yaml_file = example_root / "configs" / "network_los.yaml"
     yaml_file.write_text(network_los_yaml)
 
-    telework_arrangement_coeffs = example_root / "configs" / "telework_arrangement_coeffs.csv"
+    telework_arrangement_coeffs = (
+        example_root / "configs" / "telework_arrangement_coeffs.csv"
+    )
     telework_arrangement_coeffs.write_text(coeffs_configs_csv)
 
     telework_arrangement = example_root / "configs" / "telework_arrangement.csv"
@@ -337,7 +341,9 @@ def network_los(state, persons, households, land_use) -> los.Network_LOS:
     state.add_table("households", households)
     state.add_table("land_use", land_use)
 
-    persons_merged = pd.merge(persons.reset_index(), households, on="household_id", how="left")
+    persons_merged = pd.merge(
+        persons.reset_index(), households, on="household_id", how="left"
+    )
     persons_merged = pd.merge(
         persons_merged, land_use.rename(columns={"TAZ": "taz"}), on="taz", how="left"
     )
@@ -359,18 +365,18 @@ def network_los(state, persons, households, land_use) -> los.Network_LOS:
 
 
 def test_telework_arrangement_real(state, model_settings, network_los):
-    
+
     persons_merged = state.get_dataframe("persons_merged").copy()
-    
+
     model.telework_arrangement(
         state=state,
         persons_merged=persons_merged,
         persons=state.get_dataframe("persons").copy(),
         model_settings=model_settings,
     )
-    
+
     out = state.get_dataframe("persons")["has_in_home_work_activity"]
-    
+
     assert out.dtype == bool
     assert out.to_dict() == {
         2664688: False,

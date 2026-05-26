@@ -171,9 +171,7 @@ def telework_duration(
 
     chooser_filter_col = model_settings.CHOOSER_FILTER_COLUMN_NAME
 
-    choosers = persons_merged[
-        persons_merged[chooser_filter_col]
-    ]
+    choosers = persons_merged[persons_merged[chooser_filter_col]]
 
     logger.info("Running %s with %d persons", trace_label, len(choosers))
 
