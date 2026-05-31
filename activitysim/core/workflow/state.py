@@ -191,6 +191,30 @@ class State:
                 base_seed = self.settings.rng_base_seed
         self._context["prng"].set_base_seed(base_seed)
 
+        try:
+            rng_cache_enabled = bool(self.settings.rng_cache_enabled)
+        except StateAccessError:
+            rng_cache_enabled = False
+
+        cache_dir = None
+        if rng_cache_enabled:
+            try:
+                if self.filesystem.cache_dir is None:
+                    from platformdirs import user_cache_dir
+
+                    cache_dir = Path(user_cache_dir(appname="ActivitySim")).joinpath(
+                        "rng_eet"
+                    )
+                    cache_dir.mkdir(parents=True, exist_ok=True)
+                else:
+                    cache_dir = self.filesystem.get_cache_dir("rng_eet")
+            except StateAccessError:
+                cache_dir = None
+        self._context["prng"].configure_eet_cache(
+            cache_dir=cache_dir,
+            enabled=rng_cache_enabled,
+        )
+
     def import_extensions(self, ext: str | Iterable[str] = None, append=True) -> None:
         """
         Import one or more extension modules for use with this model.
