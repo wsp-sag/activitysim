@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import os
+import tempfile
 from builtins import object, range
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -428,6 +431,85 @@ class Random(object):
         self.step_seed = None
         self.base_seed = 0
         self.global_rng = np.random.RandomState()
+        self._eet_cache_enabled = False
+        self._eet_cache_dir = None
+
+    def configure_eet_cache(self, cache_dir=None, enabled=False):
+        """
+        Configure a disk-backed cache for EET Gumbel draws.
+
+        When enabled, `gumbel_for_df` stores each exact draw request as a .npy
+        file under the configured cache directory and reuses it on later runs.
+        """
+
+        self._eet_cache_enabled = bool(enabled and cache_dir is not None)
+        self._eet_cache_dir = Path(cache_dir) if self._eet_cache_enabled else None
+        if self._eet_cache_dir is not None:
+            self._eet_cache_dir.mkdir(parents=True, exist_ok=True)
+
+    def _gumbel_cache_key(self, channel_name, df, n):
+        """
+        Build a deterministic cache key for one EET Gumbel draw request.
+
+        The key captures both request shape and stream position so a cache hit
+        only occurs when the same random numbers should be produced:
+
+        - base seed and step name
+        - channel name
+        - request dimensions (row count and n draws per row)
+        - per-row stream state (`row_seed` and `offset`) for `df.index`
+
+        Parameters
+        ----------
+        channel_name : str
+            Name of the random channel backing this dataframe.
+        df : pandas.DataFrame
+            DataFrame whose index identifies chooser rows for the request.
+        n : int
+            Number of Gumbel draws requested per row.
+
+        Returns
+        -------
+        str
+            SHA-256 hex digest used as the cache-file key.
+        """
+        df_row_states = self.get_channel_for_df(df).row_states.loc[
+            df.index, ["row_seed", "offset"]
+        ]
+        row_seeds = df_row_states["row_seed"].to_numpy(dtype=np.int64, copy=False)
+        offsets = df_row_states["offset"].to_numpy(dtype=np.int64, copy=False)
+
+        digest = hashlib.sha256()
+        digest.update(b"activitysim-eet-gumbel-v1")
+        digest.update(str(self.base_seed).encode("utf-8"))
+        digest.update(str(self.step_name).encode("utf-8"))
+        digest.update(str(channel_name).encode("utf-8"))
+        digest.update(np.asarray([len(df), n], dtype=np.int64).tobytes())
+        digest.update(row_seeds.tobytes())
+        digest.update(offsets.tobytes())
+        return digest.hexdigest()
+
+    def _gumbel_cache_path(self, channel_name, df, n):
+        cache_key = self._gumbel_cache_key(channel_name, df, n)
+        return self._eet_cache_dir.joinpath(
+            "gumbel",
+            cache_key[:2],
+            f"{cache_key}.npy",
+        )
+
+    def _load_gumbel_cache(self, cache_path):
+        return np.load(cache_path, mmap_mode="r", allow_pickle=False)
+
+    def _store_gumbel_cache(self, cache_path, rands):
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        if cache_path.exists():
+            return
+        with tempfile.NamedTemporaryFile(
+            mode="wb", suffix=".npy", dir=cache_path.parent, delete=False
+        ) as tmp_file:
+            np.save(tmp_file, np.asarray(rands))
+            tmp_name = tmp_file.name
+        os.replace(tmp_name, cache_path)
 
     def get_channel_for_df(self, df):
         """
@@ -657,10 +739,33 @@ class Random(object):
         if not self.channels:
             rng = np.random.RandomState(0)
             rands = np.asanyarray([rng.rand(n) for _ in range(len(df))])
+            logger.debug(
+                "legacy random_for_df(test) step=%s rows=%s draws=%s randoms=%s",
+                self.step_name,
+                len(df),
+                n,
+                len(df) * n,
+            )
             return rands
 
         channel = self.get_channel_for_df(df)
+        logger.debug(
+            "legacy random_for_df request channel=%s step=%s rows=%s draws=%s randoms=%s",
+            channel.channel_name,
+            self.step_name,
+            len(df),
+            n,
+            len(df) * n,
+        )
         rands = channel.random_for_df(df, self.step_name, n)
+        logger.debug(
+            "legacy random_for_df done channel=%s step=%s rows=%s draws=%s randoms=%s",
+            channel.channel_name,
+            self.step_name,
+            len(df),
+            n,
+            len(df) * n,
+        )
         return rands
 
     def gumbel_for_df(self, df, n=1):
@@ -696,7 +801,63 @@ class Random(object):
             a single float in range [0, 1) for each row in df
         """
         channel = self.get_channel_for_df(df)
+        random_count = len(df) * n
+        cache_path = None
+        if self._eet_cache_enabled:
+            cache_path = self._gumbel_cache_path(channel.channel_name, df, n)
+            if cache_path.exists():
+                try:
+                    rands = self._load_gumbel_cache(cache_path)
+                    if rands.shape == (len(df), n):
+                        logger.debug(
+                            "EET RNG cache hit channel=%s step=%s rows=%s draws=%s randoms=%s path=%s",
+                            channel.channel_name,
+                            self.step_name,
+                            len(df),
+                            n,
+                            random_count,
+                            cache_path,
+                        )
+                        channel.row_states.loc[df.index, "offset"] += n
+                        return rands
+                    logger.debug(
+                        "EET RNG cache shape mismatch channel=%s step=%s rows=%s draws=%s randoms=%s path=%s shape=%s",
+                        channel.channel_name,
+                        self.step_name,
+                        len(df),
+                        n,
+                        random_count,
+                        cache_path,
+                        rands.shape,
+                    )
+                except Exception:
+                    logger.warning("Failed to load RNG cache %s; regenerating", cache_path)
+            else:
+                logger.debug(
+                    "EET RNG cache miss channel=%s step=%s rows=%s draws=%s randoms=%s path=%s",
+                    channel.channel_name,
+                    self.step_name,
+                    len(df),
+                    n,
+                    random_count,
+                    cache_path,
+                )
+
         rands = channel.gumbel_for_df(df, self.step_name, n)
+        if self._eet_cache_enabled:
+            try:
+                self._store_gumbel_cache(cache_path, rands)
+                logger.debug(
+                    "EET RNG cache wrote channel=%s step=%s rows=%s draws=%s randoms=%s path=%s",
+                    channel.channel_name,
+                    self.step_name,
+                    len(df),
+                    n,
+                    random_count,
+                    cache_path,
+                )
+            except Exception:
+                logger.warning("Failed to write RNG cache %s", cache_path)
         return rands
 
     def normal_for_df(self, df, mu=0, sigma=1, broadcast=False, size=None):
