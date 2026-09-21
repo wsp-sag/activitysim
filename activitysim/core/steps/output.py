@@ -17,6 +17,7 @@ import pyarrow.parquet as parquet
 from activitysim.core import configuration, workflow
 from activitysim.core.workflow.checkpoint import CHECKPOINT_NAME
 from activitysim.core.estimation import estimation_enabled, EstimationConfig
+from activitysim.core.steps._decode import _apply_decode_filter, _decode_output_column
 
 logger = logging.getLogger(__name__)
 
@@ -205,7 +206,9 @@ def write_data_dictionary(state: workflow.State) -> None:
     if txt_format:
         with open(state.get_output_file_path(txt_format), "w") as output_file:
             # get max schema column widths from omnibus table
-            col_width = {c: schema_df[c].str.len().max() + 2 for c in schema_df}
+            col_width = {
+                c: int(schema_df[c].str.len().fillna(0).max()) + 2 for c in schema_df
+            }
 
             for table_name in table_names:
                 info = schema.get(table_name, None)
@@ -515,9 +518,11 @@ def write_tables(state: workflow.State) -> None:
 
                 if decode_instruction == "time_period":
                     map_col = list(state.network_settings.skim_time_periods.labels)
-                    map_func = map_col.__getitem__
-                    revised_col = (
-                        pd.Series(dt.column(colname)).astype(int).map(map_func)
+                    map_func, preserve_nulls = _apply_decode_filter(
+                        map_col, decode_filter
+                    )
+                    revised_col = _decode_output_column(
+                        dt.column(colname), map_func, preserve_nulls=preserve_nulls
                     )
                     dt = dt.drop([colname]).append_column(
                         colname, pa.array(revised_col)
@@ -536,18 +541,10 @@ def write_tables(state: workflow.State) -> None:
                 except KeyError:
                     map_col = parent_table.column(lookup_col)
                 map_col = np.asarray(map_col)
-                map_func = map_col.__getitem__
-                if decode_filter:
-                    if decode_filter == "nonnegative":
-
-                        def map_func(x):
-                            return x if x < 0 else map_col[x]
-
-                    else:
-                        raise ValueError(f"unknown decode_filter {decode_filter}")
+                map_func, preserve_nulls = _apply_decode_filter(map_col, decode_filter)
                 if colname in dt.column_names:
-                    revised_col = (
-                        pd.Series(dt.column(colname)).astype(int).map(map_func)
+                    revised_col = _decode_output_column(
+                        dt.column(colname), map_func, preserve_nulls=preserve_nulls
                     )
                     dt = dt.drop([colname]).append_column(
                         colname, pa.array(revised_col)

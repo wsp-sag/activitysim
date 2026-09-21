@@ -660,6 +660,20 @@ def zarr_file_modification_time(zarr_dir: Path):
     return t
 
 
+def traceable_id_columns(choosers):
+    """Return non-index identifiers needed to slice interaction trace rows."""
+    return [
+        column
+        for column in (
+            "household_id",
+            "person_id",
+            "proto_household_id",
+            "proto_person_id",
+        )
+        if column in choosers.columns
+    ]
+
+
 def drop_unused_columns(
     choosers,
     spec,
@@ -689,6 +703,7 @@ def drop_unused_columns(
     if locals_d:
         unique_variables_in_spec.add(locals_d.get("orig_col_name", None))
         unique_variables_in_spec.add(locals_d.get("dest_col_name", None))
+        unique_variables_in_spec.add(locals_d.get("pnr_lot_dest_col_name", None))
         if locals_d.get("timeframe") == "trip":
             orig_col_name = locals_d.get("ORIGIN", None)
             dest_col_name = locals_d.get("DESTINATION", None)
