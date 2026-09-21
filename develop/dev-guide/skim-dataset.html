@@ -65,7 +65,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.0.5" />
-    <meta name="docbuild:last-update" content="Apr 29, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 21, 2026"/>
   </head>
   
   
@@ -373,6 +373,8 @@
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../core.html">Core Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explicit-error-terms.html">Explicit Error Terms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sampling-methods.html">Sampling Methods for Interaction Sample</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../benchmarking.html">Benchmarking</a></li>
 <li class="toctree-l1"><a class="reference internal" href="build-docs.html">Documentation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changes.html">Change Log</a></li>
@@ -436,7 +438,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="using-skim-dataset">
+  <section class="tex2jax_ignore mathjax_ignore" id="using-skim-dataset">
 <span id="skim-datasets"></span><h1>Using Skim Dataset<a class="headerlink" href="#using-skim-dataset" title="Permalink to this heading">#</a></h1>
 <p>ActivitySim 1.2 offers two internal frameworks for managing skim data.</p>
 <ul class="simple">
@@ -619,7 +621,7 @@ with the same index as df</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="activitysim.core.skim_dataset.load_skim_dataset_to_shared_memory">
-<span class="sig-prename descclassname"><span class="pre">activitysim.core.skim_dataset.</span></span><span class="sig-name descname"><span class="pre">load_skim_dataset_to_shared_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skim_tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'taz'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.4.0)"><span class="pre">Dataset</span></a></span></span><a class="headerlink" href="#activitysim.core.skim_dataset.load_skim_dataset_to_shared_memory" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">activitysim.core.skim_dataset.</span></span><span class="sig-name descname"><span class="pre">load_skim_dataset_to_shared_memory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skim_tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'taz'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v2026.7.0)"><span class="pre">Dataset</span></a></span></span><a class="headerlink" href="#activitysim.core.skim_dataset.load_skim_dataset_to_shared_memory" title="Permalink to this definition">#</a></dt>
 <dd><p>Load skims from disk into shared memory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -638,7 +640,7 @@ with the same index as df</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="activitysim.core.skim_dataset.load_sparse_maz_skims">
-<span class="sig-prename descclassname"><span class="pre">activitysim.core.skim_dataset.</span></span><span class="sig-name descname"><span class="pre">load_sparse_maz_skims</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remapper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maz2taz_file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maz_to_maz_tables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_blend_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_file_resolver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#activitysim.core.skim_dataset.load_sparse_maz_skims" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">activitysim.core.skim_dataset.</span></span><span class="sig-name descname"><span class="pre">load_sparse_maz_skims</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">land_use_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remapper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zone_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maz2taz_file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maz_to_maz_tables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_blend_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_file_resolver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_float_precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#activitysim.core.skim_dataset.load_sparse_maz_skims" title="Permalink to this definition">#</a></dt>
 <dd><p>Load sparse MAZ data on top of TAZ skim data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -773,7 +775,7 @@ zone id’s.  Recoding improves runtime efficiency.</p>
       
         <div class="footer-item"><!-- This will display the version of the docs -->
 <p class="last-updated">
-ActivitySim 1.0.5.dev1913+g3d4433f3a, documentation last updated Apr 29, 2026.<br/>
+ActivitySim 1.0.5.dev1934+g8ca6741c8, documentation last updated Sep 21, 2026.<br/>
 </p></div>
       
         <div class="footer-item">
