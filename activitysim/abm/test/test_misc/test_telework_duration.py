@@ -4,12 +4,22 @@ import pandas as pd
 import pytest
 
 from activitysim.abm.models import telework_duration as model
+from activitysim.abm.models.settings_checker import try_load_and_check_spec_coefs
 from activitysim.core import workflow
 
 
 class DummyFileSystem:
     def __init__(self, probs_path: Path):
         self.probs_path = probs_path
+
+    def _resolve_path(self, file_name):
+        candidate = Path(file_name)
+        if candidate.exists():
+            return candidate
+        tmp_candidate = Path("/tmp") / candidate.name
+        if tmp_candidate.exists():
+            return tmp_candidate
+        return candidate
 
     def read_model_alts(self, state, file_name, set_index=None):
         return pd.DataFrame(
@@ -18,6 +28,21 @@ class DummyFileSystem:
                 "duration_hours": [2.0, 4.0],
             }
         )
+
+    def read_model_spec(self, file_name, *args, **kwargs):
+        path = self._resolve_path(file_name)
+        if not path.exists():
+            return pd.DataFrame()
+        return pd.read_csv(path, comment="#")
+
+    def read_model_coefficients(self, file_name, *args, **kwargs):
+        path = self._resolve_path(file_name)
+        if not path.exists():
+            return pd.DataFrame(columns=["coefficient_name", "value"])
+        df = pd.read_csv(path, comment="#")
+        if "coefficient_name" in df.columns:
+            df = df.set_index("coefficient_name")
+        return df
 
     def get_config_file_path(self, file_name):
         assert file_name == "telework_duration_probs.csv"
@@ -51,6 +76,23 @@ def _settings():
             "compute_settings": None,
         },
     )()
+
+
+def test_telework_duration_probabilistic_skips_mnl_spec_validation(monkeypatch):
+    state = DummyState(Path("/tmp/telework_duration_probs.csv"))
+
+    settings = model.TeleworkDurationSettings(
+        CHOICE_MODEL="PROBABILISTIC",
+        PROBS_SPEC="telework_duration_probs.csv",
+    )
+
+    errors = try_load_and_check_spec_coefs(
+        model_name="telework_duration",
+        model_settings=settings,
+        state=state,
+    )
+
+    assert errors == []
 
 
 def test_telework_duration_probabilistic_maps_choice_to_duration_monkeypatch(

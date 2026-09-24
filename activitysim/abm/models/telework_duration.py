@@ -6,6 +6,7 @@ import logging
 from typing import Literal
 
 import pandas as pd
+from pydantic import model_validator
 
 from activitysim.core import (
     config,
@@ -21,7 +22,7 @@ from activitysim.core.configuration.logit import LogitComponentSettings
 logger = logging.getLogger("activitysim")
 
 
-class TeleworkDurationSettings(LogitComponentSettings):
+class TeleworkDurationSettings(LogitComponentSettings, extra="forbid"):
     """
     Settings for the `telework_duration` component.
     """
@@ -47,11 +48,11 @@ class TeleworkDurationSettings(LogitComponentSettings):
     ALT_DURATION_COLUMN: str = "duration_hours"
     """Alternatives file column containing duration values in hours."""
 
-    SPEC: str = "telework_duration.csv"
-    """MNL utility specification file."""
+    SPEC: str | None = None
+    """MNL utility specification file. Required only when CHOICE_MODEL is MNL."""
 
-    COEFFICIENTS: str | None = "telework_duration_coeffs.csv"
-    """MNL coefficients file."""
+    COEFFICIENTS: str | None = None
+    """MNL coefficients file. Required only when CHOICE_MODEL is MNL."""
 
     LOGIT_TYPE: Literal["MNL", "NL"] = "MNL"
     """Logit type when running MNL mode."""
@@ -59,8 +60,8 @@ class TeleworkDurationSettings(LogitComponentSettings):
     NESTS: dict | None = None
     """Nest settings for NL mode, if ever used."""
 
-    PROBS_SPEC: str = "telework_duration_probs.csv"
-    """Probabilistic choice lookup table."""
+    PROBS_SPEC: str | None = None
+    """Probabilistic choice lookup table. Required only when CHOICE_MODEL is PROBABILISTIC."""
 
     PROBS_JOIN_COLS: list[str] | None = None
     """Columns to join choosers to probability table."""
@@ -70,6 +71,20 @@ class TeleworkDurationSettings(LogitComponentSettings):
 
     preprocessor: dict | list[dict] | None = None
     """Chooser preprocessor settings."""
+
+    @model_validator(mode="after")
+    def validate_choice_specific_files(self):
+        if self.CHOICE_MODEL == "MNL":
+            if not self.SPEC:
+                raise ValueError("SPEC is required when CHOICE_MODEL is 'MNL'.")
+            if not self.COEFFICIENTS:
+                raise ValueError("COEFFICIENTS is required when CHOICE_MODEL is 'MNL'.")
+        elif self.CHOICE_MODEL == "PROBABILISTIC":
+            if not self.PROBS_SPEC:
+                raise ValueError(
+                    "PROBS_SPEC is required when CHOICE_MODEL is 'PROBABILISTIC'."
+                )
+        return self
 
 
 def _load_alternatives(state: workflow.State, model_settings: TeleworkDurationSettings):
