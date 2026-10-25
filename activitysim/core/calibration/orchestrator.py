@@ -8,6 +8,7 @@ from typing import Literal
 
 from activitysim.core import workflow
 
+from .component import _calibrate_component, _preflight_validate_component
 from .component import _calibrate_component
 from .execution import (
     _prep_model_data,
@@ -210,6 +211,11 @@ def run_calibration_loop(
         raise ValueError(
             "settings.yaml models list does not include configured calibration "
             f"model(s): {missing_calibration_models}"
+        )
+
+    for component in calibration_settings.run.calibrate_models:
+        _preflight_validate_component(
+            state, component, calibration_settings.model_settings[component]
         )
 
     resume_after = state.settings.resume_after
